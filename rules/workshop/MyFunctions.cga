@@ -1,0 +1,25 @@
+/**
+ * File:    MyFunctions.cga
+ * Created: 31 Oct 2021 22:53:00 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+#city engine functions are dumb 
+# and cannot return two different types of primitives.
+
+QuantityBlocks(Code) =
+	case Code == "HF" : [1]
+	case Code == "CU" : [1]
+	case Code == "BP" : [1]
+	case Code == "SPS" : [4]
+	case Code == "SUPS" : [4]
+	case Code == "SBF": [1]
+	case Code == "ODP": [1]
+	case Code == "WW": [2,10]
+	case Code == "COART": [1]
+	case Code == "SUMS": [70]
+	case Code == "CF": [30]
+	else : [0, 1/0] #cityEngine uses the undefined resolution for 1/0 as infinity
+

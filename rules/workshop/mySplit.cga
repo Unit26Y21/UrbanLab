@@ -1,0 +1,54 @@
+/**
+ * File:    mySplit.cga
+ * Created: 1 Nov 2021 20:24:29 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+import meterConverter: "meterToFeet.cga"
+
+@StartRule
+Lot -->
+	extrude(30)
+	
+	#split this, on the y axis (by what dimensions 3: What do I do next? Go to floors).  Asterisk means, do this until you cant find more geometry
+	split(y){6: StoreFront  | ~1: split(y){3: Floors}*}
+	
+attr storeFront = [3,5]
+	
+StoreFront -->
+	split(z){5: StoreDisplay}*
+
+StoreDisplay --> 
+	comp(f){top: extrude(rand(4))}
+	
+Floors -->
+	#select the face or side of the floor
+	comp(f){object.side: balconies | all: otherColor}
+ 	
+ 	
+ balconies --> 
+ 	print(getTreeKey())
+ 	extrude(float(listItem(getTreeKey(),1)))
+ 	topBalconies 
+ 	
+ topBalconies --> comp(f){top: ReportBalconieArea |	
+ 						 all: NIL
+ }
+ 
+ReportBalconieArea -->
+	report("balconie area", geometry.area())					
+ 	color(0,1,0)
+ 
+ 
+ floorColor --> color(rand(1),rand(1), rand(1))  
+ 
+ otherColor --> color(1,0,0)
+ 
+ 
+ 
+ 
+ @StarRule
+ splitStreet -->
+ 	split(z){6: StoreFront}*

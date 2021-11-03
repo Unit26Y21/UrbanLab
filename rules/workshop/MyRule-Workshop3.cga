@@ -1,0 +1,82 @@
+/**
+ * File:    MyRule-Workshop3.cga
+ * Created: 15 Oct 2021 13:53:53 GMT
+ * Author:  User
+ */
+version "2020.1"
+
+@Enum("1", "2", "3")
+attr LOD = 1
+
+/*
+const grass = 
+	case LOD == 1: Use this symbol
+	case LOD == 2: Use this other symbol
+	else:
+		1
+*/
+
+attr shapeType = ""
+
+attr lightpostFile = "lightpost.dae"
+
+attr connectionEnd = ""
+attr connectionStart = ""
+
+
+@Range(min = 1, max =100000)
+attr amount = 25
+
+@StartRule
+Streets -->
+	case shapeType == "Sidewalk":
+		extrude(1)
+		SelectSidewalkTop
+		
+	case shapeType == "Junction":
+		extrude(0.5)
+	
+	case shapeType == "Street":
+		extrude(0.5)
+		SplitStreet 
+		
+	else:
+		extrude(rand(1,3))
+		
+
+SelectSidewalkTop -->
+	comp(f){object.top: SidewalkPartition}
+	
+	
+SplitStreet -->
+	comp(f){object.top:	
+				split(x){6: 
+					split(y){2: OpenRestaurant |
+							~1: LeftOverStreet |
+							2: OpenRestaurant
+						}
+					}*
+				}
+				
+OpenRestaurant -->
+	extrude(3)
+	
+SidewalkPartition -->
+	split(x){3: RandomColor RotateSidewalkScope  }*
+
+@StartRule
+ScatterLightposts -->
+	scatter(surface, amount, uniform){LightpostObject}
+
+RotateSidewalkScope -->
+	rotate(rel, object, 90,90,0)
+	
+	LightpostObject
+	
+LightpostObject -->
+	i(lightpostFile)
+	s('1,'2,1)
+
+RandomColor -->
+	color(rand(1), rand(1), rand(1))
+	

@@ -1,0 +1,122 @@
+/**
+ * File:    PermittedStreetUse.cga
+ * Created: 1 Nov 2021 14:51:42 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+import eventClosures: "eventsClosure.cga"
+
+#### Atribute ###
+#Events Column definition
+@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW", "COART", "SUMS", "CF")
+attr EventClass = ""
+
+
+#one = means assign a value to an attr or const, instiate a function: i am making a box named EventClassName, store the name
+
+#two ==, part of the family of operators:
+# equal to: ==
+# NOT equal to: !=
+# greaten than: >
+# ....
+
+attr EventClassName = 
+	case EventClass == "HF": "HealthFair"
+    case EventClass == "CU": "CleanUps"
+    case EventClass == "BP": "BlockParty"
+    case EventClass == "SPS": "SchoolPlayStreet"
+    case EventClass == "SUPS": "SummerPlayStreet"
+    case EventClass == "PE/PPE": "PlazaEvent/PlazaPartnetEvent"
+    case EventClass == "FM": "FarmersMarket"
+    case EventClass == "SBF": "SingleBlockFestival"
+    case EventClass == "SF": "StreetFestival"
+    case EventClass == "R": "Rally"
+    case EventClass == "SS": "SeasonalStreets"
+    case EventClass == "ODP": "OneDayPlaza"
+    case EventClass == "WW": "WeekendWalks"
+    case EventClass == "COART": "CommunityArt"
+    case EventClass == "SUMS": "SummerStreets"
+    case EventClass == "CF": "CarFreeDay"
+	else : "No Event"
+
+@Enum ("Games", "Sports", "Performance")
+attr SchoolPlayStreetActivities =
+    50% : "Sports"
+    30% : "Games"
+    10% : "Performance"
+    else: "Free"
+
+
+Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
+
+
+
+attr TRAFDIR = ""
+
+#This is reading from the street attribute
+attr TrafficCategory =
+    # if TRAFDIR is something, return  a new name
+    case TRAFDIR == "TW": "Two-Way" 
+    case TRAFDIR == "FT": "With"
+    case TRAFDIR  == "TF": "Against"
+    case TRAFDIR  == "NV": "Non-Vehicular"
+    else: "Other Street"
+
+#[attr TrafficCategory = PermittedStreet(Code)]
+
+PermittedStreet(Code)=
+    case Code == "SPS": ["FT","TF","NV"]
+    case Code == "SUPS" : ["FT","TF","NV"]
+    case Code == "PE/PPE" : [""]
+    case Code == "FM" : [""]
+    case Code == "R" : [""]
+    else :  ["FT","TF","NV", "TW"]
+
+
+
+###################################################################
+###################################################################
+###################################################################
+
+@StartRule
+SchoolPlayStreet-->
+    #if traffic ISNOT  two way then apply PaintActivity
+    case TrafficCategory != "Two-Way": 
+    	PaintActivity
+    	report("EventClosure", listFromArray(eventClosures.roadTypeClosure(EventClass)))
+    	
+    else: 
+    	NIL #Delete Model
+        #DoNothing. #nothing, the dot is needed to do nothing.
+
+PaintActivity -->
+    case SchoolPlayStreetActivities == "Sports": color(1,0,0)
+    case SchoolPlayStreetActivities == "Games": color (0,1,0)
+    case SchoolPlayStreetActivities == "Performance":color ("CDCDCD")
+    else : color ("#D4D4D4")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

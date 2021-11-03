@@ -1,0 +1,155 @@
+/**
+ * File:    Tester.cga
+ * Created: 31 Oct 2021 21:06:00 GMT
+ * Author:  nlaveau000
+ */
+ 
+version "2021.0"
+
+#{attr, const} when you have a value that can change or not.
+# attr: box called HorizontalSurfaceType and I want to store this values in this parameter
+# const: this box is static and can only hold one value
+# example const FAR = 1 . Inside rule you try to set FAR to 3, CE wont allowed because its a const.
+
+#mechanism to perform repeated instructions.
+#functionName(input1, input2, input3) = 
+	#option1 x*y
+	#option2 if else is case else
+	
+# the rule is the machine that intervenes in the digital space
+# constructor: rule -->
+
+
+### Atributes ####
+#Assign Names to each horizontal Surface Type
+@Enum("Roof", "Pavement", "Park", "Road", "Carpark")
+attr HorizontalSurfaceType = "Roof"
+
+#Moving on to Vertical Surfaces
+#Assign Names to each Vertical Surface Type
+@Enum ("VST1", "VST2", "VST3")
+attr VerticallSurfaceType = ""
+
+/*
+	VST1 ("BuildingFacade")
+	VST2 ("Fence")
+	VST3 ("Wall")
+	VST4("BuildingFacadeHorizontal")
+	Report VerticalSurfaceArea
+	Report MaterialType
+*/
+
+#Assigning value for how each surface contributes to city cooling
+attr SurfaceCoolingFactor =
+	case HorizontalSurfaceType == "Roof": 1
+	case HorizontalSurfaceType == "Pavement": 2
+	case HorizontalSurfaceType == "Road": 3
+	case HorizontalSurfaceType == "Park": 4
+	case HorizontalSurfaceType == "Carpark": 5
+	else:0
+	
+attr minMax = [0, 100]
+
+#Assigning corefficiets of recommended soil types
+@Enum(0.30, 0.66, [0.10-0.25], -1, 0.66)
+attr RecommendedSoilType = 0
+
+#Assigning Vegetation to soil type
+attr VegetationNeeded =
+	case SoilType == GradeOne: "VegType"
+	case SoilType == GradeTwo: "VegType"
+	case SoilType == GradeThree:"VegType"
+	else: "VegType"
+	
+
+### Functions ####
+
+#Assigning each surface a Coefficient for runoff (without ecology)
+RunoffCoefficent(RCWithoutEcology) =
+	case HorizontalSurfaceType == "Roof": 0.95
+	case HorizontalSurfaceType == "Pavement": 0.75-0.85
+	case HorizontalSurfaceType == "Road": 0.70-0.95
+	case HorizontalSurfaceType == "Park": 0.10-0.25
+	case HorizontalSurfaceType == "Carpark": 0.70-0.95
+	else: 0
+	
+#Trying to figure out how to determine the criteria for assigning the new soil type for each horizontal surface.
+PerformativeRunoffCoefficent =
+	case HorizontalSurfaceType == "Roof": rand(0.1, 0.3) #assign random coefficent between 0.1 and 0.3
+	case HorizontalSurfaceType == "Pavement": "new soil coefficient x"
+	case HorizontalSurfaceType == "Road": "new soil coefficient x"
+	case HorizontalSurfaceType == "Park": "new soil coefficient x"
+	case HorizontalSurfaceType == "Carpark": "new soil coefficient x"
+	else:0
+	
+const BF = 1
+#Assigning Value for Contribution to biodiversity (how many species does the surface support when vegetation is added?)
+BiodiversityFactor =
+	case gradeType == "GradeOne": BF
+	case gradeType == "GradeTwo":  BF
+	case gradeType == "GradeThree": BF
+	case gradeType == "GradeFour": BF
+	else: 0 #what happens with Grade zero?
+	
+	
+const x = 1
+
+#Assigning value for how each vertical surface contributes to city cooling
+SurfaceCoolingFactor =
+	case VerticalSurfaceType == "BuildingFacade": x
+	case HorizontalSurfaceType == "Fence": x
+	case HorizontalSurfaceType == "Wall": x
+	case HorizontalSurfaceType == "BuildingFacadeHorizontal": x
+	else:0
+#Assigning each vertical surface a Coefficient for runoff (without ecology)
+RunoffCoefficent (RCWithoutEcology) =
+	case VerticalSurfaceType == "BuildingFacade": x
+	case HorizontalSurfaceType == "Fence": x
+	case HorizontalSurfaceType == "Wall": x
+	case HorizontalSurfaceType == "BuildingFacadeHorizontal": x
+	else:0
+	
+#Assigning Value for Contribution to biodiversity (how many species does the vertical surface support when vegetation is added?)
+BiodiversityFactor =
+	case VerticalSurfaceType == "BuildingFacade": BF
+	case HorizontalSurfaceType == "Fence": BF
+	case HorizontalSurfaceType == "Wall": BF
+	case HorizontalSurfaceType == "BuildingFacadeHorizontal": BF
+	else:0
+
+#The issue is trying to figure out the criteria to provide people that says, if you have this.... then do this....
+#Maybe like if horizontal surface has area of >10000 square feet, then  use this soil type...
+#Assigning Recommended SoilType for Better Rainfall performance surface
+attr RecommendedSoilType =
+	case RCWithoutEcology ("Roof") == x: "SoilType"
+	case RCWithoutEcology ("Pavement") == x: "SoilType"
+	case RCWithoutEcology ("Park") == x: "SoilType"
+	case RCWithoutEcology ("Road") == x: "SoilType"
+	case RCWithoutEcology ("Carpark") == x: "SoilType"
+	else: "SoilType"
+	
+### Rules ####
+
+#Taking note of the surface area
+ReportSurfaceArea -->
+	report("SurfaceArea", geometry.area)
+	
+#Taking note of the surface area
+ReportVerticalSurfaceArea -->
+	report("VericalArea", geometry.area)
+
+#Taking note of material of surface
+ReportMaterialType -->
+	report ("MaterialType", VegetationNeeded)
+	
+
+#Report Cooling factor after vegetation and soil type added
+ReportNewCoolingFactor -->
+	report("NewCoolingFactor", attr.coolingFactor)
+	
+#Report BiodiversityFactor after vegetation and soil type added
+ReportNewBiodiversityFactor -->
+	report("NewBiodiversityFactor", attr.BiodiversityFactor)
+
+
+

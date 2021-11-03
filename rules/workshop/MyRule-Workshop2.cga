@@ -1,0 +1,145 @@
+/**
+ * File:    MyRule-Workshop2.cga
+ * Created: 14 Oct 2021 13:13:27 GMT
+ * Author:  User
+ */
+
+version "2020.1"
+
+import meterConverter: "meterToFeet.cga"
+
+#Name --> something
+
+attr maxHeight = 100
+
+attr frontBaseHeight = 20
+
+@Angle
+attr frontAngle = 45
+
+@Range(min= 0, max= 10)
+attr radius = 10
+
+@Range(min = 1, max =100000)
+attr amount = 25
+
+attr lightpostFile = "lightpost.dae"
+
+@Range(min=1, max=10)
+attr frontSetback = 10
+
+attr edgeCondition = edgeAttr.getString("streetcategories")
+
+@StartRule
+Parcel --> 
+	extrude(meterConverter.feet(maxHeight))
+	comp(f){top: ReportRoofDrainage}
+
+
+attr waterDrainage = 0
+
+ReportRoofDrainage -->
+	set(waterDrainage, waterDrainage(meterConverter.sqmeterTosqft(geometry.area()))) 
+	#print(countToThree(1))
+	print(waterDrainage)
+	report("waterDrainage", waterDrainage)
+	
+	feasableRoofs(waterDrainage)
+	
+	#countThreeFloors(1, waterDrainage)
+
+	#report("Water Drainage", waterDrainage)
+
+feasableRoofs(checkDrainage) -->
+	case checkDrainage > 6:
+		countThreeFloors(1, waterDrainage)
+		
+	else:
+		//ScatterLightposts
+		Stop.
+		print("its not feasable")
+
+countThreeFloors(input, limitExtrusion) -->
+	case input < limitExtrusion: 
+		print(input)
+		extrudeFloor
+		translate(rel, scope, 0, 0, meterConverter.feet(10))
+		countThreeFloors(input + 1, limitExtrusion)
+	else:
+		print(input)
+		extrudeFloor
+		translate(rel, scope, 0, 0, meterConverter.feet(10))
+
+
+extrudeFloor -->
+	extrude(meterConverter.feet(10))
+	report("CountFloors", 1)
+
+
+const waterCoefficient = 0.25
+
+waterDrainage(input) = (input * pow(waterCoefficient,2)) /30 #volume per liter
+
+countToThree(input) =
+	case input < 3: countToThree(input + 1)
+	else:
+		input 
+
+/*
+	case edgeCondition == "Wide":
+		setback(frontSetback){street.front: ScatterLightposts| 
+							street.back: RandomColor | 
+							street.side: RandomColor|
+							remainder: Normal}
+		
+	else:
+		setback(frontSetback){street.front: RandomColor| 
+							street.back: RandomColor | 
+							street.side: RandomColor|
+							remainder: Normal}
+		
+	#envelope(world.up, maxHeight, frontBaseHeight, frontAngle)
+	#primitiveCylinder(16,radius, maxHeight)
+	#primitiveSphere(16,16,radius)
+	#extrude(10)
+	*/
+	
+#For loops or recursive rules?
+
+	
+RandomColor -->
+	color(rand(1), rand(1), rand(1))
+	
+	
+Normal -->
+	extrude(10)
+	
+	
+@StartRule 
+Building -->
+	comp(f){top: NewStoreFront | all: ExistingBuilding }
+	
+NewStoreFront -->
+	extrude(8)
+	
+ExistingBuilding -->
+	color(1,1,1,0.5)
+
+@StartRule
+ScatterLightposts -->
+	scatter(surface, amount, uniform){LightpostObject}
+	
+	
+Lightpost -->
+	primitiveCylinder(16,radius/2, maxHeight)
+	comp(f){object.top: LightSphere| all: Pole}
+	
+LightSphere -->
+	translate(abs, scope, 0,0,radius)
+	#s(2,2,2)
+	primitiveSphere(16,16,radius)
+	center(xy)
+	
+LightpostObject -->
+	i(lightpostFile)
+	RandomColor

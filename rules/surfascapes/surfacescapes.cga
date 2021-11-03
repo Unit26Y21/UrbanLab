@@ -1,0 +1,53 @@
+
+/* File:    Surfacescapes.cga
+ * Created: 20 Oct 2021 16:03:33 GMT
+ * Author:  skamins000
+ */
+version "2021.0"
+#attributes
+ attr shapeType = ""
+ attr StreetType = ""
+ attr shapeCreation = "true"
+ attr streetWidth = ""
+ attr connectionEnd = ""
+ attr connectionStart = ""
+ 
+# 0: (SR) ServiceRoad (Cars Only, split for # of lanes and 1 way vs 2 way)
+# 1: (PT) PublicTransit (Bus lanes and/or light rail)
+# 2: (LZ) LoadingZone (adjacent to commerical and residential zones, rules tbd)
+# 3: (PL) ParkingLot (existing golf course lot, any other program that will need parking lot: education, civic, ADA access)
+# 4: (PP) PermitParking (adjacent to certain buildingClass [commerical and residential zones, rules tbd])
+# 5: (PC) PedestrianCirculation (sidewalk, widths vary according to adjacent buildingClass)
+# 6: (SP) SidewalkProgram (Cafe, Bike Storage/Bike Share, etc.)
+# 7: (BP) BikePath (1 way vs 2 way + Elevation)
+# 8: (FH) FloraHydro (RainGarden, Swale, CatchmentArea, Watershed, CommunityGarden, SewerPoint)
+ @Enum ("ServiceRoad", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "Pedestrian", "SidewalkProgram", "BikePath", "FloraHydro")
+ attr surfaceType = ""
+@Enum(min=10, max=70, stepsize=1)
+attr StreetWidth = 10
+#Function Biking, Walking & Running
+#Width 25-50 Feet
+#Speed 15 MPH
+#Pedestrians on N&S or E&W
+#Ground Level or Elevated
+#Treeline/Grassway on 1-side, 2-sides
+#Train/Lightrail No
+#Bike Lanes 1 way one lane to 4 lanes two ways
+#Car Lane No
+#Seweror Swale
+#Curb Yes
+# Split the street
+
+@Range(min=1, max =4, stepSize=1)
+attr  nLanesTotal = 3
+
+@StartRule
+Street -->			# split away the side geometry on the streets
+	split(v,uvSpace,0){ -geometry.vMin: Asphalt 		# the lanes start at v-coord 0 i.e. everything below can be splitted away (= asphalt)
+					  | nLanesTotal	  : Lanes 			# the lanes end at v-coord nLanesTotal
+					  | ~1			  : Asphalt }		# all remaining geometry beyond v-coord nLanesTotal can be split away
+
+					  
+					  
+					  
+					  

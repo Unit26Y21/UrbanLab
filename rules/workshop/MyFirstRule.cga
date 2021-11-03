@@ -1,0 +1,141 @@
+/**
+ * File:    MyFirstRule.cga
+ * Created: 13 Oct 2021 13:26:46 GMT
+ * Author:  Hector Tarrido-Picart
+ */
+
+version "2020.1"
+
+@Enum("Residential", "Retail", "Educational", "Community Facility")
+attr buildingUse =
+	30%: "Retail"
+	40%: "Residential"
+	10%: "Educational"
+	else: "Community Facility"
+
+#attr Name = "String", Int, Float, Boolean
+@Range(min=1, max=100)
+attr height = 
+	case buildingUse == "Residential": rand(10,100)
+	case buildingUse == "Retail": 20
+	case buildingUse == "Educational": 40
+	else: 10
+	
+	/*
+	case BldgClass == "A5": rand(10,20)
+	case BldgClass == "A8": rand(20,50)
+	case BldgClass == "W2": rand(20,100)
+	else: rand(10,30)
+	*/
+
+attr actualHeight = 0
+
+@Enum("A8", "A5", "W2", "")
+attr BldgClass = ""
+
+
+attr generateExtraFacade = false #true or false
+
+@Angle
+attr telecomAntennaHeight = 30
+
+@Range(min=0, max=20)
+attr AntennaBaseOffset = 3
+
+# Name --> something
+
+@StartRule
+Parcel --> 
+	extrude(height)
+	SelectTop
+	
+		
+	
+	/*
+	# if BldgClass is Walkup: extrude 10
+	case BldgClass == "A5": extrude(10)
+	
+	# elseif the BldgClass is Row House: extrude(20)
+	case BldgClass == "A8": extrude(20)
+	
+	# elseif the BldgClass is Tower: extrude between 20 and 100
+	case BldgClass == "W2": extrude(rand(20,100))
+	
+	else: extrude(rand(height))
+	# else: whatever
+	
+	
+	/*
+	set(actualHeight, rand(10,height))
+	extrude(actualHeight)
+	SelectVerticalSurfaces
+*/
+
+attr floorHeight = 3
+
+@StartRule
+SelectVerticalSurfaces -->
+	alignScopeToAxes(world.y)
+	split(y){floorHeight: Floor.}*
+	
+	#comp(f){side: ReportVerticalSurfaces}	
+	#report("LotArea", geometry.area(bottom))
+	#report("ActualHeight", geometry.height())
+	
+attr verticalSurfaceArea = 0
+
+ReportVerticalSurfaces -->
+	set(verticalSurfaceArea, geometry.area()) 
+	report("VerticalArea", verticalSurfaceArea)
+	SurfacePerformance
+
+/*
+GenerateExtraFacade -->
+	case generateExtraFacade:
+		SurfacePerformance 
+	
+	else: 
+		Stop.
+		*/
+		
+SurfacePerformance -->
+	case generateExtraFacade:
+		case verticalSurfaceArea > 600: #sqmeter
+			extrude(rand(1,10))
+			
+		else:
+			color(255,0,0)
+			
+	else:
+		Stop.
+		
+SelectTop -->
+	comp(f){object.top: AntennaBase | all: PaintBuildings}
+
+AntennaBase -->
+	split(x){~1: RandomColor | 
+				AntennaBaseOffset: offset(-4) comp(f) { inside: Antenna | border: RandomColor}| 
+				~1: RandomColor}
+	#offset(AntennaBaseOffset)
+	# comp(f) { inside: Antenna| border= RandomColor }
+	
+Antenna -->
+	roofPyramid(byAngle,telecomAntennaHeight)
+	# taper()
+	PaintBuildings
+
+Debug -->
+	print(seedian)
+	print(actualHeight)
+	
+PaintBuildings -->
+	case buildingUse == "Residential":
+		color("#FFC0CB")
+	case buildingUse == "Retail":
+		color("#0000FF")
+	case buildingUse == "Community Facility":
+		color("#FFFF00")
+	else:
+		color(255,255,255)
+		
+RandomColor --> color(rand(1), rand(1), rand(1))
