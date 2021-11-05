@@ -25,6 +25,27 @@ const wastePerHH =
 	else: "1"
 
 ##### ATTRIBUTES ######
+#This list of BldgClass is powerfull
+#Consider creating a const so you instatiated once and access it at all points
+const BldgClassType = ["Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise"]
+
+
+#You have two options to randomly apply it when the rule is instantiated:
+# option a); stochastically randomize it at the attribute level. 
+# This options gives the user control to assign new bldg class
+#You will still need the enum to create the UI options...
+
+@Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
+attr BldgClassAlt = 
+	50%: BldgClassType[0]
+	20%:BldgClassType[1]
+	10%: BldgClassType[3]
+	5%: BldgClassType[2]
+	else: BldgClassType[4]
+
+#option b): create an array that is a constant and randomly select the array at the rule level
+# This options DOES NOT gives the user control to assign new bldg class
+#set(BldgClassRandom, BldgClassType[int(rand(0,4))]
 
 @Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
 attr BldgClass = "Low Walkup"
@@ -34,6 +55,7 @@ attr WasteType = "Refuse"
 
 	
 #number of households per BldgClass
+# @Katie should this not be a functio???
 attr NumberofHouseholds =
 	case BldgClass == "Low Walkup": rand(4,10)
 	case BldgClass == "High Walkup": rand(10,18)
@@ -43,6 +65,7 @@ attr NumberofHouseholds =
 	else: 0.5
 
 #building height based on household size & housing type (in meters)
+# @Katie should this not be a functio???
 attr Height =
 	case BldgClass == "Low Walkup" && NumberofHouseholds >=6: 9
 	case BldgClass == "Low Walkup" && NumberofHouseholds <10: 10
@@ -56,6 +79,9 @@ attr Height =
 	case BldgClass == "Dense High Rise" && NumberofHouseholds <=80: 50
 	else: 10
 
+# @Katie should this not be a functio???
+# Do you want to give the user the option to change the color??
+# If the answer is no, then this should be a function
 @Color
 attr BldgColor = 
 	case BldgClass == "Low Walkup": "#FF0000"
@@ -80,9 +106,28 @@ averageBuildingWaste (wastePerHH, NumberofHouseholds) =
 	case WasteType == "Glass": wastePerHH * NumberofHouseholds
 	case WasteType == "Textiles": wastePerHH * NumberofHouseholds
 	case WasteType == "Other": wastePerHH * NumberofHouseholds
-	else: 4
+	else: 4 #Why 4???
 
-@LowWalkUpParcels
+# Great job with creating rules.
+# Dont you think it might be easier to simple use one rule instead of 5???
+
+# Like this
+
+@StartRule
+WalkupParcel -->
+	#we do not need to set Bldg Class because it already comes from the attributes
+	# samething with BldgColor
+	extrude(Height)
+	color(BldgColor)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+	report("Building Height", Height) #maybe include height???
+	
+
+#This @Symbol is a key attribute in CE, 
+# since it does not comply with how the @ expects, it does nothing...
+@LowWalkUpParcels 
 LowWalkupParcel -->
 	set(BldgClass, "Low Walkup") 
 	set(BldgColor, "Low Walkup") 
