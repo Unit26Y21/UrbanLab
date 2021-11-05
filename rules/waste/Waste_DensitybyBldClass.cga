@@ -1,0 +1,142 @@
+/**
+ * File:    Waste_DensitybyBldClass.cga
+ * Created: 5 Nov 2021 14:29:26 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+##### CONSTANTS ########
+
+const AvgHouseholdSize = 2.5
+
+const InhabitantsPerBld = AvgHouseholdSize * NumberofHouseholds 
+
+#lbs of waste per HH by waste type 
+const wastePerHH = 
+	case WasteType == "Refuse": "7.09"
+	case WasteType == "Organics": "7.93"
+	case WasteType == "Paper": "9.64"
+	case WasteType == "Metal": "1.18"
+	case WasteType == "Plastic": "1.47" 
+	case WasteType == "Glass": "4.41"
+	case WasteType == "Textiles": "2.41"
+	case WasteType == "Other": "4.11" 
+	else: "1"
+
+##### ATTRIBUTES ######
+
+@Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
+attr BldgClass = "Low Walkup"
+
+@Enum("Refuse", "Organics", "Paper", "Metal", "Plastic", "Glass", "Textiles", "Other")
+attr WasteType = "Refuse"  
+
+	
+#number of households per BldgClass
+attr NumberofHouseholds =
+	case BldgClass == "Low Walkup": rand(4,10)
+	case BldgClass == "High Walkup": rand(10,18)
+	case BldgClass == "Low High Rise": rand(20,50)
+	case BldgClass == "Medium High Rise": rand(40,60)
+	case BldgClass == "Dense High Rise": rand(50,80)
+	else: 0.5
+
+#building height based on household size & housing type (in meters)
+attr Height =
+	case BldgClass == "Low Walkup" && NumberofHouseholds >=6: 9
+	case BldgClass == "Low Walkup" && NumberofHouseholds <10: 10
+	case BldgClass == "High Walkup"&& NumberofHouseholds >=14: 17
+	case BldgClass == "High Walkup" && NumberofHouseholds <18: 22
+	case BldgClass == "Low High Rise" && NumberofHouseholds >=30: 20
+	case BldgClass == "Low High Rise" && NumberofHouseholds <50: 25
+	case BldgClass == "Medium High Rise" && NumberofHouseholds >=50: 30
+	case BldgClass == "Medium High Rise" && NumberofHouseholds >=60: 35
+	case BldgClass == "Dense High Rise" && NumberofHouseholds >60: 40
+	case BldgClass == "Dense High Rise" && NumberofHouseholds <=80: 50
+	else: 10
+
+@Color
+attr BldgColor = 
+	case BldgClass == "Low Walkup": "#FF0000"
+	case BldgClass == "High Walkup": "#800000"
+	case BldgClass == "Low High Rise": "#0000FF"
+	case BldgClass == "Medium High Rise": "#00FF00"
+	case BldgClass == "Dense High Rise": "#FFA500"
+	else: "000000"
+	
+	
+###consider adding attribute for avg squarefootage per HH###
+
+
+#function that gives you total waste per houseHold lbs
+
+averageBuildingWaste (wastePerHH, NumberofHouseholds) =
+	case WasteType == "Refuse": wastePerHH * NumberofHouseholds
+	case WasteType == "Organics": wastePerHH * NumberofHouseholds
+	case WasteType == "Paper": wastePerHH * NumberofHouseholds
+	case WasteType == "Metal": wastePerHH * NumberofHouseholds
+	case WasteType == "Plastic": wastePerHH * NumberofHouseholds
+	case WasteType == "Glass": wastePerHH * NumberofHouseholds
+	case WasteType == "Textiles": wastePerHH * NumberofHouseholds
+	case WasteType == "Other": wastePerHH * NumberofHouseholds
+	else: 4
+
+@LowWalkUpParcels
+LowWalkupParcel -->
+	set(BldgClass, "Low Walkup") 
+	set(BldgColor, "Low Walkup") 
+	extrude(Height)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+	#report("Lbs of Refuse", averageBuildingWaste("Refuse", NumberofHouseholds))
+	#report("Lbs of Organics", averageBuildingWaste("Organics", NumberofHouseholds))
+	#report("Lbs of Paper", averageBuildingWaste("Paper", NumberofHouseholds))
+	#report("Lbs of Metal", averageBuildingWaste("Metal", NumberofHouseholds))
+	#report("Lbs of Plastic", averageBuildingWaste("Plastic", NumberofHouseholds))
+	#report("Lbs of Glass", averageBuildingWaste("Glass", NumberofHouseholds))
+	#report("Textiles", averageBuildingWaste("Textiles", NumberofHouseholds))
+	#report("Other", averageBuildingWaste("Other", NumberofHouseholds))
+	
+
+@HighWalkUpParcels
+HighWalkupParcel -->
+	set(BldgClass, "High Walkup") 
+	set(BldgColor, "High Walkup") 
+	extrude(Height)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+
+@LowHighRiseParcel	
+LowHighRiseParcel -->
+	set(BldgClass, "Low High Rise") 
+	set(BldgColor, "Low High Rise") 
+	extrude(Height)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+
+@MediumHighRiseParcel	
+MediumHighRiseParcel -->
+	set(BldgClass, "Medium High Rise") 
+	set(BldgColor, "Medium High Rise") 
+	extrude(Height)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+
+@DenseHighRiseParcel	
+DenseHighRiseParcel -->
+	set(BldgClass, "Dense High Rise") 
+	set(BldgColor, "Dense High Rise") 
+	extrude(Height)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+	
+	
+	
+	
+	
