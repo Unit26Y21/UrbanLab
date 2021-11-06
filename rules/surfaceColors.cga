@@ -6,7 +6,12 @@
 
 version "2021.1"
 
- getColor =
+# you needed to change the function to a rule. from = tp -->.
+# that is th eonly way you can assign color()
+# finally you needed to pass surfaceType as a variable to your rule
+# it would have been the same if it was a function also, it was missing the variable.
+
+ getColor(surfaceType) -->
 	case surfaceType == "ServiceRoad":
 		color(59,59,59)
 	case surfaceType == "PublicTransit":
