@@ -44,7 +44,7 @@ streetWidthByClass =
 // oneway width correction
 oneway = 
     case getStringObjectAttr("oneway", false) == "yes" : 0.5
-    else : 0                                             : 1
+    else : 1
 
 
 
