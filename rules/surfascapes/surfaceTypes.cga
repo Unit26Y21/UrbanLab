@@ -6,17 +6,28 @@
 
 version "2021.1"
 
-streetscale = 1 // street width scale factor
+###### CONSTANTS ########
 
-width = getFloatObjectAttr("width", false)
+streetscale = 1 // street width scale factor
+sidewalkscale = 1 // sidewalk width scale factor
+class = getStringObjectAttr("highway", false)
 lanes = getFloatObjectAttr("lanes", false)
+
+###### Atributes ########
+
+attr sidewalkWidthLeft  = sidewalkWidth * sidewalkscale
+attr sidewalkWidthRight = sidewalkWidth * sidewalkscale
+
+attr streetWidth = getFloatObjectAttr("width", false)
 
 attr streetWidth = // street width dependeding on available attributes
     case width > 0 : width       * streetscale
     case lanes > 0 : lanes * 3.5 * streetscale
     
     else           : streetWidthByClass * streetscale * oneway
-class = getStringObjectAttr("highway", false)
+
+###### FUNCTIONS ########
+
 streetWidthByClass =
     case class == "primary"     : 8
     case class == "secondary"   : 7
@@ -29,15 +40,18 @@ streetWidthByClass =
     case class == "cycleway"    : 2
     case class == "steps"       : 2
     else                        : 4
-oneway = // oneway width correction
+
+// oneway width correction
+oneway = 
     case getStringObjectAttr("oneway", false) == "yes" : 0.5
-    else                                               : 1
-sidewalkscale = 1 // sidewalk width scale factor
+    else : 0                                             : 1
+
+
+
 sidewalkWidth =
     case class == "primary"     : 2
     case class == "secondary"   : 2
     case class == "tertiary"    : 2
     case class == "residential" : 2
     else                        : 0
-attr sidewalkWidthLeft  = sidewalkWidth * sidewalkscale
-attr sidewalkWidthRight = sidewalkWidth * sidewalkscale
+
