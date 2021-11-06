@@ -1,0 +1,29 @@
+/**
+ * File:    surfaceColors.cga
+ * Created: 6 Nov 2021 15:10:30 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+ getColor =
+	case surfaceType == "ServiceRoad":
+		color(59,59,59)
+	case surfaceType == "PublicTransit":
+		color(166,111,125)
+	case surfaceType == "LoadingZone":
+		color(153,153,153)
+	case surfaceType == "ParkingLot":
+		color(112,112,112)
+	case surfaceType == "PermitParking":
+		color(153,153,153)
+	case surfaceType == "PedestrianCirculation":
+		color(236,215,160)
+	case surfaceType == "SidewalkProgram":
+		color(236,172,165)
+	case surfaceType == "BikePath":
+		color(236,215,102)
+	case surfaceType == "FloraHydro":
+		color(136,183,161)
+	else:
+		color(255,255,255)
