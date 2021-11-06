@@ -1,0 +1,43 @@
+/**
+ * File:    surfaceTypes.cga
+ * Created: 6 Nov 2021 15:15:10 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+streetscale = 1 // street width scale factor
+
+width = getFloatObjectAttr("width", false)
+lanes = getFloatObjectAttr("lanes", false)
+
+attr streetWidth = // street width dependeding on available attributes
+    case width > 0 : width       * streetscale
+    case lanes > 0 : lanes * 3.5 * streetscale
+    
+    else           : streetWidthByClass * streetscale * oneway
+class = getStringObjectAttr("highway", false)
+streetWidthByClass =
+    case class == "primary"     : 8
+    case class == "secondary"   : 7
+    case class == "tertiary"    : 6
+    case class == "motorway"    : 12
+    case class == "trunk"       : 11
+    case class == "road"        : 6
+    case class == "residential" : 5
+    case class == "footway"     : 2
+    case class == "cycleway"    : 2
+    case class == "steps"       : 2
+    else                        : 4
+oneway = // oneway width correction
+    case getStringObjectAttr("oneway", false) == "yes" : 0.5
+    else                                               : 1
+sidewalkscale = 1 // sidewalk width scale factor
+sidewalkWidth =
+    case class == "primary"     : 2
+    case class == "secondary"   : 2
+    case class == "tertiary"    : 2
+    case class == "residential" : 2
+    else                        : 0
+attr sidewalkWidthLeft  = sidewalkWidth * sidewalkscale
+attr sidewalkWidthRight = sidewalkWidth * sidewalkscale
