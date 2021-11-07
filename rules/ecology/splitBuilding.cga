@@ -1,7 +1,7 @@
-/**
++/**
  * File:    splitBuilding.cga
  * Created: 7 Nov 2021 22:16:08 GMT
- * Author:  Nathan Laveau
+ * Author:  User
  */
 
 version "2021.1"
@@ -13,36 +13,30 @@ attr floor_height = 3.5
 attr tile_width 		= 3
 attr height 			= 11
 attr wallColor		= "#FEFEFE"
-
 // geometries
-window_asset = "facades/window.obj"
+	window_asset = "facades/window.obj"
 	
 	######Rules######
 Lot-->	
 	extrude (rand(10,50))
-	
 Building -->
-	comp (f) {	front: FrontFacade | 
-				side: SideFacade | 
-				top: Roof}
-				
+	comp (f) {front: FrontFacade | side: SideFacade | top: Roof}
 Facade -->
-	split(y){ groundfloor_height : Groundfloor |
-	{ ~floor_height: Floor }* }
+	split (y){groundfloor_height: Groundfloor |
+	{~floor_height:  Floor}*}
 	
 SideFacade -->
-	split(y){ groundfloor_height: Floor | { ~floor_height: Floor }* }
+	split (y) {groundfloor_height: Floor |
+	{~floor_height: Floor}*}
 	
 Floor -->
-	split(x){ 1: Wall 
-            | { ~tile_width: Tile }* 
-            | 1 : Wall }
-	
+	split (x){ 1: Wall
+	| {~tile_width: Tile
+	| 1: Wall}
 Groundfloor -->
-	split (x){1: Wall | 
-			{ ~tile_width: Tile }* |
-			~tile_width: EntranceTile| 
-			1:Wall}
+	split (x){1: Wall | {~tile_width: Tile}*
+	| ~tilewidth: EntranceTile
+	| 1:Wall}
 	
 Tile -->
 	split (x){~1:Wall | 2: split (y){~1: Wall | 1.5: Window | ~1: Wall }
