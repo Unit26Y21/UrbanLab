@@ -31,11 +31,12 @@ SideFacade -->
 	
 Floor -->
 	split (x){ 1: Wall
-	| {~tile_width: Tile
+	| {~tile_width: Tile} #you are missin a curly bracket here
 	| 1: Wall}
+	
 Groundfloor -->
 	split (x){1: Wall | {~tile_width: Tile}*
-	| ~tilewidth: EntranceTile
+	| ~tile_width: EntranceTile #this has a typo, it needs to be tile_width
 	| 1:Wall}
 	
 Tile -->
