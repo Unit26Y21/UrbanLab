@@ -1,0 +1,39 @@
+/**
+ * File:    eventClosure.cga
+ * Created: 1 Nov 2021 19:01:58 GMT
+ * Author:  aaceved006
+ */
+
+version "2021.0"
+
+determinesClosure(eventType) =
+	case eventType == "ST" : "Streets"
+    case eventType == "SW" : "Sidewalks"
+    case eventType == "I" : "Intersection"
+    case eventType == "DE" : "DeadEnd"
+    case eventType == "P" : "Plaza"
+    case eventType == "OPA" : "OnPeakArea"
+    case eventType == "CC" : "CommercialCorridor"
+    else: "Do nothing."
+
+#Converting codeLetter into the name of the type of closure
+roadTypeClosure(Code) =
+	case  Code == "HF": ["ST", "P"]
+    case  Code == "CU": ["ST","SW"]
+    case  Code == "BP": ["ST","SW"]
+    case  Code == "SPS": ["I","DE"]
+    case  Code == "SUPS": ["I","DE"]
+    case  Code == "PE/PPE": ["P"]
+    case  Code == "FM": ["SW"]
+    case  Code == "SBF": ["ST","SW"]
+    case  Code == "SF": ["ST","SW"]
+    case  Code == "R": ["P"]
+    case  Code == "SS":  ["OPA","CC"]
+    case  Code == "ODP":  ["ST","I","DE","SW"]
+    case  Code == "WW": ["CC"]
+    case  Code == "COART":  ["SW","P"]
+    case  Code == "SUMS": ["ST"]
+    case  Code == "CF": ["ST"]
+    else : [""]
+    
+    

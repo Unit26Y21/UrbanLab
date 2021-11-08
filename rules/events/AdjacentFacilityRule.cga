@@ -1,0 +1,63 @@
+/**
+ * File:    AdjacentFacilityRule.cga
+ * Created: 1 Nov 2021 13:49:33 GMT
+ * Author:  aaceved006
+ */
+
+version "2021.0"
+
+#Events Column definition
+@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW", "COART", "SUMS", "CF")
+attr EventClass=
+	case EventClass == "HF": "HealthFair"
+    case EventClass == "CU": "CleanUps"
+    case EventClass == "BP": "BlockParty"
+    case EventClass == "SPS": "SchoolPlayStreet"
+    case EventClass == "SUPS": "SummerPlayStreet"
+    case EventClass == "PE/PPE": "PlazaEvent/PlazaPartnetEvent"
+    case EventClass == "FM": "FarmersMarket"
+    case EventClass == "SBF": "SingleBlockFestival"
+    case EventClass == "SF": "StreetFestival"
+    case EventClass == "R": "Rally"
+    case EventClass == "SS": "SeasonalStreets"
+    case EventClass == "ODP": "OneDayPlaza"
+    case EventClass == "WW": "WeekendWalks"
+    case EventClass == "COART": "CommunityArt"
+    case EventClass == "SUMS": "SummerStreets"
+    case EventClass == "CF": "CarFreeDay"
+else : DoNothing.
+
+@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF")
+const Code = ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF")
+
+#Adjancency Field
+@Enum (“School”, “Hospital”, “Park”, “Nonprofit”, “Plaza”, “Parking”, “Commerce”, “OwnedByDOT”, “Other”)
+#Converting codeNumber into the name of the adjacent facility
+attr AdjacentFacility=
+	case  AdjacentFacility == "1" : "School"
+	case  AdjacentFacility == "2" : "Hospital"
+	case  AdjacentFacility == "3" : "Park"
+	case  AdjacentFacility == "4" : "Nonprofit"
+	case  AdjacentFacility == "5" : "Plaza"
+	case  AdjacentFacility == "6" : "Parking"
+	case  AdjacentFacility == "7" : "Commerce"
+	case  AdjacentFacility == "8" : "OwnedByDOT"
+	case  AdjacentFacility == "0" : "Other"
+else: DoNothing.
+
+[attr AdjacentFacility = Adjacency (Code)]
+Adjacency (Code) =
+	case  Code == "HF": “4”
+	case  Code == "CU": “4”
+	case  Code == "SPS": “2” && “3”
+	case  Code == "SUPS": “2” && “3”
+	case  Code == "PE/PPE": “5”
+	case  Code == "FM": “3” && “6”
+	case  Code == "SBF": “4”
+	case  Code == "SF": “4”
+	case  Code == "SS": “7”
+	case  Code == "R": “5”
+	case  Code == "ODP": “5”
+	case  Code == "WW": “7”
+	case  Code == "COART": “7” && “8”
+else : “0”
