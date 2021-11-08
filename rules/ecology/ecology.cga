@@ -6,6 +6,7 @@
 
 version "2021.1"
 
+import plants: "plants.cga"
 #Scenario 1:
 #Since this is a value that changes depending on the scenario, it should be an attribute
 #const RainfallIntensity = 0.025
@@ -53,7 +54,10 @@ SelectVerticalSurfaces -->
 
 @StartRule
 SelectTopSurfaces -->
-	comp(f){top: ReportTopSurfaces}
+	comp(f){top: 
+				ReportTopSurfaces
+				Keep.
+	}
 	#this comp needs to go inside a rule
 	#comp(f){top: ReportRunoffSavings} like here, 
 	#but you do not need it since you are already selecting the top and using ReportTopSurfaces to get the ReportRunoss Saving
@@ -63,12 +67,18 @@ ReportVerticalSurfaces -->
 
 ReportTopSurfaces -->
 	set(roofArea, geometry.area()) #lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
+	
+	
 	report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 	report("Soil Grade", soilGrade)
 	#report runoff saving will go here:
 	set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 	report("Runoff Savings", runoffSavings)
+	PlantSeedsOnRoof
 	
+PlantSeedsOnRoof -->
+	plants.scatterSeeds(50, "#EB5279")
+	plants.scatterSeeds(50, "#EBA052")
 
 ############## Functions
 ##############
