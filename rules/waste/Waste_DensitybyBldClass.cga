@@ -39,6 +39,9 @@ attr BldgClass =
 	5%: BldgClassType[2]
 	else: BldgClassType[4]
 
+# is this per floor or per building
+# if per floor talk to ecology
+
 attr NumberofHouseholds =
 	case BldgClass == "Low Walkup": rand(4,10)
 	case BldgClass == "High Walkup": rand(10,18)
