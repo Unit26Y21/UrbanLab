@@ -24,7 +24,7 @@ version "2021.0"
  @Enum ("ServiceRoad", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "Pedestrian", "SidewalkProgram", "BikePath", "FloraHydro")
  attr surfaceType = ""
 @Enum(min=10, max=70, stepsize=1)
-attr StreetWidth = 10
+attr StreetWidth = 15
 #Function Biking, Walking & Running
 #Width 25-50 Feet
 #Speed 15 MPH
