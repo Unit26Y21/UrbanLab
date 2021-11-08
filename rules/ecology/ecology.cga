@@ -33,6 +33,12 @@ attr soilGrade =
 	
 
 @StartRule
+CourtyardBuilding -->
+	shapeO(4,4,4,14) { shape : Lot| remainder: NIL }
+
+	
+
+@StartRule
 Lot -->
 	extrude(rand(10, 80))
 	report("height", geometry.height())
