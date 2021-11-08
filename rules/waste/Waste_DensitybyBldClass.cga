@@ -26,6 +26,7 @@ wastePerHH(WasteType) =
 
 #This list of BldgClass is powerfull
 #Consider creating a const so you instatiated once and access it at all points
+						#[0,1,2,3,4] a specific order
 const BldgClassType = ["Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise"]
 
 ##### ATTRIBUTES ######
