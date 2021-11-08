@@ -1,0 +1,52 @@
+/**
+ * File:    rule.cg
+ * Created: 31 Oct 2021 19:11:12 GMT
+ * Author:  Sidnie Ancion
+ */
+ 
+version "2021.0"
+
+#attr Name - "String", Int, Float, Boolean
+attr maxHeight = 100
+
+@Range(min= 0,max= 10)
+attr frontSetback = 10
+
+
+@StartRule
+Lot -->
+	extrude (maxHeight)
+	
+@StartRule
+Parcel -->
+	setback(frontSetback){street.front: RandomColor | remainder: Normal}
+	envelope (world.up, maxHeight)
+	#primitiveCube(10,15,20)
+	#extrude (10)
+	
+Lot -->
+	case (geometry.area()>2000):
+		# if the lot is too big, make more lots.
+	case (geometry.area()<500):
+		# if lot is too small, reduce setbacks.
+		DoSetbacks(0.5)
+	else:
+		# make a building using usual setbacks.
+		DoSetbacks(1)
+		#Trying to understand split tool
+		split(z){ ~Lot_Width : DoSetbacks(1) | ~Distance_Seperation : NIL }*
+
+DoSetbacks(reduceSetbackPercent) -->
+	setback(Front_Depth * reduceSetbackPercent) { street.front: NIL | remainder: Normal.}
+	  setback(Rear_Depth * reduceSetbackPercent) { street.back: NIL | remainder: Normal.}
+	    setback(Side_Width * reduceSetbackPercent) { street.side: NIL | remainder: Normal.}
+
+	extrude(rand(6,8))
+
+Normal -->
+	extrude (10)
+
+RandomColor -->
+	color(rand(1), rand(1), rand(1)
+	
+	
