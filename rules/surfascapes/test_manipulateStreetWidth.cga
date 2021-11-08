@@ -1,0 +1,37 @@
+/**
+ * File:    test_manipulateStreetWidth.cga
+ * Created: 7 Nov 2021 22:49:21 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+@Enum ("ServiceRoad", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "Pedestrian", "SidewalkProgram", "BikePath", "FloraHydro")
+attr surfaceType = "ServiceRoad"
+
+
+streetWidthModifier(input) = 
+	case surfaceType == "ServiceRoad": 3
+	case surfaceType == "PublicTransit": 5
+	case surfaceType == "LoadingZone": 2
+	else: 1
+
+@StartRule
+testStreetWidth -->
+	alignScopeToAxes()
+	alignScopeToGeometryBBox(xz)
+	extrude(1)
+	#s('3.5,'3.5,'3.5)
+	comp(f){street.side: drawTrueWidth }
+	#setback(1){all: streetColor}
+
+@StartRule
+testStreetWidth2 -->
+	setback(3){street.front: delete. |
+			street.back: delete. |
+				remainder: streetColor}
+
+drawTrueWidth --> extrude(streetWidthModifier(surfaceType))
+	
+streetColor --> color(1,0,0)
+	
