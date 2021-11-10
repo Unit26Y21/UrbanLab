@@ -30,7 +30,7 @@ attr EventClassName =
     case EventClass == "CF": "CarFreeDay"
 	else : "No Event"
 		
-Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
+#Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
 
 
 #### Functions ####
@@ -45,30 +45,37 @@ SalesPermitted(Code)=
 
 #### Rules ####
 @StartRule
-Vendors--> 
+Vendors-->
 #If True happens, then do Kiosks. Else, NoVendors
-case SalesPermitted(EventClass)== true : Kiosks
-else : NIL
+	case SalesPermitted(EventClass)== true : Street
+	else : NIL
 
+Street -->
+	scatter(surface, 30, uniform) { VendorsSpace }
+	#How to do rand(angleRotation)?
+	#split(x) {{5: VendorsSpace | 1: NIL}* | 5: VendorsSpace}
+
+VendorsSpace-->
+#Setting the combination of the Kiosks and a MeetingSpace
+	rotate(abs, world, 0, -66, 0)
+	primitiveQuad(6,5)
+	split(x) {2: Kiosks | 4: MeetingSpace}
+	
 Kiosks -->
-primitiveCube(2.43,0.91,2.52)
-rotate(abs, world, 0, -66, 0)
-i("Street Vendor.dae")
+	primitiveQuad(2,3)
+	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+	
+MeetingSpace-->
+	primitiveQuad (4,5)
+	rotate(abs, world, 0, -66, 0)
+	i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
+	#How to do scatter { OurdoorFurniture.dae } within the primitiveQuad?		
 
-meetingSpace-->
-primitiveQuad (3,2)
-color ("#d6e3b1")
-rotate(abs, world, 0, -66, 0)
-#i("Outdoor Table.dae")
-
-
-SetBarriers-->
-i("Event barrier.dae")
+#SetBarriers-->
+#i("Event barrier.dae")
 #How to locate it on connectionEnd and/or connectionStart?
 
 
-Street -->
-split(x) {{2.43: Kiosks | 3: meetingSpace}* | 2.43: Kiosks}
 
 
 #setback(3){StreetFront:Kiosk}

@@ -176,3 +176,6 @@ assets/Bicycle Park.dae
 assets/Bench/PDM_Concrete_02N_0.jpg
 assets/Bench/PDM_Concrete_02N.jpg
 assets/Bench.dae
+*.dae
+*.png
+*.jpg
