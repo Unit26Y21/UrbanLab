@@ -1,0 +1,87 @@
+/**
+ * File:    Communial_Rule.cga
+ * Created: 10 Nov 2021 16:01:59 GMT
+ * Author:  sancion000
+ */
+
+version "2021.0"
+
+#attr Name - "String", Int, Float, Boolean
+attr maxHeight = 100
+
+@Range(min= 0,max= 10)
+attr Front_Depth = 1
+
+@Range(min= 0, max= 10)
+attr Rear_Depth = 1
+
+@Range(min= 0, max= 10)
+attr Side_Depth = 1
+
+@Range(min= 300, max= 1000)
+attr idealLotSize = 700
+
+
+@StartRule
+Lot -->
+	case (geometry.area()>1000):
+		#if the lot is too big, make more lots.
+		splitArea(x){idealLotSize: DoSetbacks}*
+		
+	case (geometry.area()<300):
+		#if the lot is to small, reduce setbacks.
+		DoSetbacks
+		
+	else:
+	
+		#make a building using usual setbacks.
+		DoSetbacks
+		#split(z){~Lot_Width : DoSetbacks(1)| ~Distance_Seperation: NIL}*
+		
+
+
+DoSetbacks -->
+ 	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace}
+ 	
+RearSpace -->
+ 	setback(Rear_Depth){ street.back: RandomColor | remainder : SideSpace}
+ 	
+ 
+SideSpace -->
+ 	setback(Side_Depth){ street.side: RandomColor | remainder: Normal}
+ 	
+Normal -->
+	extrude (10)
+	
+RandomColor -->
+	color(rand(1), rand(1), rand(1))
+	
+	
+	
+	
+	
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business"]
+	
+@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business")
+attr BldgClass = 
+	50%: CommercialTypes[0]
+	20%:CommercialTypes[1]
+	10%: CommercialTypes[3]
+	5%: CommercialTypes[2]
+	else: CommercialTypes[4]
+
+assignBldgColor(CommercialTypes) = 
+	case CommercialTypes == "Supermarket": "#FF0000"
+	case CommercialTypes == "Clothing Outlet": "#800000"
+	case CommercialTypes == "Restaurant": "#0000FF"
+	case CommercialTypes == "Bar": "#00FF00"
+	case CommercialTypes == "Small Business": "#FFA500"
+	else: "000000"	
+	
+	
+@StartRule
+Parcel -->
+	extrude(height)
+	color(CommercialTypes)
+	
+	
