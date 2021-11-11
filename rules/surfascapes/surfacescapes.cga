@@ -6,6 +6,7 @@
 version "2021.0"
 #attributes
  attr shapeType = ""
+
  attr StreetType = ""
  attr shapeCreation = "true"
  attr streetWidth = ""
@@ -23,6 +24,7 @@ version "2021.0"
 # 8: (FH) FloraHydro (RainGarden, Swale, CatchmentArea, Watershed, CommunityGarden, SewerPoint)
  @Enum ("service", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "pedestrian", "pedestrianBike", "Sidewalk", "Bike", "FloraHydro")
  attr surfaceType = ""
+ 
 @Enum(min=10, max=70, stepsize=1)
 attr StreetWidth = 15
 #Function Biking, Walking & Running
@@ -46,6 +48,9 @@ Street -->			# split away the side geometry on the streets
 	split(v,uvSpace,0){ -geometry.vMin: Asphalt 		# the lanes start at v-coord 0 i.e. everything below can be splitted away (= asphalt)
 					  | nLanesTotal	  : Lanes 			# the lanes end at v-coord nLanesTotal
 					  | ~1			  : Asphalt }		# all remaining geometry beyond v-coord nLanesTotal can be split away
+
+@StartRule 
+testColor --> color(1,0,0)
 
 @StartRule			  
 PaintSurfaceType -->
