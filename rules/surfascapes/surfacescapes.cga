@@ -21,7 +21,7 @@ version "2021.0"
 # 6: (SP) SidewalkProgram (Cafe, Bike Storage/Bike Share, etc.)
 # 7: (BP) BikePath (1 way vs 2 way + Elevation)
 # 8: (FH) FloraHydro (RainGarden, Swale, CatchmentArea, Watershed, CommunityGarden, SewerPoint)
- @Enum ("ServiceRoad", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "Pedestrian", "SidewalkProgram", "BikePath", "FloraHydro")
+ @Enum ("service", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "pedestrian", "pedestrianBike", "Sidewalk", "Bike", "FloraHydro")
  attr surfaceType = ""
 @Enum(min=10, max=70, stepsize=1)
 attr StreetWidth = 15
@@ -47,7 +47,28 @@ Street -->			# split away the side geometry on the streets
 					  | nLanesTotal	  : Lanes 			# the lanes end at v-coord nLanesTotal
 					  | ~1			  : Asphalt }		# all remaining geometry beyond v-coord nLanesTotal can be split away
 
-					  
-					  
-					  
+@StartRule			  
+PaintSurfaceType -->
+	case surfaceType == "service":
+		color(59,59,59)
+	case surfaceType == "PublicTransit":
+		color(166,111,125)
+	case surfaceType == "LoadingZone":
+		color(153,153,153)
+	case surfaceType == "ParkingLot":
+		color(112,112,112)
+	case surfaceType == "PermitParking":
+		color(153,153,153)
+	case surfaceType == "pedestrian":
+		color(236,215,160)
+	case surfaceType == "SidewalkProgram":
+		color(236,172,165)
+	case surfaceType == "pedestrianBike":
+		color(236,215,102)
+	case surfaceType == "FloraHydro":
+		color(136,183,161)
+	else:
+		color(255,255,255)
+		
+RandomColor --> color(rand(1), rand(1), rand(1))				  
 					  
