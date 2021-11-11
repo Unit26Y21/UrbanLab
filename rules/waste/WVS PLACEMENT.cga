@@ -1,0 +1,51 @@
+/**
+ * File:    WVS PLACEMENT.cga
+ * Created: 11 Nov 2021 13:52:15 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+#Randomly assign MINI WVS on blocks 
+#BuildingQualifiers -->
+@Range(min = 1, max = 100)
+attr schoolamount = 10
+
+@Range(min = 1, max = 100)
+attr busamount = 100
+
+@Range(min = 1, max = 100)
+attr groceryamount = 15
+#import objects
+attr schoolFile = "school.dae"
+attr busstopFile = "busstop.dae"
+attr grocerystoreFile = "grocerystore.dae"
+#Bldgclassifiers
+@Enum("school", "busstop", "grocerystore")
+attr BldgClassifiers = ""
+	
+attr NumberofBldgClassifiers =
+	case BldgClassifiers == "school": schoolamount
+	case BldgClassifiers == "busstop": busamount
+	case BldgClassifiers == "grocerystore": groceryamount
+	else: 0
+#scatter the placement of schools, transit and grocery stores & use operation function to bring things in
+@StartRule
+#scatter(surface, 100, uniform) { xxxx }
+ScatterSchools -->
+	scatter(surface, schoolamount, uniform){schoolObject}
+schoolObject -->
+	i(schoolFile)
+	
+@StartRule
+#scatter(surface, 100, gaussian, left, '0.1) { xxxx }
+Scatterbusstop -->
+	scatter(surface, busamount, gaussian, left, '0.1){busstopObject}
+busstopObject -->
+	i(busstopFile)
+@StartRule
+#scatter(surface, 100, gaussian, left, '0.1) { xxxx }
+ScatterGrocery -->
+	scatter(surface, groceryamount, uniform){grocerystoreObject}
+grocerystoreObject -->
+	i(grocerystoreFile)
