@@ -1,0 +1,49 @@
+/**
+ * File:    myfirstrule.cga
+ * Created: 9 Nov 2021 12:45:46 GMT
+ * Author:  Caner Sahin
+ */
+
+version "2021.0"
+
+
+@Range(min=2.4, max=15)
+attr floorHight = 10
+
+
+@Range(min=0, max=185)
+attr smallretail = 185
+
+const superMarketArea = 200000
+
+attr idealRetailGroundFloorsize = 185
+
+attr idealFacadeWidth = 40
+attr retailDepth = 50
+
+attr categorizeRetail = ""
+
+@Startrule
+Retailsize --> 
+# if retailsize is bigger than 185 square meter ,
+# keep ground floor 185 and make leftover size as second floor
+	case geometry.area() > bigBoxArea:
+		set(categorizeRetail, "SuperMarket")
+		report("reatilType", categorizeRetail)
+		SmallRetailDepth
+		
+	else:
+		set(categorizeRetail, "SmallRetail")
+		
+	
+
+@Startrule
+SmallRetailDepth -->
+	#if retailsizefrontfacade > 12 meter 
+	split(x){retailDepth: facadeRetail | ~1: supermarket}
+	setback(retailDepth){str
+
+
+
+
+
