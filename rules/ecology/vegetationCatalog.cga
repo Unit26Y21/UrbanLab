@@ -1,0 +1,17 @@
+/**
+ * File:    vegetationCatalog.cga
+ * Created: 11 Nov 2021 21:33:19 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+const vegetation = ["MH", "CC", "FI"]
+
+lifeForm(input) =
+ case count("MH; BB; FIB", input) >= 1: "deciduos shrub"
+ case count("BA; RB", input) >=1 : "deciduos tree"
+ else: ""
+ 
+ 
+# lifeForm("MS") #output this is a "deciduos shrub"

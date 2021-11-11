@@ -10,6 +10,6 @@ scatterSeeds(amount, seedColor) -->
 	scatter(surface,amount, uniform){plant2D(seedColor)}
 	
 plant2D(seedColor)-->
-	primitiveDisk(16, 0.1)
+	primitiveDisk(20, 0.6)
 	extrude(.1)
 	color(seedColor)

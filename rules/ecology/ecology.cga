@@ -7,11 +7,16 @@
 version "2021.1"
 
 import plants: "plants.cga"
+
+
+####### CONSTANTS ########
+
 #Scenario 1:
 #Since this is a value that changes depending on the scenario, it should be an attribute
 #const RainfallIntensity = 0.025
 #Rainfall Intensity to be 3 scenarios (0.025m,0.050m, 0.075m)
 
+####### ATTRIBUTES #######
 @Enum(0.025, 0.05, 0.07) 
 #use enum to capture the three options
 attr rainfallIntensity = 0.025
@@ -22,7 +27,7 @@ attr runoffSavings = 0
 @Hidden 
 attr roofArea = 0
 
-#@StartRule you do not need this StartRule. THis is an attribute
+
 #AssignSoilGrade
 @Enum("GradeZero", "GradeOne", "GradeTwo", "GradeThree", "GradeFour") #considerusing integers instead of strings in the future.
 attr soilGrade =
@@ -31,11 +36,43 @@ attr soilGrade =
 	10%: SoilGradeCoefficient("GradeThree")
 	10%: SoilGradeCoefficient("GradeFour")
 	else: SoilGradeCoefficient("GradeZero")
+
+/*#Assign seedColor	
+attr seedColor =
+case vegtype == "plant1" : "#EB5279"
+case vegtype == "plant2" : "#EBA052"
+case vegtype == "plant3" : "#00D100"
+case vegtype == "plant4" : "#21B6A8" #BlueGreen
+case vegtype == "plant5" : "#A3EBB1" #NeonGreen
+case vegtype == "plant6" :
+case vegtype == "plant7" :
+case vegtype == "plant8" :
+case vegtype == "plant9" :
+case vegtype == "plant10":
+else: "#FFFFFF"*/
+ 
+attr myFrontDepth = 5
+attr myRightWidth = 3
+attr myBackDepth = 2
+attr myLeftWidth = 11
+
+
+####### RULES #######
+
+    
+CourtyardBuilding-->
+offset(-3, inside)
+    shapeO(myFrontDepth,myRightWidth,myBackDepth,myLeftWidth) { shape : Footprint | remainder: NIL }
+
+Footprint -->
+    extrude(rand(10,20)) color(1,0,0)
+    
+/*@StartRule
+CourtyardBuilding -->
+	shapeO(4,4,4,14) { shape : Lot| remainder: NIL }*/
+
 	
 
-@StartRule
-CourtyardBuilding -->
-	shapeO(4,4,4,14) { shape : Lot| remainder: NIL }
 
 	
 
@@ -48,40 +85,39 @@ Lot -->
 	SelectVerticalSurfaces
 	SelectTopSurfaces
 	
-@StartRule
+@StartRule#VerticalSurfaces
 SelectVerticalSurfaces -->
 	comp(f){side: ReportVerticalSurfaces}
+	
+	
+ ReportVerticalSurfaces -->
+	report("verticalArea", geometry.area)
+PlantOnFacades
+	
+PlantOnFacades -->
+	plants.scatterSeeds(50,"#116530")
 
-@StartRule
+@StartRule#Roofs
 SelectTopSurfaces -->
-	comp(f){top: 
-				ReportTopSurfaces
-				Keep.
-	}
-	#this comp needs to go inside a rule
-	#comp(f){top: ReportRunoffSavings} like here, 
-	#but you do not need it since you are already selecting the top and using ReportTopSurfaces to get the ReportRunoss Saving
-
-ReportVerticalSurfaces -->
-		report("verticalArea", geometry.area)
-
+	comp(f){top: ReportTopSurfaces}
+	
+	
 ReportTopSurfaces -->
 	set(roofArea, geometry.area()) #lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
-	
-	
 	report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 	report("Soil Grade", soilGrade)
+	
 	#report runoff saving will go here:
 	set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 	report("Runoff Savings", runoffSavings)
 	PlantSeedsOnRoof
-	
 PlantSeedsOnRoof -->
 	plants.scatterSeeds(50, "#EB5279")
 	plants.scatterSeeds(50, "#EBA052")
-
-############## Functions
-##############
+	plants.scatterSeeds(50, "#00D100")
+	keep.
+	
+####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =
 	case gradeType == "GradeOne": 0.1
@@ -90,11 +126,14 @@ SoilGradeCoefficient(gradeType) =
 	case gradeType == "GradeFour": 0.4
 	else: 0 #what happens with Grade zero?
 	
-	
 #Savings should be a function not a rule
 #careful where you put the parenthesis and the multiplications, you might get different results...
 ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade) = rainfallIntensity * roofArea - (soilGrade * rainfallIntensity * roofArea)
 	
-
+	
+#Courtyard
+#Horizontal plants
+#Vertical Plants
+#Split roof surfaces
 
 	
