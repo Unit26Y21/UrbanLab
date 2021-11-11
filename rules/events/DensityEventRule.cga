@@ -1,0 +1,39 @@
+/**
+ * File:    DensityEventRule.cga
+ * Created: 11 Nov 2021 00:52:27 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+#####Attributes#####
+attr ST_WIDTH = ""
+
+@Enum ("SuperNarrow", "Narrow", "Wide")
+attr StreetType =
+    # if ST_Width is something, return  a new name
+    case ST_WIDTH =< 30 : "SuperNarrow"
+    case ST_WIDTH >= 60: "Wide"
+    else : "Narrow"
+
+attr EventSizeStreet =
+	case StreetType == "SuperNarrow" : "Small"
+	case StreetType == "Narrow" : "Medium"
+	case StreetType == "Wide" : "Big"
+	else : "Massive"
+
+
+#####Rules#####
+Street -->
+#How to scatter people and avoid overlapping of primitiveQuad?
+	scatter(surface, 30, uniform) { DensityStanding }
+
+DensityStanding-->
+#For People Stading, the density in an event is 6 sqft/person
+	primitiveQuad(6,6)
+	StandingPeople
+	
+StandingPeople-->
+#Defining the standing people placeholder with a primitiveCube
+	primitiveCube(2, 6, 2)
+	
