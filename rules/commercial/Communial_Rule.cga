@@ -63,25 +63,28 @@ RandomColor -->
 const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business"]
 	
 @Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business")
-attr BldgClass = 
+attr Commercial = 
 	50%: CommercialTypes[0]
 	20%:CommercialTypes[1]
 	10%: CommercialTypes[3]
 	5%: CommercialTypes[2]
 	else: CommercialTypes[4]
 
-assignBldgColor(CommercialTypes) = 
-	case CommercialTypes == "Supermarket": "#FF0000"
-	case CommercialTypes == "Clothing Outlet": "#800000"
-	case CommercialTypes == "Restaurant": "#0000FF"
-	case CommercialTypes == "Bar": "#00FF00"
-	case CommercialTypes == "Small Business": "#FFA500"
+@Color
+attr BldgColor = assignBldgColor(Commercial)
+	
+assignBldgColor(input) = 
+	case input == "Supermarket": "#FF0000"
+	case input == "Clothing Outlet": "#800000"
+	case input == "Restaurant": "#0000FF"
+	case input == "Bar": "#00FF00"
+	case input == "Small Business": "#FFA500"
 	else: "000000"	
 	
-	
+
 @StartRule
 Parcel -->
-	extrude(height)
-	color(CommercialTypes)
+	extrude(maxHeight)
+	color(BldgColor)
 	
 	
