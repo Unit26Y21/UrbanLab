@@ -6,8 +6,13 @@
 
 version "2019.0"
 
+import meterConverter: "meterToFeet.cga"
+
 #####Attributes#####
 attr ST_WIDTH = 0 #Remember this needs to be an integer or float
+
+@Range(min=1, max=1000)
+attr scatterPeople = 30
 
 @Enum ("SuperNarrow", "Narrow", "Wide")
 attr StreetType =
@@ -24,16 +29,24 @@ attr EventSizeStreet =
 
 
 #####Rules#####
+@StartRule
 Street -->
 #How to scatter people and avoid overlapping of primitiveQuad?
-	scatter(surface, 30, uniform) { DensityStanding }
+	scatter(surface, scatterPeople, uniform) { DensityStanding }
 
 DensityStanding-->
 #For People Stading, the density in an event is 6 sqft/person
-	primitiveQuad(6,6)
+	primitiveQuad(meterConverter.feet(6),meterConverter.feet(6))
 	StandingPeople
 	
 StandingPeople-->
 #Defining the standing people placeholder with a primitiveCube
-	primitiveCube(2, 6, 2)
+	primitiveCube(meterConverter.feet(2), meterConverter.feet(6), meterConverter.feet(2))
+	label("person")
+	RemoveClashingPeople
+	
+RemoveClashingPeople -->
+	case overlaps(intra, "person"): NIL
+	else:
+		report("Total persons", 1)
 	
