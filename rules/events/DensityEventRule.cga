@@ -7,12 +7,12 @@
 version "2019.0"
 
 #####Attributes#####
-attr ST_WIDTH = ""
+attr ST_WIDTH = 0 #Remember this needs to be an integer or float
 
 @Enum ("SuperNarrow", "Narrow", "Wide")
 attr StreetType =
     # if ST_Width is something, return  a new name
-    case ST_WIDTH =< 30 : "SuperNarrow"
+    case ST_WIDTH <= 30 : "SuperNarrow" #comparisons should be less than or equal <=. If your write equal lessthan it wont work =<
     case ST_WIDTH >= 60: "Wide"
     else : "Narrow"
 
