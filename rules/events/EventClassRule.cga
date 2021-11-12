@@ -15,7 +15,7 @@ const Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", 
 attr input = ""
 */
 
-inputCode(input) =
+inputName(input) =
 	case input == "HealthFair": "HF" 
     case input == "CleanUps": "CU"
     case input == "BlockParty": "BP" 
