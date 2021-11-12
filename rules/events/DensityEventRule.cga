@@ -12,7 +12,7 @@ import meterConverter: "meterToFeet.cga"
 attr ST_WIDTH = 0 #Remember this needs to be an integer or float
 
 @Range(min=1, max=1000)
-attr scatterPeople = 30
+attr scatterPeople = densityCalculator("LongBlock", "Standing") #30
 
 @Enum ("SuperNarrow", "Narrow", "Wide")
 attr StreetType =
@@ -26,6 +26,12 @@ attr EventSizeStreet =
 	case StreetType == "Narrow" : "Medium"
 	case StreetType == "Wide" : "Big"
 	else : "Massive"
+	
+	
+###### function #########
+densityCalculator(input1, input2) = 
+	case input1 == "LongBlock" && input2 == "Standing": 34000
+	else: 0
 
 
 #####Rules#####
