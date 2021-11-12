@@ -29,8 +29,6 @@ attr EventClassName =
     case EventClass == "SUMS": "SummerStreets"
     case EventClass == "CF": "CarFreeDay"
 	else : "No Event"
-		
-#Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
 
 
 #### Functions ####
@@ -57,7 +55,7 @@ Street -->
 
 VendorsSpace-->
 #Setting the combination of the Kiosks and a MeetingSpace
-	rotate(abs, world, 0, -66, 0)
+	rotate(abs, world, 0, rand(0,360), 0) #in order to randomly rotate you just need to pass the rand function to the degree and specify the range rand(0,360)
 	primitiveQuad(6,5)
 	split(x) {2: Kiosks | 4: MeetingSpace}
 	
@@ -67,7 +65,7 @@ Kiosks -->
 	
 MeetingSpace-->
 	primitiveQuad (4,5)
-	rotate(abs, world, 0, -66, 0)
+	rotate(abs, world, 0, 0, 0)
 	i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
 	#How to do scatter { OurdoorFurniture.dae } within the primitiveQuad?		
 
