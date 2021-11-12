@@ -7,22 +7,25 @@
 version "2019.0"
 #####Constants#####
 
-const BlockArea= (120000)
-const DensityPerBlock= (6.5)
-const EventDensity= (6)
+const BlockArea= 120000 #you dont need parenthesis
+const DensityPerBlock= 6.5 #you dont need parenthesis
+const EventDensity= 6 #you dont need parenthesis
 
 #####Functions#####
-BlockPopulation(BlockArea, DensityPerBlock)=
+BlockPopulationCalculator(BlockArea, DensityPerBlock)=
 	BlockArea/DensityPerBlock
 	
-RequiredArea(BlockPopulation, EventDensity) =
-	BlockPopulation*EventDensity
+# first, separate the function into an attribute that can be recalculated on the fly.
+attr blockPopulation = BlockPopulationCalculator(BlockArea, DensityPerBlock)
+
+RequiredArea(blockPopulation, EventDensity) = # then pass the attribute to the new function. this gives you more flexibility
+	blockPopulation*EventDensity
 	
 StreetArea(ST_WIDTH, SHAPE_Leng)=
 	ST_WIDTH*SHAPE_Leng
 	
 BalanceSpaceArea(RequiredArea, StreetArea)=
-	RequiredArea-StreetArea
+	RequiredArea - StreetArea #added space for reading clarity
 
 
 #####Rules#####
