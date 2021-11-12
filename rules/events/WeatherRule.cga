@@ -31,11 +31,12 @@ attr EventClassName =
 	else : "No Event"
 	
 #EventWeather Field
-EventWeather (Code) = 
-    case Code == "HF" : False
-    case Code == "CU" : False
-    case Code == "BP" : False
-    case Code == "SBF" : False
-    case Code == "SF" : False
-    case Code == "R" : False
-    else: True
+#true and false needs to be lower case
+EventWeather(Code) = 
+    case Code == "HF" : false
+    case Code == "CU" : false
+    case Code == "BP" : false
+    case Code == "SBF" : false
+    case Code == "SF" : false
+    case Code == "R" : false
+    else: true
