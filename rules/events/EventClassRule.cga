@@ -1,5 +1,5 @@
 /**
- * File:    EventClassRule.cga
+ * File:    inputRule.cga
  * Created: 5 Nov 2021 18:49:14 GMT
  * Author:  aaceved006
  */
@@ -8,28 +8,31 @@ version "2021.0"
 
 #### Atribute ###
 #Events Column definition
-@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW", "COART", "SUMS", "CF")
-attr EventClass = ""
+const Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
 
-attr EventClassName =
-	case EventClass == "HF": "HealthFair"
-    case EventClass == "CU": "CleanUps"
-    case EventClass == "BP": "BlockParty"
-    case EventClass == "SPS": "SchoolPlayStreet"
-    case EventClass == "SUPS": "SummerPlayStreet"
-    case EventClass == "PE/PPE": "PlazaEvent/PlazaPartnetEvent"
-    case EventClass == "FM": "FarmersMarket"
-    case EventClass == "SBF": "SingleBlockFestival"
-    case EventClass == "SF": "StreetFestival"
-    case EventClass == "R": "Rally"
-    case EventClass == "SS": "SeasonalStreets"
-    case EventClass == "ODP": "OneDayPlaza"
-    case EventClass == "WW": "WeekendWalks"
-    case EventClass == "COART": "CommunityArt"
-    case EventClass == "SUMS": "SummerStreets"
-    case EventClass == "CF": "CarFreeDay"
+/*
+@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW", "COART", "SUMS", "CF")
+attr input = ""
+*/
+
+inputCode(input) =
+	case input == "HealthFair": "HF" 
+    case input == "CleanUps": "CU"
+    case input == "BlockParty": "BP" 
+    case input == "SPS": "SchoolPlayStreet"
+    case input == "SUPS": "SummerPlayStreet"
+    case input == "PlazaEvent/PlazaPartnetEvent": "PE/PPE"
+    case input == "FarmersMarket": "FM"
+    case input == "SingleBlockFestival": "SBF" 
+    case input == "StreetFestival": "SF" 
+    case input == "Rally": "R" 
+    case input == "SeasonalStreets": "SS" 
+    case input == "OneDayPlaza": "ODP" 
+    case input == "WeekendWalks": "WW" 
+    case input == "CommunityArt": "COART" 
+    case input == "SummerStreets": "SUMS" 
+    case input == "CarFreeDay": "CF" 
 	else : "No Event"
 		
-Code = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
 
 	
