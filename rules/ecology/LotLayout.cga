@@ -1,0 +1,31 @@
+/**
+ * File:    LotLayout.cga
+ * Created: 13 Nov 2021 03:18:10 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+#Scenario 1: Setbacks on all Sides
+/*Lot --> 
+	setback(5) { street.front = Garden   | street.back = Garden | street.left = Garden | street.right = Garden |
+                     remainder    : Building }
+    	
+Garden --> 
+	color("#00ff00")
+
+Building --> 
+	extrude(world.up, rand(5, 15))*/
+	
+#Scenario 2: Setbacks behind and infront 
+Lot --> 
+	setback(20) { street.back = Garden   | 
+                     remainder    : Building }
+    #setback (-10) {street.back = Garden|
+    				#remainder:Building}	
+    
+Garden --> 
+	color("#00ff00")
+
+Building --> 
+	extrude(world.up, (5))
