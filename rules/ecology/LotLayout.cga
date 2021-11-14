@@ -16,34 +16,34 @@ Garden -->
 
 Building --> 
 	extrude(world.up, rand(5, 15))*/
-	
+
+
 #Scenario 2: Setbacks behind for internal couryard
 Lot --> 
 	setback(20) { street.back = Garden   | 
-                     remainder    : Building }
-    #setback (5) {street.right = Garden|
-    				#remainder:Building}	
- 
+        		remainder    : Building }
 Garden --> 
 	color("#567d46")
 
 Building --> 
 	extrude(world.up, (50))
 	report ("height", geometry.height())
-	#setback (2) {street.right = Garden | remainder:Building}
-
 
 #Going up from ground floor
-
-#split this, on the y axis (by what dimensions 3: What do I do next? Go to floors).  Asterisk means, do this until you cant find more geometry
-	split(y){6: StoreFront  | ~1: split(y){5: Floors}*}
-StoreFront -->
-	split(z){5: StoreDisplay}
-StoreDisplay --> 
-	comp(f){top: extrude(rand(4))}
+#Split building sides into floors
+	split(y){6: Sides  | ~1: split(y){5: Floors}*}
+	
 	
 Floors -->
-	#select the face or side of the floor
+	split (x){ 5: Tile | 5: Tile | 5: Tile}*
+	
+	
+	
+	
+/*
+	
+Floors -->
+	#select the Tiles of the floor
 	comp(f){object.side: balconies | all: otherColor}
  	
  	
@@ -53,8 +53,7 @@ Floors -->
  	topBalconies 
  	
  topBalconies --> comp(f){top: ReportBalconieArea |	
- 						 all: NIL
- }
+ 						 all: NIL}
  
 ReportBalconieArea -->
 	report("balconie area", geometry.area())					
@@ -63,4 +62,4 @@ ReportBalconieArea -->
  
  floorColor --> color(rand(1),rand(1), rand(1))  
  
- otherColor --> color(1,0,0)	
+ otherColor --> color(1,0,0)	*/
