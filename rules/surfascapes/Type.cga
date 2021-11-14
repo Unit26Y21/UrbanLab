@@ -1,0 +1,74 @@
+/**
+ * File:    Type.cga
+ * Created: 14 Nov 2021 18:39:17 GMT
+ * Author:  skamins000
+ */
+
+version "2021.0"
+
+### Constants ###
+const type = ["A", "B", "C", "D", "E", "F"]
+
+
+### Attributes ###
+
+#create attrubute widths for the type splits
+@Range (min=2, max=10)
+attr floraHydro_width = (min)
+
+attr service_width = 10
+
+@Range (min=6, max=20)
+attr pedestrian_width = (min)
+
+attr shoulder_width = 9
+
+attr bike_width = 6
+
+### Functions ###
+
+#split type A into parts, greenways, two bike lanes, shoulder, two car lames, another shoulder and another greenway
+@StartRule
+Types-->
+case type == "A":
+	split(v, uvSpace){ floraHydro_width : surface(split.index) 	// first greenway
+			| bike_width : surface(split.index)   		// first bike path
+			| bike_width : surface(split.index)   		// second bike path
+			| shoulder_width : surface(split.index)		 	// first shoulder
+			| service_width : surface(split.index)		// first service road
+			| service_width : surface(split.index)	// second service road
+			| shoulder_width : surface(split.index)		 	// second shoulder
+			| floraHydro_width    : surface(split.index)} 	// second greenway
+
+#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
+case type == "B":
+	split(v, uvSpace){ shoulder_width : surface(split.index)	// first shoulder
+			| service_width : surface(split.index)		// first service road
+			| service_width : surface(split.index)		// second service road
+			| shoulder_width : surface(split.index)		 	// second shoulder
+			| bike_width : surface(split.index)   		// first bike path
+			| bike_width : surface(split.index)}   		// second bike path
+
+
+case type == "C":
+	split(v, uvSpace){ floraHydro_width : surface(split.index) 	// first greenway
+		 	| pedestrian_width : surface(split.index)		 	// first pedestrian way
+			| bike_width : surface(split.index)   		// first bike path
+			| bike_width : surface(split.index)   		// second bike path
+			| pedestrian_width : surface(split.index)		 	// second pedestrian way
+			| floraHydro_width    : surface(split.index)} 	// second greenway
+
+case type == "D":
+	split(v, uvSpace){ bike_width : surface(split.index)   		// first bike path
+			| bike_width : surface(split.index)   			// second bike path
+		 	| pedestrian_width : surface(split.index)}		 	// pedestrian way
+		 	
+case type == "E":
+	NIL
+	
+case type == "F":
+	split(v, uvSpace){floraHydro_width : surface(split.index) 	// greenway
+	| pedestrian_width : surface(split.index)}		 	// pedestrian way
+
+	else:
+	NIL
