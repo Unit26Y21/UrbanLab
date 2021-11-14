@@ -51,21 +51,17 @@ case vegtype == "plant9" :
 case vegtype == "plant10":
 else: "#FFFFFF"*/
  
-attr myFrontDepth = 5
-attr myRightWidth = 3
-attr myBackDepth = 2
-attr myLeftWidth = 11
 
 
 ####### RULES #######
 
     
-CourtyardBuilding-->
+/*CourtyardBuilding-->
 offset(-3, inside)
     shapeO(myFrontDepth,myRightWidth,myBackDepth,myLeftWidth) { shape : Footprint | remainder: NIL }
 
 Footprint -->
-    extrude(rand(10,20)) color(1,0,0)
+    extrude(rand(10,20)) color(1,0,0)*/
     
 /*@StartRule
 CourtyardBuilding -->
@@ -81,19 +77,13 @@ Lot -->
 	extrude(rand(10, 80))
 	report("height", geometry.height())
 	report("volume", geometry.volume)
-	
 	SelectVerticalSurfaces
 	SelectTopSurfaces
+	PlantOnFacades
 	
-@StartRule#VerticalSurfaces
-SelectVerticalSurfaces -->
-	comp(f){side: ReportVerticalSurfaces}
-	
-	
- ReportVerticalSurfaces -->
-	report("verticalArea", geometry.area)
-PlantOnFacades
-	
+SelectVerticalSurfaces-->
+comp(f){side: ReportVericalSurfaces}
+
 PlantOnFacades -->
 	plants.scatterSeeds(50,"#116530")
 
