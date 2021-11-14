@@ -6,6 +6,7 @@
 version "2021.0"
 #attributes
  attr shapeType = ""
+
  attr StreetType = ""
  attr shapeCreation = "true"
  attr streetWidth = ""
@@ -23,6 +24,7 @@ version "2021.0"
 # 8: (FH) FloraHydro (RainGarden, Swale, CatchmentArea, Watershed, CommunityGarden, SewerPoint)
  @Enum ("service", "PublicTransit", "LoadingZone", "ParkingLot", "PermitParking", "pedestrian", "pedestrianBike", "Sidewalk", "Bike", "FloraHydro")
  attr surfaceType = ""
+ 
 @Enum(min=10, max=70, stepsize=1)
 attr StreetWidth = 15
 #Function Biking, Walking & Running
@@ -47,28 +49,33 @@ Street -->			# split away the side geometry on the streets
 					  | nLanesTotal	  : Lanes 			# the lanes end at v-coord nLanesTotal
 					  | ~1			  : Asphalt }		# all remaining geometry beyond v-coord nLanesTotal can be split away
 
+@StartRule 
+testColor --> color(1,0,0)
+
 @StartRule			  
 PaintSurfaceType -->
 	case surfaceType == "service":
-		color(59,59,59)
-	case surfaceType == "PublicTransit":
-		color(166,111,125)
+		color("#3A3A3A")
+	case surfaceType == "publicTransit":
+		color("#A66F7D")
 	case surfaceType == "LoadingZone":
-		color(153,153,153)
+		color("#999999")
 	case surfaceType == "ParkingLot":
-		color(112,112,112)
-	case surfaceType == "PermitParking":
-		color(153,153,153)
+		color("#707070")
+	case surfaceType == "bikeShare":
+		color("#9D8E1C")
 	case surfaceType == "pedestrian":
-		color(236,215,160)
+		color("#ECD7A0")
 	case surfaceType == "SidewalkProgram":
-		color(236,172,165)
+		color("#ECACA5")
 	case surfaceType == "pedestrianBike":
-		color(236,215,102)
-	case surfaceType == "FloraHydro":
-		color(136,183,161)
+		color("#FDC700")
+	case surfaceType == "floraHydro":
+		color("#87B7A0")
+	case surfaceType == "path":
+		color("#3A3A3A")
 	else:
-		color(255,255,255)
+		color("#000000")
 		
 RandomColor --> color(rand(1), rand(1), rand(1))				  
 					  
