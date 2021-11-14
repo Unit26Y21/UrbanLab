@@ -63,11 +63,11 @@ const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office
 @Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
 attr Commercial = 
 	20%: CommercialTypes[0]
-	15%:CommercialTypes[1]
-	20%:CommercialTypes[3]
-	10%:CommercialTypes[2]
-	10%: CommercialTypes[4]
-	15%: CommercialTypes[5]
+	20%:CommercialTypes[1]
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
 	else: CommercialTypes[6]
 	
 @Color
@@ -88,4 +88,7 @@ assignBldgColor(input) =
 Parcel -->
 	extrude(maxHeight)
 	color(BldgColor)
+	
+	
+
 	
