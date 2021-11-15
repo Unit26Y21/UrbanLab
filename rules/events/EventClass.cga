@@ -8,32 +8,29 @@ version "2019.0"
 
 #### Constant ###
 #Events Column definition
-#const Code = ["HealthFair", "CleanUps","BlockParty", "SchoolPlayStreet","SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent","FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay"]
-#const input = ["HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF"]
-const input = ["HealthFair", "CleanUps","BlockParty", "SchoolPlayStreet","SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent","FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay"]
+
+@Enum ("HealthFair", "CleanUps", "BlockParty", "SchoolPlayStreet", "SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent", "FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay")
+const inputName = ""
 
 
-#### Atribute ###
-#Events Column definition
-#@Enum ("HealthFair", "CleanUps","BlockParty", "SchoolPlayStreet","SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent","FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay")
-#@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "R", "SS", "ODP", "WW",  "COART", "SUMS", "CF")
-#attr input = "" 
+#### Atribute ####
+attr eventName = input(inputName)
 
-inputName(input)=
-	case input == "HealthFair": "HF"
-    case input == "CleanUps": "CU"
-    case input == "BlockParty": "BP" 
-    case input == "SchoolPlayStreet": "SPS" 
-    case input == "SummerPlayStreet": "SUPS": 
-    case input == "PlazaEvent/PlazaPartnetEvent": "PE/PPE"
-    case input == "FarmersMarket": "FM"
-    case input == "SingleBlockFestival": "SBF" 
-    case input == "StreetFestival": "SF" 
-    case input == "Rally": "R" 
-    case input == "SeasonalStreets": "SS" 
-    case input == "OneDayPlaza": "ODP" 
-    case input == "WeekendWalks": "WW" 
-    case input == "CommunityArt": "COART" 
-    case input == "SummerStreets": "SUMS" 
-    case input == "CarFreeDay": "CF" 
+input(inputName) =
+	case inputName == "HealthFair": "HF"
+	case inputName == "CleanUps": "CU"
+    case inputName == "BlockParty": "BP" 
+    case inputName == "SchoolPlayStreet": "SPS" 
+    case inputName == "SummerPlayStreet": "SUPS"
+    case inputName == "PlazaEvent/PlazaPartnetEvent": "PE/PPE"
+    case inputName == "FarmersMarket": "FM"
+    case inputName == "SingleBlockFestival": "SBF" 
+    case inputName == "StreetFestival": "SF" 
+    case inputName == "Rally": "R" 
+    case inputName == "SeasonalStreets": "SS" 
+    case inputName == "OneDayPlaza": "ODP" 
+    case inputName == "WeekendWalks": "WW" 
+    case inputName == "CommunityArt": "COART" 
+    case inputName == "SummerStreets": "SUMS" 
+    case inputName == "CarFreeDay": "CF" 
 	else : "No Event"
