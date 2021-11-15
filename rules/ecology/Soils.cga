@@ -10,6 +10,6 @@ scatterSoils(amount, soilColor) -->
 	scatter(surface,amount, uniform){plant2D(soilColor)}
 	
 plant2D(soilColor)-->
-	primitiveCube(50, 0.3)
+	primitiveQuad(50, 0.3)
 	extrude(.1)
 	color(soilColor)
