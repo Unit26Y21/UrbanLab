@@ -4,47 +4,24 @@
  * Author:  aaceved006
  */
 
-version "2021.0"
+version "2019.0"
 
-
-#### Atribute ###
-#Events Column definition
-@Enum ("HF", "CU","BP", "SPS","SUPS", "PE/PPE","FM", "SBF", "SF", "SIS", "R", "SS", "ODP", "WW", "COART", "SUMS", "CF")
-attr EventClass = ""
-
-attr EventClassName =
-	case EventClass == "HF": "HealthFair"
-    case EventClass == "CU": "CleanUps"
-    case EventClass == "BP": "BlockParty"
-    case EventClass == "SPS": "SchoolPlayStreet"
-    case EventClass == "SUPS": "SummerPlayStreet"
-    case EventClass == "PE/PPE": "PlazaEvent/PlazaPartnetEvent"
-    case EventClass == "FM": "FarmersMarket"
-    case EventClass == "SBF": "SingleBlockFestival"
-    case EventClass == "SF": "StreetFestival"
-    case EventClass == "R": "Rally"
-    case EventClass == "SS": "SeasonalStreets"
-    case EventClass == "ODP": "OneDayPlaza"
-    case EventClass == "WW": "WeekendWalks"
-    case EventClass == "COART": "CommunityArt"
-    case EventClass == "SUMS": "SummerStreets"
-    case EventClass == "CF": "CarFreeDay"
-	else : "No Event"
+import EventClassRule: "EventClass.cga"
 	
 #QuantityBlocks Field
-QuantityBlocks (Code) =
-           case Code == "HF" : 1
-           case Code == "CU" : 1
-           case Code == "BP" : 1
-           case Code == "SPS" : 4
-           case Code == "FM" : (1,10)
-           case Code == "SS" : (1,10)
-           case Code == "SF" : (1,10)
-           case Code == "SUPS" : 4
-           case Code == "SBF": 1
-           case Code == "ODP": 1
-           case Code == "WW": (2,10)
-           case Code == "COART": 1
-           case Code == "SUMS": 70
-           case Code == "CF": 30
-    else : DoNothing.
+QuantityBlocks(Code) =
+	case Code == "HF" : 1
+	case Code == "CU" : 1
+	case Code == "BP" : 1
+	case Code == "SPS" : 4
+	case Code == "FM" : [1,10]
+	case Code == "SS" : [1,10]
+	case Code == "SF" : [1,10]
+	case Code == "SUPS" : 4
+	case Code == "SBF": 1
+	case Code == "ODP": 1
+	case Code == "WW": [2,10]
+	case Code == "COART": 1
+	case Code == "SUMS": 70
+	case Code == "CF": 30
+	else : NIL

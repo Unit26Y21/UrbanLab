@@ -4,7 +4,9 @@
  * Author:  aaceved006
  */
 
-version "2021.0"
+version "2019.0"
+
+import EventClassRule: "EventClass.cga"
 
 determinesClosure(eventType) =
 	case eventType == "ST" : "Streets"
@@ -17,7 +19,7 @@ determinesClosure(eventType) =
     else: "Do nothing."
 
 #Converting codeLetter into the name of the type of closure
-roadTypeClosure(Code) =
+roadTypeClosure(Code)=
 	case  Code == "HF": ["ST", "P"]
     case  Code == "CU": ["ST","SW"]
     case  Code == "BP": ["ST","SW"]
