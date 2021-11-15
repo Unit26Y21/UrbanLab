@@ -1,0 +1,65 @@
+/**
+ * File:    LotLayout.cga
+ * Created: 13 Nov 2021 03:18:10 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+/*#Scenario 1: Setbacks on all Sides
+Lot --> 
+	setback(5) { street.front = Garden   | street.back = Garden | street.left = Garden | street.right = Garden |
+                     remainder    : Building }
+    	
+Garden --> 
+	color("#567d46")
+
+Building --> 
+	extrude(world.up, rand(5, 15))*/
+
+
+#Scenario 2: Setbacks behind for internal couryard
+Lot --> 
+	setback(20) { street.back = Garden   | 
+        		remainder    : Building }
+Garden --> 
+	color("#567d46")
+
+Building --> 
+	extrude(world.up, (50))
+	report ("height", geometry.height())
+
+#Going up from ground floor
+#Split building sides into floors
+	split(y){6: Sides  | ~1: split(y){5: Floors}*}
+	
+	
+Floors -->
+	split (x){ 5: Tile | 5: Tile | 5: Tile}*
+	
+	
+	
+	
+/*
+	
+Floors -->
+	#select the Tiles of the floor
+	comp(f){object.side: balconies | all: otherColor}
+ 	
+ 	
+ balconies --> 
+ 	print(getTreeKey())
+ 	extrude(float(listItem(getTreeKey(),1)))
+ 	topBalconies 
+ 	
+ topBalconies --> comp(f){top: ReportBalconieArea |	
+ 						 all: NIL}
+ 
+ReportBalconieArea -->
+	report("balconie area", geometry.area())					
+ 	color(0,1,0)
+ 
+ 
+ floorColor --> color(rand(1),rand(1), rand(1))  
+ 
+ otherColor --> color(1,0,0)	*/

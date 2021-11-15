@@ -1,0 +1,19 @@
+/**
+ * File:    Test.cga
+ * Created: 13 Nov 2021 03:51:47 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+#Scenario 1: Setbacks on all Sides
+Lot --> 
+	setback(5) { street.front = Garden   | street.back = Garden | street.left = Garden | street.right = Garden |
+                     remainder    : Building }
+    	
+Garden --> 
+	color("#567d46")
+
+Building --> 
+	extrude(world.up, 5)
+	
