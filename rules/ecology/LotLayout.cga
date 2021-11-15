@@ -6,33 +6,63 @@
 
 version "2021.0"
 
-/*#Scenario 1: Setbacks on all Sides
-Lot --> 
-	setback(5) { street.front = Garden   | street.back = Garden | street.left = Garden | street.right = Garden |
-                     remainder    : Building }
+#added this to give you more variation on that interior ecology
+@Range(min = 0, max = 100)
+attr blockRearYard = 10
+
+@Range(min = 3, max = 10)
+
+attr arcadeDepth = 3
+
+/*#Scenario 1: Setbacks on all Sides*/
+# use StartRule to manage your different scenarios. You can use the same rule but different starting points
+@StartRule
+LowDensityLot -->	setback(5){	  street.front = Garden
+					| street.back = Garden 
+					| street.left = Garden 
+					| street.right = Garden 
+					| remainder: LowDensityBuilding }
     	
 Garden --> 
 	color("#567d46")
 
-Building --> 
-	extrude(world.up, rand(5, 15))*/
+LowDensityBuilding --> 
+	extrude(world.up, rand(5, 15))
 
 
 #Scenario 2: Setbacks behind for internal couryard
-Lot --> 
-	setback(20) { street.back = Garden   | 
-        		remainder    : Building }
-Garden --> 
-	color("#567d46")
+HighDensityLot --> setback(rand(10, blockRearYard)) { street.back = Garden
+        					   | remainder: HighDensityBuilding }
 
-Building --> 
+HighDensityBuilding --> 
 	extrude(world.up, (50))
-	report ("height", geometry.height())
+	report("height", geometry.height())
+	SplitBuilding
 
 #Going up from ground floor
 #Split building sides into floors
-	split(y){6: Sides  | ~1: split(y){5: Floors}*}
-	
+# the problem here is that you need to deploy split() inside a RULE
+
+SplitBuilding -->
+	split(y){6: comp(f){street.front: FirstFloor}  
+			| ~1: OtherFloors
+			}
+
+FirstFloor --> 	
+	extrude(arcadeDepth)
+	alignScopeToAxes(y)
+	comp(f){0: Columnade
+			| 1: Columnade
+			| 4: TopColumade}
+
+Columnade -->
+	split(x){ 0.5: keep.
+			| 3: NIL
+			| 0.5: keep.
+			| 4: NIL
+			}*
+
+OtherFloors --> split(y){3: Floors.}*
 	
 Floors -->
 	split (x){ 5: Tile | 5: Tile | 5: Tile}*
