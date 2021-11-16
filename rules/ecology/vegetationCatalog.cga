@@ -1,12 +1,37 @@
 /**
  * File:    vegetationCatalog.cga
  * Created: 11 Nov 2021 21:33:19 GMT
- * Author:  nlaveau000
+ * Author:  Rebbeca
  */
 
 version "2021.0"
 
 const Vegetation = ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl"]
+
+# consider grouping these vegetations into subgroups so that when you plant you can pick and choose from a structured list
+
+# consider assigning unique colors to each plant. You can make a function for that
+
+# consider for each plant a number that represents density of planting. If you are gonna scatter these, it might be a good way to automate planting.
+
+
+
+###### Functions ###########
+
+# vegetation rule: only call once when placing ONE plant #
+# this will report on the plant that is placed and will as feedback to the ecologist or landscape architect #
+
+VegetationReport(input) -->
+	report("VegetationType", VegetationType(input))
+	report("VegetationAesthetic", VegetationAesthetics(input))
+	report( "SoilMoisture", SoilMoisture(input))
+	report("SeasonDuration", SeasonDuration(input))
+	report("GreenSeasons", GreenSeasons(input))
+	report("SunCondition",SunConditions(input))
+	report("ShadeConditions", ShadeConditions(input))
+	# @Rebecca and sooo on...
+	
+####### These are the sub functions that make up the planting machine #######
 
 VegetationType(input) = 
 	case count("AuOl;BoBe;BuBu;EuSp;FaInBu;JaBa;MoHo;SmSu;StSu;WiCa",input)>=1:"Shrub"
@@ -62,7 +87,7 @@ WaterDrainage(input) =
 	case count("BlAl;FaInBu;Ha;JaHo;MoHo;WiCa;BuBu;JaYe;HaFe;MoGl;AuOl;BlLo;EuSp;FiHo;GrBi;NoCa;ScRu;SmSu;StSu;Wi",input)>=1:"Well"
 	case count("RiBi;SiBr;PiOa;PuMo;SiMo;HoLo",input)>=1:"Poor"
 	case count("SeFe;OrBi;BoBe;JaBa;CoCa",input)>=1:"Normal"
-	else:false
+	else: ""
 
 AdaptableEnvironment(input) =
 		#only know about ones that are adaptable to any environment
@@ -78,7 +103,7 @@ DeerResistant(input) =
 RoadSaltTolerant(input) =
 		#only know about ones that are road salt tolerant
 	case count("NoCa;RiBi;BlAl;Ha;JaHo;MoHo;EuSp;StSu",input)>=1: true
-	case count("",input)>=1:"false
+	case count("",input)>=1:false
 	else: false
 
 PesticideResistant(input) =
@@ -104,3 +129,5 @@ DroughtResistant(input) =
 	case count("AuOl;GrBi;MoHo;HaFe;BoBe;HoLo;SmSu",input)>=1: true
 	case count("",input)>=1: false
 	else: false
+	
+	
