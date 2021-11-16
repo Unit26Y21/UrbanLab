@@ -45,45 +45,45 @@ attr floraHydroColor = "#87B7A0"
 @StartRule
 Types-->
 	case type == "A":
-		split(v, uvSpace, 0){ floraHydro_width : color(floraHydroColor) # what is ??? streetWidth(split.index) 	// first greenway
-							| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// first bike path
-							| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// second bike path
-							| shoulder_width : color(shoulderColor) # what is ??? streetWidth(split.index)		 	// first shoulder
-							| service_width : color(serviceColor) # what is ??? streetWidth(split.index)		// first service road
-							| service_width : color(serviceColor) # what is ??? streetWidth(split.index)	// second service road
-							| shoulder_width : color(shoulderColor) # what is ??? streetWidth(split.index)		 	// second shoulder
-							| floraHydro_width  : color(floraHydroColor) } # what is ??? streetWidth(split.index)} 	// second greenway
+		split(x){ floraHydro_width : color(floraHydroColor)  	// first greenway
+							| bike_width : color(bikeColor)    		// first bike path
+							| bike_width : color(bikeColor)   		// second bike path
+							| shoulder_width : color(shoulderColor)	 	// first shoulder
+							| service_width : color(serviceColor) 		// first service road
+							| service_width : color(serviceColor) 	// second service road
+							| shoulder_width : color(shoulderColor) 		 	// second shoulder
+							| floraHydro_width  : color(floraHydroColor) }  	// second greenway
 
 	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
 	case type == "B":
-		split(v, uvSpace, 0){ shoulder_width : color(shoulderColor) # what is ??? streetWidth(split.index)	// first shoulder
-							| service_width : color(serviceColor) # what is ??? streetWidth(split.index)		// first service road
-							| service_width : color(serviceColor) # what is ??? streetWidth(split.index)		// second service road
-							| shoulder_width : color(shoulderColor) # what is ??? streetWidth(split.index)		 	// second shoulder
-							| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// first bike path
-							| bike_width : color(bikeColor)} # what is ??? streetWidth(split.index)}   		// second bike path
+		split(x){ shoulder_width : color(shoulderColor) 	// first shoulder
+							| service_width : color(serviceColor) 		// first service road
+							| service_width : color(serviceColor) 		// second service road
+							| shoulder_width : color(shoulderColor) 	 	// second shoulder
+							| bike_width : color(bikeColor)    		// first bike path
+							| bike_width : color(bikeColor)}  		// second bike path
 
 
 	case type == "C":
-		split(v, uvSpace, 0){ floraHydro_width : color(floraHydroColor) # what is ??? streetWidth(split.index) 	// first greenway
-						 	| pedestrian_width : color(pedestrianColor) # what is ??? streetWidth(split.index)		 	// first pedestrian way
-							| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// first bike path
-							| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// second bike path
-							| pedestrian_width : color(pedestrianColor) # what is ??? streetWidth(split.index)		 	// second pedestrian way
-							| floraHydro_width  : color(floraHydroColor) }# what is ??? streetWidth(split.index)} 	// second greenway
+		split(x){ floraHydro_width : color(floraHydroColor) 	// first greenway
+						 	| pedestrian_width : color(pedestrianColor) 		 	// first pedestrian way
+							| bike_width : color(bikeColor)   		// first bike path
+							| bike_width : color(bikeColor) 		// second bike path
+							| pedestrian_width : color(pedestrianColor) 	 	// second pedestrian way
+							| floraHydro_width  : color(floraHydroColor) }	// second greenway
 
 	case type == "D":
-		split(v, uvSpace, 0){ bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   		// first bike path
-				| bike_width : color(bikeColor) # what is ??? streetWidth(split.index)   			// second bike path
-			 	| pedestrian_width : color(pedestrianColor)} # what is ??? streetWidth(split.index)}		 	// pedestrian way
+		split(x){ bike_width : color(bikeColor) 		// first bike path
+				| bike_width : color(bikeColor) 			// second bike path
+			 	| pedestrian_width : color(pedestrianColor)} 	 	// pedestrian way
 		 	
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
 		NIL
 	
 	case type == "F":
-		split(v, uvSpace, 0){floraHydro_width : color(floraHydroColor) # what is ??? streetWidth(split.index) 	// greenway
-		| pedestrian_width : color(pedestrianColor) }# what is ??? streetWidth(split.index)}		 	// pedestrian way
+		split(x){floraHydro_width : color(floraHydroColor)  	// greenway
+		| pedestrian_width : color(pedestrianColor) }		 	// pedestrian way
 
 	else:
 		NIL
