@@ -5,7 +5,46 @@
  */
 
 version "2019.0"
+import meterConverter: "meterToFeet2019.cga"
+#import Waste_DensitybyBldClass:"rules/waste/Waste_DensitybyBldClass.cga"
+
 #####Constants#####
+const BalanceSpaceBuilding = 0.35
+
+
+# How Call attr Height of Waste_DensitybyBldClass???
+#If not, below I am trying to define
+
+
+@Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
+attr BldgClass = 
+	50%: "Low Walkup"
+	20%: "High Walkup"
+	10%: "Low High Rise"
+	5%: "Medium High Rise"
+	else: "Dense High Rise" 
+
+@StartRule
+BdlgExtrusion-->
+	case BldgClass == "Low Walkup" : extrude (rand(meterConverter.feet(0),meterConverter.feet(36)))
+	case BldgClass == "High Walkup" : extrude (rand(meterConverter.feet(37),meterConverter.feet(60)))
+	case BldgClass == "Low High Rise" : extrude (rand(meterConverter.feet(61), meterConverter.feet(108)))
+	case BldgClass == "Medium High Rise" : extrude (rand(meterConverter.feet(109),meterConverter.feet(240)))
+	case BldgClass == "Dense High Rise" : extrude (rand(meterConverter.feet(241),meterConverter.feet(360)))
+	else : NIL
+	
+#split
+#GroundFloorSelector-->
+#comp
+#negative extrude the 70% of the ground floor, rand
+
+
+/* 	
+
+
+BuildingFootprint-->
+	extrude (Height)	
+
 
 const BlockArea= 120000 #you dont need parenthesis
 const DensityPerBlock= 6.5 #you dont need parenthesis
@@ -32,4 +71,5 @@ BalanceSpaceArea(RequiredArea, StreetArea)=
 @StartRule
 BalanceSpace-->
 	#splitArea()
-	color ("#edffc2")
+	color ("#edffc2")  
+	*/ 

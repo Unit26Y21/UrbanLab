@@ -1,0 +1,36 @@
+/**
+ * File:    meterToFeet.cga
+ * Created: 5 Jun 2017 15:40:16 GMT
+ * Author:  htarrido
+ */
+
+version "2019.0"
+
+###################################################
+## Attributes
+###################################################
+@Range("feet", "meter")
+@Order(0)
+attr MeasureSystem = "feet"
+
+
+###################################################
+## Converters
+###################################################
+
+feet(unit) =
+   case MeasureSystem == "feet": unit * 0.3048
+   else: unit
+   
+meterTofeet(unit) =
+   case MeasureSystem == "feet": unit * 3.28084
+   else: unit
+   
+sqmeterTosqft(unit) = 
+	case MeasureSystem == "feet": unit * 10.7639
+	else: unit
+	
+#cubicMeterTocubicFoot = 
+#	case MeasureSystem == "feet": unit * 0.283168
+#	else: unit
+

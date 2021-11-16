@@ -12,10 +12,10 @@ version "2019.0"
 @Enum ("HealthFair", "CleanUps", "BlockParty", "SchoolPlayStreet", "SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent", "FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay")
 const inputName = ""
 
-
 #### Atribute ####
 attr eventName = input(inputName)
 
+#### Function ####
 input(inputName) =
 	case inputName == "HealthFair": "HF"
 	case inputName == "CleanUps": "CU"
@@ -34,3 +34,4 @@ input(inputName) =
     case inputName == "SummerStreets": "SUMS" 
     case inputName == "CarFreeDay": "CF" 
 	else : "No Event"
+		
