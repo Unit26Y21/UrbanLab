@@ -73,22 +73,32 @@ attr Commercial =
 @Color
 attr BldgColor = assignBldgColor(Commercial)
 	
+#changing colors to not have the same as the waste team
 assignBldgColor(input) = 
-	case input == "Supermarket": "#FF0000"
-	case input == "Clothing Outlet": "#800000"
-	case input == "Restaurant": "#0000FF"
-	case input == "School": "#00FF00"
-	case input == "Small Business": "#FFA500"
-	case input == "Office": "#44ff44"
-	case input == "Bar": "#FFF000"
+	case input == "Supermarket": "#A447FE"
+	case input == "Clothing Outlet": "#C140E6"
+	case input == "Restaurant": "#FE8C47"
+	case input == "School": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
 	else: "000000"	
 	
+reportSQFT(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportSQFT(i + 1, list)
+	else:
+		stop.
+		NIL
 
 @StartRule
 Parcel -->
 	extrude(maxHeight)
 	color(BldgColor)
+	report("Area"+"."+Commercial, geometry.area(bottom))
 	
-	
+
+
 
 	
