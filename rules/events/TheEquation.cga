@@ -5,16 +5,21 @@
  */
 
 version "2019.0"
+
 import meterConverter: "meterToFeet2019.cga"
 #import Waste_DensitybyBldClass:"rules/waste/Waste_DensitybyBldClass.cga"
 
-#####Constants#####
+##### CONSTANTS #####
 const BalanceSpaceBuilding = 0.35
 
+#Building Contants
+const groundfloor_height = meterConverter.feet(15)
+const floor_height = meterConverter.feet(12)
 
 # How Call attr Height of Waste_DensitybyBldClass???
 #If not, below I am trying to define
 
+##### ATTRIBUTES #####
 
 @Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
 attr BldgClass = 
@@ -24,15 +29,34 @@ attr BldgClass =
 	5%: "Medium High Rise"
 	else: "Dense High Rise" 
 
+##### FUNCTIONS #####
+BdlgHeight(BldgClass)= 
+	case BldgClass == "Low Walkup" : rand(meterConverter.feet(12),meterConverter.feet(39))
+	case BldgClass == "High Walkup" : rand(meterConverter.feet(39),meterConverter.feet(63))
+	case BldgClass == "Low High Rise" : rand(meterConverter.feet(63), meterConverter.feet(111))
+	case BldgClass == "Medium High Rise" : rand(meterConverter.feet(111),meterConverter.feet(243))
+	case BldgClass == "Dense High Rise" : rand(meterConverter.feet(243),meterConverter.feet(363))
+	else : 0
+
+##### RULES #####
 @StartRule
 BdlgExtrusion-->
-	case BldgClass == "Low Walkup" : extrude (rand(meterConverter.feet(0),meterConverter.feet(36)))
-	case BldgClass == "High Walkup" : extrude (rand(meterConverter.feet(37),meterConverter.feet(60)))
-	case BldgClass == "Low High Rise" : extrude (rand(meterConverter.feet(61), meterConverter.feet(108)))
-	case BldgClass == "Medium High Rise" : extrude (rand(meterConverter.feet(109),meterConverter.feet(240)))
-	case BldgClass == "Dense High Rise" : extrude (rand(meterConverter.feet(241),meterConverter.feet(360)))
-	else : NIL
+	extrude(BdlgHeight(BldgClass))
+	split(y){ groundfloor_height : GroundFloor |
+             { ~floor_height : RestFloor }* }  
+
+GroundFloor-->
+	color("#FAD97D")
 	
+RestFloor-->
+	color("#A3CCD1")
+
+
+   
+            
+
+	
+
 #split
 #GroundFloorSelector-->
 #comp
@@ -40,7 +64,7 @@ BdlgExtrusion-->
 
 
 /* 	
-
+ 
 
 BuildingFootprint-->
 	extrude (Height)	
@@ -72,4 +96,5 @@ BalanceSpaceArea(RequiredArea, StreetArea)=
 BalanceSpace-->
 	#splitArea()
 	color ("#edffc2")  
-	*/ 
+	*/	
+ 
