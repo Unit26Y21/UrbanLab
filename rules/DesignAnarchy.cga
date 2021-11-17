@@ -1,0 +1,13 @@
+/**
+ * File:    DesignAnarchy.cga
+ * Created: 17 Nov 2021 04:56:34 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+import waste: "waste/Waste_DensitybyBldClass.cga"
+
+@StartRule
+Parcel -->
+	waste.WalkupParcel
