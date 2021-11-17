@@ -44,7 +44,7 @@ medWVSCapacity(WasteType) =
 largeWVSCapacity(WasteType) = 
 	case WasteType == "Refuse": 400000
 	case WasteType == "Organics": 400000
-
+	else: 0
 
 
 #Randomly assign MINI WVS on blocks 
