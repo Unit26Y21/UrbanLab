@@ -1,0 +1,121 @@
+/**
+ * File:    LotLayout.cga
+ * Created: 13 Nov 2021 03:18:10 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+#added this to give you more variation on that interior ecology
+@Range(min = 0, max = 100)
+attr blockRearYard = 10
+
+@Range(min = 3, max = 10)
+
+attr arcadeDepth = 3
+
+attr columnMatrix = [3,4]
+
+/*#Scenario 1: Setbacks on all Sides*/
+# use StartRule to manage your different scenarios. You can use the same rule but different starting points
+@StartRule
+LowDensityLot -->	setback(5){	  street.front = Garden
+					| street.back = Garden 
+					| street.left = Garden 
+					| street.right = Garden 
+					| remainder: LowDensityBuilding }
+    	
+Garden --> 
+	color("#567d46")
+
+LowDensityBuilding --> 
+	extrude(world.up, rand(5, 15))
+
+
+#Scenario 2: Setbacks behind for internal couryard
+HighDensityLot --> setback(rand(10, blockRearYard)) { street.back = Garden
+        					   | remainder: HighDensityBuilding }
+
+HighDensityBuilding --> 
+	extrude(world.up, (50))
+	report("height", geometry.height())
+	SplitBuilding
+
+#Going up from ground floor
+#Split building sides into floors
+# the problem here is that you need to deploy split() inside a RULE
+
+SplitBuilding -->
+	split(y){6: comp(f){street.front: FirstFloor
+						|object.bottom: FirstFloorColumns}  
+			| ~1: OtherFloors
+			}
+
+FirstFloorColumns -->
+	split(x){columnMatrix[0]: 
+			split(y){columnMatrix[1]:
+				PlaceColumn}*}*
+				
+PlaceColumn -->
+	comp(v){all: DrawColumn}
+
+DrawColumn -->
+	rotateScope(270,0,0)
+	primitiveQuad(0.5,0.5)
+	extrude(6)
+				
+FirstFloor --> 	
+	extrude(arcadeDepth)
+	alignScopeToAxes(y)
+	comp(f){0: Columnade
+			| 1: Columnade
+			| 4: TopColumade}
+
+Columnade -->
+	split(x){ 0.5: keep.
+			| 3: NIL
+			| 0.5: keep.
+			| 4: NIL
+			}*
+
+TopColumade -->
+	offset(-1, all)
+	extrude(1)
+
+OtherFloors --> split(y){3: Floors}*
+	
+Floors -->
+	case split.index < 1:
+		NoBalcony. #at first floor
+	else:
+		comp(f){street.front: Tile}
+	
+Tile --> 
+	#Balcony 
+	split(x){ 5: Balcony | 5: Balcony | 5: Balcony}*
+	
+	
+Balcony --> extrude(rand(1,3))
+/*
+	
+Floors -->
+	#select the Tiles of the floor
+	comp(f){object.side: balconies | all: otherColor}
+ 	
+ 	
+ balconies --> 
+ 	print(getTreeKey())
+ 	extrude(float(listItem(getTreeKey(),1)))
+ 	topBalconies 
+ 	
+ topBalconies --> comp(f){top: ReportBalconieArea |	
+ 						 all: NIL}
+ 
+ReportBalconieArea -->
+	report("balconie area", geometry.area())					
+ 	color(0,1,0)
+ 
+ 
+ floorColor --> color(rand(1),rand(1), rand(1))  
+ 
+ otherColor --> color(1,0,0)	*/

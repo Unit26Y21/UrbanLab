@@ -1,0 +1,133 @@
+/**
+ * File:    vegetationCatalog.cga
+ * Created: 11 Nov 2021 21:33:19 GMT
+ * Author:  Rebbeca
+ */
+
+version "2021.0"
+
+const Vegetation = ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl"]
+
+# consider grouping these vegetations into subgroups so that when you plant you can pick and choose from a structured list
+
+# consider assigning unique colors to each plant. You can make a function for that
+
+# consider for each plant a number that represents density of planting. If you are gonna scatter these, it might be a good way to automate planting.
+
+
+
+###### Functions ###########
+
+# vegetation rule: only call once when placing ONE plant #
+# this will report on the plant that is placed and will as feedback to the ecologist or landscape architect #
+
+VegetationReport(input) -->
+	report("VegetationType", VegetationType(input))
+	report("VegetationAesthetic", VegetationAesthetics(input))
+	report( "SoilMoisture", SoilMoisture(input))
+	report("SeasonDuration", SeasonDuration(input))
+	report("GreenSeasons", GreenSeasons(input))
+	report("SunCondition",SunConditions(input))
+	report("ShadeConditions", ShadeConditions(input))
+	# @Rebecca and sooo on...
+	
+####### These are the sub functions that make up the planting machine #######
+
+VegetationType(input) = 
+	case count("AuOl;BoBe;BuBu;EuSp;FaInBu;JaBa;MoHo;SmSu;StSu;WiCa",input)>=1:"Shrub"
+	case count("BlAl;BlLo;CoCa;GrBi;Ha;HoLo;JaYe;NoCa;PiOa;RiBi",input)>=1:"Tree"
+	case count("HaFe;SeFe",input)>=1:"Fern"
+	case count("SiBr;SiMo;PuMo",input)>=1:"Moss"
+	case count("FiHo;ScRu",input)>=1:"Stems"
+	case count("JaHo;MoGl;OrBi;Wi",input)>=1:"Vine"
+	else:""
+
+VegetationAesthetics(input) =
+	case count("BoBe;MoGl;WiCa",input)>=1:"Flower"
+	case count("AuOl;JaBa",input)>=1:"Fruit"
+	else:""
+
+SoilMoisture(input) =
+	case count("HaFe;FiHo;ScRu;StSu;MoHo;BuBu;FaInBu;BlAl;RiBi;NoCa;PiOa;MoGl",input)>=1:"Wet"
+	case count("SiBr;SmSu;GrBi;Wi;WiCa;BoBe",input)>=1:"Dry"
+	case count("EuSp;JaBa;AuOl;JaYe;CoCa",input)>=1:"Normal"
+	case count("SeFe;SiMo;PuMo;Ha;HoLo;BlLo;JaHo;OrBi",input)>=1:"Either"
+	else:""
+
+SeasonDuration(input)=
+	#all vegetation in current catalog are perenials
+	case count("",input)>=1:"Perenial"
+	case count("",input)>=1:"Annual"
+	else:""
+
+GreenSeasons(input) =
+	case count("SeFe;HaFe;StSu;SmSu;MoHo;BuBu;EuSp;FaInBu;JaBa;AuOl;BlAl;RiBi;GrBi;NoCa;CoCa;Ha;HoLo;BlLo;PiOa;OrBi",input)>=1:"Deciduous"
+	case count("FiHo;ScRu;SiMo;SiBr;PuMo;JaYe;JaHo;Wi;WiCa;BoBe;MoGl",input)>=1:"Evergreen"
+	else:""
+
+SunConditions(input) = 
+	case count("MoGl;WiCa;AuOl;JaBa;BlAl;BlLo;BuBu;CoCa;EuSp;FaInBu;FiHo;GrBi;HoLo;JaYe;NoCa;PiOa;RiBi;ScRu;SmSu;StSu;Wi",input)>=1:"Full"
+	case count("HaFe;PuMo;SiMo;BoBe",input)>=1:"Part"
+	case count("Ha;JaHo;MoHo;OrBi;SeFe;SiBr",input)>=1:"Either"
+	else:""
+
+ShadeConditions(input) =
+	case count("PuMo;RiBi;SiMo;HaFe",input)>=1:"Full"
+	case count("BoBe;MoGl;AuOl;JaBa;BlAl;BlLo;CoCa;EuSp;FaInBu;FiHo;GrBi;HoLo;NoCa;ScRu;SmSu;StSu;Wi",input)>=1:"Part"
+	case count("Ha;JaHo;MoHo;OrBi;SeFe;SiBr;WiCa;BuBu;JaYe;PiOa",input)>=1:"Either"
+	else:""
+
+NearBodyOfWater(input) =
+		#only know about ones that need proximity to body of water
+	case count("SeFe;RiBi;BlAl;FaInBu",input)>=1:true
+	case count("",input)>=1:false
+	else: false
+
+WaterDrainage(input) =
+	case count("BlAl;FaInBu;Ha;JaHo;MoHo;WiCa;BuBu;JaYe;HaFe;MoGl;AuOl;BlLo;EuSp;FiHo;GrBi;NoCa;ScRu;SmSu;StSu;Wi",input)>=1:"Well"
+	case count("RiBi;SiBr;PiOa;PuMo;SiMo;HoLo",input)>=1:"Poor"
+	case count("SeFe;OrBi;BoBe;JaBa;CoCa",input)>=1:"Normal"
+	else: ""
+
+AdaptableEnvironment(input) =
+		#only know about ones that are adaptable to any environment
+	case count("OrBi;BuBu;JaYe;GrBi;NoCa",input)>=1:true
+	case count("",input)>=1:false
+	else: false
+
+DeerResistant(input) =
+	case count("AuOl;HaFe;BoBe;HoLo;SmSu;FaInBu;FiHo;NoCa;StSu;ScRu;BuBu;JaYe;SeFe;JaBa;CoCa;SiBr;PiOa;PuMo;SiMo;MoGl;Wi",input)>=1:true
+	case count("GrBi;MoHo;BlAl;RiBi;Ha;BlLo;JaHo;EuSp;OrBi;WiCa",input)>=1:false
+	else: false
+
+RoadSaltTolerant(input) =
+		#only know about ones that are road salt tolerant
+	case count("NoCa;RiBi;BlAl;Ha;JaHo;MoHo;EuSp;StSu",input)>=1: true
+	case count("",input)>=1:false
+	else: false
+
+PesticideResistant(input) =
+		#only know about ones that are pecticide resistant
+	case count("FiHo;ScRu",input)>=1: true
+	case count("",input)>=1: false
+	else: false
+
+PoorSoilTolerant(input) =
+		#only know about ones that are poor soil tolerant
+	case count("NoCa;RiBi;Ha;StSu;AuOl;GrBi;FaInBu;BlLo",input)>=1: true
+	case count("",input)>=1: false
+	else: false
+
+ImproveSoil(input) =
+		#only know about ones that improve soil
+	case count("AuOl;FaInBu;FiHo;BlAl",input)>=1: true
+	case count("",input)>=1: false
+	else: false
+
+DroughtResistant(input) =
+		#only know about ones that are drought resistant
+	case count("AuOl;GrBi;MoHo;HaFe;BoBe;HoLo;SmSu",input)>=1: true
+	case count("",input)>=1: false
+	else: false
+	
+	
