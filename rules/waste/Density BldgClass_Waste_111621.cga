@@ -93,7 +93,7 @@ Height =
 /*
 #how to write?? 
 assignBldgDistribution(BldgClass, BldgSize) =
-	case BldgClassType[0]: BldgSizeType[0] == 20%, BldgSizeType[1] == 80%
+	case BldgClassType[0]: BldgSizeType[0] == 20%, BldgSizeType[1] == 80%   
 	case BldgClassType[1]: (80% BldgSizeType[0], 20% BldgSizeType[1])
 	case BldgClassType[2]: 40% BldgSizeType[0], 60% BldgSizeType[1]
 	 
