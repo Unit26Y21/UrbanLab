@@ -22,7 +22,7 @@ wastePerHH(WasteType) =
 	case WasteType == "Glass": 4.41
 	case WasteType == "Textiles": 2.41
 	case WasteType == "Other": 4.11
-	else: 1
+	else: 0
 
 #This list of BldgClass is powerfull
 #Consider creating a const so you instatiated once and access it at all points
@@ -38,6 +38,9 @@ attr BldgClass =
 	10%: BldgClassType[3]
 	5%: BldgClassType[2]
 	else: BldgClassType[4]
+
+# is this per floor or per building
+# if per floor talk to ecology
 
 attr NumberofHouseholds =
 	case BldgClass == "Low Walkup": rand(4,10)
