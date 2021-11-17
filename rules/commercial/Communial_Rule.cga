@@ -58,18 +58,18 @@ RandomColor -->
 	
 	
 	
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar"]
 	
-	
-const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business"]
-	
-@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Bar", "Small Business")
+@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
 attr Commercial = 
-	50%: CommercialTypes[0]
+	20%: CommercialTypes[0]
 	20%:CommercialTypes[1]
-	10%: CommercialTypes[3]
-	5%: CommercialTypes[2]
-	else: CommercialTypes[4]
-
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
+	else: CommercialTypes[6]
+	
 @Color
 attr BldgColor = assignBldgColor(Commercial)
 	
@@ -77,8 +77,10 @@ assignBldgColor(input) =
 	case input == "Supermarket": "#FF0000"
 	case input == "Clothing Outlet": "#800000"
 	case input == "Restaurant": "#0000FF"
-	case input == "Bar": "#00FF00"
+	case input == "School": "#00FF00"
 	case input == "Small Business": "#FFA500"
+	case input == "Office": "#44ff44"
+	case input == "Bar": "#FFF000"
 	else: "000000"	
 	
 
@@ -87,4 +89,6 @@ Parcel -->
 	extrude(maxHeight)
 	color(BldgColor)
 	
+	
+
 	
