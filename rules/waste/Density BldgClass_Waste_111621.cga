@@ -7,13 +7,13 @@
 version "2021.0"
 
 
-##### CONSTANTS ########
+################################## CONSTANTS #########################################
 
 const AvgHouseholdSize = 3
 
 const InhabitantsPerBld = AvgHouseholdSize * NumberofHouseholds 
 
-##### should we add in a rule that dictates household size based on height? eg: for walkup: if height is between 20-30 ft, randomize number of HH between (8,15)
+const WasteType = ["Refuse", "Organics", "Paper", "Metal", "Plastic", "Glass", "Textiles", "Other"] 
 
 #lbs of waste per HH by waste type 
 wastePerHH(WasteType) = 
@@ -27,9 +27,6 @@ wastePerHH(WasteType) =
 	case WasteType == "Other": 4.11
 	else: 1
 
-#This list of BldgClass is powerfull
-#Consider creating a const so you instatiated once and access it at all points
-						#[0,1,2,3,4] a specific order
 						
 #Setback: primarily residential 
 #Courtyard: primarily mixed residential / commerical 
@@ -39,25 +36,26 @@ const BldgClassType = ["SetBack", "Courtyard", "Stack"]
 
 const BldgSizeType = ["Walkup", "High Rise"]
 
-##### should we add in a rule that dictates household size based on height? eg: for walkup: if height is between 20-30 ft, randomize number of HH between (8,15)
-const Households =
-	case BldgSize == "Walkup" && Height >=40: rand(10,18)
-	case BldgSize == "Walkup" && Height <40: rand(16, 30)
-	case BldgSize == "High Rise" && Height >=70: rand(16, 30)
-	case BldgSize == "High Rise" && Height >=80: rand(16, 30)
-	case BldgSize == "Low High Rise" && Height <90: rand(16, 30)
-	case BldgSize == "Medium High Rise" && Height >=100: rand(16, 30)
-	case BldgSize == "Medium High Rise" && Height >=110: rand(16, 30)
-	case BldgSize == "Dense High Rise" && Height >120: rand(16, 30)
-	case BldgSize == "Dense High Rise" && Height <=130: rand(16, 30)
-	case BldgSize == "Dense High Rise" && Height <=140: rand(16, 30)
+##### rule that dictates household size based on height, eg: for walkup: if height is between 20-30 ft, randomize number of HH between (8,15)
+const NumberofHouseholds =
+	case BldgSize == "Walkup" && Height <=40: rand(10,18)
+	case BldgSize == "Walkup" && Height >40: rand(16, 30)
+	case BldgSize == "High Rise" && Height <=70: rand(60, 120)
+	case BldgSize == "High Rise" && Height (>70,<=80): rand(70, 140)
+	case BldgSize == "High Rise" && Height (>80, <=90): rand(80, 160)
+	case BldgSize == "High Rise" && Height (>90, <=100): rand(90, 180)
+	case BldgSize == "High Rise" && Height (>100, <=110): rand(100, 200)
+	case BldgSize == "High Rise" && Height (>110, <=120): rand(110, 220)
+	case BldgSize == "High Rise" && Height (>120, <=130): rand(120, 240)
+	case BldgSize == "High Rise" && Height (>130, <=140): rand(130, 260)
+	case BldgSize == "High Rise" && Height (>140, <=150): rand(140, 300)
 	else: 10
 
 
-##### ATTRIBUTES ######
+######################################### ATTRIBUTES #########################################
 
 
-##distribute this mix within every 0.5 mile radius (inspo from 15 min city)
+##distribute this mix within every 0.5 mile radius (inspo from 15 min city) >> what rule can we use? 
 @Enum("SetBack", "Courtyard", "Stack") 
 attr BldgClass = 
 	40%: BldgClassType[0]
@@ -71,7 +69,7 @@ attr BldgSize =
 	case BldgSizeType[1]: rand(60,150)
 	else: 0
 
-########### FUNCTIONS ################
+######################################### FUNCTIONS #########################################
 
 #how to write?? 
 assignBldgDistribution(BldgClass, BldgSize) =
@@ -79,77 +77,31 @@ assignBldgDistribution(BldgClass, BldgSize) =
 	case BldgClassType[1]: (80% BldgSizeType[0], 20% BldgSizeType[1])
 	case BldgClassType[2]: 40% BldgSizeType[0], 60% BldgSizeType[1]
 	 
-	 
-	 
-assignBldgColor(BldgClass) = 
-	case BldgClass == "Low Walkup": "#FF0000"
-	case BldgClass == "High Walkup": "#800000"
-	case BldgClass == "Low High Rise": "#0000FF"
-	case BldgClass == "Medium High Rise": "#00FF00"
-	case BldgClass == "Dense High Rise": "#FFA500"
+
+assignBldgColor(BldgClass, BldgSize) = 
+	case BldgClassType[0] && BldgSizeType[0]: "#FF0000"
+	case BldgClassType[1] && BldgSizeType[0]: "#800000"
+	case BldgClassType[2] && BldgSizeType[0]: "#0000FF"
+	case BldgClassType[0] && BldgSizeType[1]: "#00FF00"
+	case BldgClassType[1] && BldgSizeType[1]: "#FFA500"
+	case BldgClassType[2] && BldgSizeType[1]: "#90EE90"
 	else: "000000"	
 
 
-attr NumberofHouseholds =
-	case BldgClass == "Low Walkup": rand(4,10)
-	case BldgClass == "High Walkup": rand(10,18)
-	case BldgClass == "Low High Rise": rand(20,50)
-	case BldgClass == "Medium High Rise": rand(50,100)
-	case BldgClass == "Dense High Rise": rand(100,150)
-	else: 0.5
-
-
-attr Height =
-	case BldgClass == "Low Walkup" && NumberofHouseholds >=6: 9
-	case BldgClass == "Low Walkup" && NumberofHouseholds <10: 10
-	case BldgClass == "High Walkup"&& NumberofHouseholds >=14: 17
-	case BldgClass == "High Walkup" && NumberofHouseholds <18: 22
-	case BldgClass == "Low High Rise" && NumberofHouseholds >=30: 20
-	case BldgClass == "Low High Rise" && NumberofHouseholds <50: 25
-	case BldgClass == "Medium High Rise" && NumberofHouseholds >=50: 30
-	case BldgClass == "Medium High Rise" && NumberofHouseholds >=60: 35
-	case BldgClass == "Dense High Rise" && NumberofHouseholds >60: 40
-	case BldgClass == "Dense High Rise" && NumberofHouseholds <=80: 50
-	else: 10
-
-# @Katie should this not be a functio???
-# Do you want to give the user the option to change the color??
-# If the answer is no, then this should be a function
-@Color
-attr BldgColor = assignBldgColor(BldgClass)
-
-
-##### FUNCTIONS ######
-###consider adding attribute for avg squarefootage per HH###
-
-assignBldgColor(BldgClass) = 
-	case BldgClass == "Low Walkup": "#FF0000"
-	case BldgClass == "High Walkup": "#800000"
-	case BldgClass == "Low High Rise": "#0000FF"
-	case BldgClass == "Medium High Rise": "#00FF00"
-	case BldgClass == "Dense High Rise": "#FFA500"
-	else: "000000"
-
-#I think this should be a constant that then you access using a function that reports
-const WasteType = ["Refuse", "Organics", "Paper", "Metal", "Plastic", "Glass", "Textiles", "Other"] 
-
-
 #function that gives you total waste per houseHold lbs
-averageBuildingWaste(WasteTypeInput, NumberofHouseholds) = wastePerHH(WasteTypeInput) * NumberofHouseholds
-	
+averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * NumberofHouseholds
 
 
-##### RULES ######
+######################################### RULES #########################################
+
 @StartRule
 WalkupParcel -->
-	#we do not need to set Bldg Class because it already comes from the attributes
-	# samething with BldgColor
-	extrude(Height)
+	extrude(BldgSize)
 	color(BldgColor)
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
 	report("Households per Bld", NumberofHouseholds)
-	report("Building Height", Height) #maybe include height???
+	report("Building Height", BldgSize)
 	reportWaste(0, WasteType)
 
 reportWaste(i, list) -->
