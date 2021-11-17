@@ -4,10 +4,11 @@
  * Author:  User
  */
 
-version "2021.1"
+version "2021.0"
 
 import waste: "waste/Waste_DensitybyBldClass.cga"
 
 @StartRule
 Parcel -->
 	waste.WalkupParcel
+	

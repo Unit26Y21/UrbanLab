@@ -45,6 +45,7 @@ HighDensityBuilding -->
 #Split building sides into floors
 # the problem here is that you need to deploy split() inside a RULE
 
+
 SplitBuilding -->
 	split(y){6: comp(f){street.front: FirstFloor
 						|object.bottom: FirstFloorColumns}  
@@ -88,7 +89,8 @@ Floors -->
 	case split.index < 1:
 		NoBalcony. #at first floor
 	else:
-		comp(f){street.front: Tile}
+		comp(f){street.front: Tile
+				| all: DrawFloors}
 	
 Tile --> 
 	#Balcony 
@@ -96,26 +98,6 @@ Tile -->
 	
 	
 Balcony --> extrude(rand(1,3))
-/*
-	
-Floors -->
-	#select the Tiles of the floor
-	comp(f){object.side: balconies | all: otherColor}
- 	
- 	
- balconies --> 
- 	print(getTreeKey())
- 	extrude(float(listItem(getTreeKey(),1)))
- 	topBalconies 
- 	
- topBalconies --> comp(f){top: ReportBalconieArea |	
- 						 all: NIL}
- 
-ReportBalconieArea -->
-	report("balconie area", geometry.area())					
- 	color(0,1,0)
- 
- 
- floorColor --> color(rand(1),rand(1), rand(1))  
- 
- otherColor --> color(1,0,0)	*/
+
+DrawFloors -->
+	color(1,1,1,0.3)
