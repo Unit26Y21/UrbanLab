@@ -37,33 +37,33 @@ attr bike_width = meterConverter.feet(6)
 Types-->
 	case type == "A":
 		split(v, unitSpace, 0){ pedestrian_width : pedestrianColor // first sidewalk
-							|'floraHydro_width : floraHydroColor scatterfloraHydro	// first greenway
+							|~floraHydro_width : floraHydroColor scatterfloraHydro	// first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
-							| ~shoulder_width : shoulderColor	 	// first shoulder
+							| shoulder_width : shoulderColor	 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 	// second service road
-							| ~shoulder_width : shoulderColor 		 	// second shoulder
-							| 'floraHydro_width  : floraHydroColor scatterfloraHydro // second greenway
+							| shoulder_width : shoulderColor 		 	// second shoulder
+							| ~floraHydro_width  : floraHydroColor scatterfloraHydro // second greenway
 							| pedestrian_width : pedestrianColor}  	// second sidewalk
 							
 	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
 	case type == "B":
-		split(v, unitSpace, 0){ 'shoulder_width : shoulderColor 	// first shoulder
+		split(v, unitSpace, 0){ shoulder_width : shoulderColor 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 		// second service road
-							| 'shoulder_width : shoulderColor 	 	// second shoulder
+							| shoulder_width : shoulderColor 	 	// second shoulder
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor} 		// second bike path
 
 
 	case type == "C":
-		split(v, unitSpace, 0){ 'floraHydro_width : floraHydroColor	scatterfloraHydro// first greenway
+		split(v, unitSpace, 0){ floraHydro_width : floraHydroColor	scatterfloraHydro// first greenway
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
 							| pedestrian_width : pedestrianColor 	 	// second pedestrian way
-							| 'floraHydro_width  : floraHydroColor scatterfloraHydro}	// second greenway
+							| floraHydro_width  : floraHydroColor scatterfloraHydro}	// second greenway
 
 	case type == "D":
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
