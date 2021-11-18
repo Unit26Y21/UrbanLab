@@ -1,0 +1,91 @@
+/**
+ * File:    Type.cga
+ * Created: 14 Nov 2021 18:39:17 GMT
+ * Author:  skamins000
+ */
+
+version "2021.0"
+
+import meterConverter: "meterToFeet.cga"
+#	Do not copy paste. Import the rule like the example above. if you want to use a function call it the following way:
+# 	meterConverter.feet(yourValue)
+#	meterConverter.sqmeterTosqft(yourValue)
+# 	see the rule file for full functionality and documentation
+
+### Constants ###
+const typeConstants = ["A", "B", "C", "D", "E", "F"]
+
+@Enum("A", "B", "C", "D", "E", "F")
+attr type = "A"
+
+### Attributes ###
+
+#create attrubute widths for the type splits
+@Range (min=2, max=10)
+attr floraHydro_width = 2 
+attr service_width = 10
+
+@Range (min=6, max=20)
+attr pedestrian_width = 6
+attr shoulder_width = 9
+attr bike_width = 6
+
+
+#Hector did the way I attributed these colors make sense?
+attr serviceColor = "#3A3A3A"
+attr bikeColor = "#FDC700"
+attr pedestrianColor = "#ECD7A0"
+attr shoulderColor = "#999999"
+attr floraHydroColor = "#87B7A0"
+
+
+### Functions ###
+
+#split type A into parts, greenways, two bike lanes, shoulder, two car lames, another shoulder and another greenway
+@StartRule
+Types-->
+	case type == "A":
+		split(x){ floraHydro_width : color(floraHydroColor)  	// first greenway
+							| bike_width : color(bikeColor)    		// first bike path
+							| bike_width : color(bikeColor)   		// second bike path
+							| shoulder_width : color(shoulderColor)	 	// first shoulder
+							| service_width : color(serviceColor) 		// first service road
+							| service_width : color(serviceColor) 	// second service road
+							| shoulder_width : color(shoulderColor) 		 	// second shoulder
+							| floraHydro_width  : color(floraHydroColor) }  	// second greenway
+
+	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
+	case type == "B":
+		split(x){ shoulder_width : color(shoulderColor) 	// first shoulder
+							| service_width : color(serviceColor) 		// first service road
+							| service_width : color(serviceColor) 		// second service road
+							| shoulder_width : color(shoulderColor) 	 	// second shoulder
+							| bike_width : color(bikeColor)    		// first bike path
+							| bike_width : color(bikeColor)}  		// second bike path
+
+
+	case type == "C":
+		split(x){ floraHydro_width : color(floraHydroColor) 	// first greenway
+						 	| pedestrian_width : color(pedestrianColor) 		 	// first pedestrian way
+							| bike_width : color(bikeColor)   		// first bike path
+							| bike_width : color(bikeColor) 		// second bike path
+							| pedestrian_width : color(pedestrianColor) 	 	// second pedestrian way
+							| floraHydro_width  : color(floraHydroColor) }	// second greenway
+
+	case type == "D":
+		split(x){ bike_width : color(bikeColor) 		// first bike path
+				| bike_width : color(bikeColor) 			// second bike path
+			 	| pedestrian_width : color(pedestrianColor)} 	 	// pedestrian way
+		 	
+		 	
+	case type == "E": # Type E is only pedestrian so does not need split up
+		NIL
+	
+	case type == "F":
+		split(x){floraHydro_width : color(floraHydroColor)  	// greenway
+		| pedestrian_width : color(pedestrianColor) }		 	// pedestrian way
+
+	else:
+		NIL
+
+	

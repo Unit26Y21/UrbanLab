@@ -1,0 +1,15 @@
+/**
+ * File:    plants.cga
+ * Created: 8 Nov 2021 22:13:15 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+scatterSeeds(amount, seedColor) -->
+	scatter(surface,amount, uniform){plant2D(seedColor)}
+	
+plant2D(seedColor)-->
+	primitiveDisk(20, 0.6)
+	extrude(.1)
+	color(seedColor)
