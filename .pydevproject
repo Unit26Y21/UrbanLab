@@ -4,4 +4,5 @@
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/Urban Lab/scripts</path>
 </pydev_pathproperty>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.1</pydev_property>
 </pydev_project>
