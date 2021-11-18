@@ -82,7 +82,8 @@ Types-->
 		NIL
 
 floraHydroColor-->
-	tileUV(0,~4,~4) texture("/UrbanLab/assets/tileable_classic_grass_and_dirt_texture_-_grass_texture.jpg")
+	#use the folderPath you so cleverly declared above!!!!
+	tileUV(0,~4,~4) texture(textureFolder + "tileable_classic_grass_and_dirt_texture_-_grass_texture.jpg")
 bikeColor-->
 	tileUV(0,~4,~4) color("#FDC700")
 
@@ -90,7 +91,7 @@ shoulderColor-->
 	tileUV(0,0,0) color("#999999")
  
  pedestrianColor-->
- 	tileUV(0,14,14) texture("/UrbanLab/assets/Dirt_texture.jpg")
+ 	tileUV(0,14,14) texture(textureFolder + "Dirt_texture.jpg")
  	
  serviceColor-->
  tileUV(0,14,14) texture("/ESRI.lib/assets/Streets/Lanes/asphalt_14x14m.jpg")
