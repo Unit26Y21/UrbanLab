@@ -31,7 +31,6 @@ attr shoulder_width = 9
 attr bike_width = 6
 
 
-#Hector did the way I attributed these colors make sense?
 attr serviceColor = "#3A3A3A"
 attr bikeColor = "#FDC700"
 attr pedestrianColor = "#ECD7A0"
@@ -88,4 +87,17 @@ Types-->
 	else:
 		NIL
 
+StartRule-->
+	case bike_width:
+		color(bikeColor)
+	case service_width:
+		color(serviceColor)
+	case pedestrian_width:
+		color(pedestrianColor)
+	case floraHydro_width:
+		color(floraHydroColor)
+	case shoulder_width:
+		color(shoulderColor)
+	else:
+	NIL
 	
