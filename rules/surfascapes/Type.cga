@@ -13,7 +13,7 @@ import meterConverter: "meterToFeet.cga"
 # 	see the rule file for full functionality and documentation
 
 ### Constants ###
-const textureFolder =  "/UrbanLab/" 
+const textureFolder =  "assets/" 
 
 @Enum("A", "B", "C", "D", "E", "F")
 attr type = "A"
@@ -40,10 +40,10 @@ Types-->
 							|'floraHydro_width : floraHydroColor scatterfloraHydro	// first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
-							| 'shoulder_width : shoulderColor	 	// first shoulder
+							| ~shoulder_width : shoulderColor	 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 	// second service road
-							| 'shoulder_width : shoulderColor 		 	// second shoulder
+							| ~shoulder_width : shoulderColor 		 	// second shoulder
 							| 'floraHydro_width  : floraHydroColor scatterfloraHydro // second greenway
 							| pedestrian_width : pedestrianColor}  	// second sidewalk
 							
@@ -90,15 +90,15 @@ shoulderColor-->
 	tileUV(0,0,0) color("#999999")
  
  pedestrianColor-->
- 	tileUV(0,14,14) texture(textureFolder + "path-wood-street-ground-texture-floor-image.jpg")
+ 	tileUV(0,14,14) texture("/UrbanLab/assets/Dirt_texture.jpg")
  	
  serviceColor-->
  tileUV(0,14,14) texture("/ESRI.lib/assets/Streets/Lanes/asphalt_14x14m.jpg")
  
  scatterfloraHydro-->
- 	scatter (surface, 50, uniform){treeObject}
+ 	scatter (surface, 10, uniform){treeObject}
  	
  treeObject-->
  s(5,5,5 )
- i("/UrbanLab/assets/Lowpoly_tree_sample.dae")
+ i(textureFolder + "Lowpoly_tree_sample.dae")
  
