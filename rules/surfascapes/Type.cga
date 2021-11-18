@@ -88,7 +88,7 @@ shoulderColor-->
 	tileUV(0,0,0) color("#999999")
  
  pedestrianColor-->
- 	tileUV(0,14,14) texture("/UrbanLab/data/assets/path-wood-street-ground-texture-floor-image.jpg")
+ 	tileUV(0,14,14) texture("/Urban Lab/data/assets/path-wood-street-ground-texture-floor-image.jpg")
  	
  serviceColor-->
  tileUV(0,14,14) texture("/ESRI.lib/assets/Streets/Lanes/asphalt_14x14m.jpg")
