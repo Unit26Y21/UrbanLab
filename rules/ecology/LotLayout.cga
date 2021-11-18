@@ -10,8 +10,7 @@ version "2021.0"
 @Range(min = 0, max = 100)
 attr blockRearYard = 10
 
-@Range(min = 3, max = 10)
-
+@Range(min = 0, max = 10)
 attr arcadeDepth = 3
 
 attr columnMatrix = [3,4]
@@ -65,19 +64,26 @@ DrawColumn -->
 	primitiveQuad(0.5,0.5)
 	extrude(6)
 				
-FirstFloor --> 	
-	extrude(arcadeDepth)
-	alignScopeToAxes(y)
-	comp(f){0: Columnade
-			| 1: Columnade
-			| 4: TopColumade}
+FirstFloor --> 
+	case arcadeDepth > 0:
+		extrude(arcadeDepth)
+		alignScopeToAxes(y)
+		comp(f){0: Columnade
+				| 1: Columnade
+				| 4: TopColumade}
+				
+	else:
+		NIL
 
 Columnade -->
-	split(x){ 0.5: keep.
+	split(x){ 0.5: ColumnadeColumn
 			| 3: NIL
-			| 0.5: keep.
+			| 0.5: ColumnadeColumn
 			| 4: NIL
 			}*
+
+ColumnadeColumn -->
+	extrude(-0.5)
 
 TopColumade -->
 	offset(-1, all)

@@ -17,6 +17,11 @@ HabitableTower -->
 	Floors 
 	#NIL
 	
+@StartRule
+SmallTower -->
+	i("assets/telecom/TelecomTowerShell.dae", yUp, alignSizeAndPosition)
+	
+	
 SolarPanels --> 
 	color(rand(1),rand(1), rand(1))
 
