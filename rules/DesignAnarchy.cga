@@ -7,8 +7,14 @@
 version "2021.0"
 
 import waste: "waste/Waste_DensitybyBldClass.cga"
+import events: "events/BalanceSpacesBldg.cga"
+
+@Enum("Waste", "BalanceSpace")
+attr selectSystemStart = "Waste"
 
 @StartRule
 Parcel -->
-	waste.WalkupParcel
-	
+	case selectSystemStart == "Waster":
+		waste.WalkupParcel
+	else:
+		events.BdlgExtrusion
