@@ -1,0 +1,57 @@
+/**
+ * File:    SalesPermittedRule.cga
+ * Created: 1 Nov 2021 13:45:27 GMT
+ * Author:  aaceved006
+ */
+
+version "2019.0"
+
+import EventClassRule: "EventClass.cga"
+
+#### Functions ####
+#Sales Permitted field
+SalesPermitted(eventName)=
+	case eventName == "PE/PPE": true
+	case eventName == "FM": true
+	case eventName == "SBF": true
+	case eventName == "SF": true
+	case eventName == "SS": true
+	else : false
+
+#### Rules ####
+@StartRule
+Vendors-->
+#If True happens, then do Kiosks. Else, NoVendors
+	case SalesPermitted(eventName)== true : Street
+	else : NIL
+ 
+Street -->
+	scatter(surface, 30, uniform) { VendorsSpace }
+	#How to do rand(angleRotation)?
+	#split(x) {{5: VendorsSpace | 1: NIL}* | 5: VendorsSpace}
+
+VendorsSpace-->
+#Setting the combination of the Kiosks and a MeetingSpace
+	rotate(abs, world, 0, rand(0,360), 0) #in order to randomly rotate you just need to pass the rand function to the degree and specify the range rand(0,360)
+	primitiveQuad(6,5)
+	split(x) {2: Kiosks | 4: MeetingSpace}
+	
+Kiosks -->
+	primitiveQuad(2,3)
+	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+	
+MeetingSpace-->
+	primitiveQuad (4,5)
+	rotate(abs, world, 0, 0, 0)
+	i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
+	#How to do scatter { OurdoorFurniture.dae } within the primitiveQuad?		
+
+#SetBarriers-->
+#i("Event barrier.dae")
+#How to locate it on connectionEnd and/or connectionStart?
+
+#setback(3){StreetFront:Kiosk}
+#split(x) {10:Kiosk}
+
+
+
