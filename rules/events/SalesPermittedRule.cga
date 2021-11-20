@@ -4,27 +4,27 @@
  * Author:  aaceved006
  */
 
-version "2021.0"
+version "2019.0"
 
 import EventClassRule: "EventClass.cga"
 
 #### Functions ####
 #Sales Permitted field
-SalesPermitted(input)=
-	case input == "PE/PPE": true
-	case input == "FM": true
-	case input == "SBF": true
-	case input == "SF": true
-	case input == "SS": true
+SalesPermitted(eventName)=
+	case eventName == "PE/PPE": true
+	case eventName == "FM": true
+	case eventName == "SBF": true
+	case eventName == "SF": true
+	case eventName == "SS": true
 	else : false
 
 #### Rules ####
 @StartRule
 Vendors-->
 #If True happens, then do Kiosks. Else, NoVendors
-	case SalesPermitted(input)== true : Street
+	case SalesPermitted(eventName)== true : Street
 	else : NIL
-
+ 
 Street -->
 	scatter(surface, 30, uniform) { VendorsSpace }
 	#How to do rand(angleRotation)?

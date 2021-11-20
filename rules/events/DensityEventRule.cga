@@ -6,7 +6,7 @@
 
 version "2019.0"
 
-import meterConverter: "meterToFeet.cga"
+import meterConverter: "meterToFeet2019.cga"
 
 #####Attributes#####
 attr ST_WIDTH = 0 #Remember this needs to be an integer or float
