@@ -8,6 +8,7 @@ version "2019.0"
 
 import EventClassRule: "EventClass.cga"
 
+
 #### Functions ####
 #Sales Permitted field
 SalesPermitted(eventName)=

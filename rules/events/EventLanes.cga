@@ -1,0 +1,28 @@
+/**
+ * File:    EventLanes.cga
+ * Created: 20 Nov 2021 21:04:44 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+BlockDivision-->
+	offset(-4)OffsetSelector
+//	split(x){ { 2 : A | 3 : B }* }
+ 	
+ OffsetSelector-->
+	comp(f){ inside: Second | border: First } 
+ 
+First-->
+	color ("#84c2db")
+ 
+Second-->
+	color ("#ffa3a3")
+	offset(-4)OffsetSelector2
+
+OffsetSelector2-->
+	comp(f) { inside: Third | border: Second } 
+	
+Third-->
+	color("#c8f5a2")
+
+
