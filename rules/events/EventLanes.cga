@@ -4,9 +4,10 @@
  * Author:  mozar
  */
 
-version "2019.0"
+version "2021.0"
+
 BlockDivision-->
-	offset(-4)OffsetSelector
+	offset(-2)OffsetSelector
 //	split(x){ { 2 : A | 3 : B }* }
  	
  OffsetSelector-->
@@ -17,7 +18,7 @@ First-->
  
 Second-->
 	color ("#ffa3a3")
-	offset(-4)OffsetSelector2
+	offset(-2)OffsetSelector2
 
 OffsetSelector2-->
 	comp(f) { inside: Third | border: Second } 
