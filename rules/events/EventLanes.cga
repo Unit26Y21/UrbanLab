@@ -4,7 +4,9 @@
  * Author:  mozar
  */
 
-version "2021.0"
+version "2019.0"
+
+@StartRule
 
 BlockDivision-->
 	offset(-2)OffsetSelector
@@ -14,16 +16,19 @@ BlockDivision-->
 	comp(f){ inside: Second | border: First } 
  
 First-->
-	color ("#84c2db")
+	color ("#ffcf54")
  
 Second-->
-	color ("#ffa3a3")
+	color ("#e88079")
 	offset(-2)OffsetSelector2
 
+     
 OffsetSelector2-->
 	comp(f) { inside: Third | border: Second } 
 	
 Third-->
 	color("#c8f5a2")
-
-
+	
+Lot-->
+	comp(f){ top : Third }
+	print(scope.sx)
