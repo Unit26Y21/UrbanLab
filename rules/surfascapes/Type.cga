@@ -13,7 +13,7 @@ import meterConverter: "meterToFeet.cga"
 # 	see the rule file for full functionality and documentation
 
 ### Constants ###
-const textureFolder =  "/Urbanlab/data/" 
+const textureFolder =  "/Urbanlab/assets/" 
 
 @Enum("A", "B", "C", "D", "E", "F")
 attr type = "A"
@@ -80,7 +80,7 @@ Types-->
 		NIL
 
 floraHydroColor-->
-	tileUV(0,~4,~4) texture("/UrbanLab/data/assets/tileable_classic_grass_and_dirt_texture_-_grass_texture.jpg")
+	tileUV(0,~4,~4) texture(textureFolder + "tileable_classic_grass_and_dirt_texture_-_grass_texture.jpg")
 bikeColor-->
 	tileUV(0,0,0) color("#FDC700")
 
@@ -88,7 +88,7 @@ shoulderColor-->
 	tileUV(0,0,0) color("#999999")
  
  pedestrianColor-->
- 	tileUV(0,14,14) texture("/UrbanLab/data/assets/path-wood-street-ground-texture-floor-image.jpg")
+ 	tileUV(0,14,14) texture(textureFolder + "path-wood-street-ground-texture-floor-image.jpg")
  	
  serviceColor-->
  tileUV(0,14,14) texture("/ESRI.lib/assets/Streets/Lanes/asphalt_14x14m.jpg")
@@ -98,5 +98,5 @@ shoulderColor-->
  	
  treeObject-->
  s(5,5,5 )
- i("/UrbanLab/data/assets/Lowpoly_tree_sample.dae")
+ i(textureFolder + "Lowpoly_tree_sample.dae")
  
