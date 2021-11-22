@@ -7,16 +7,14 @@
 version "2019.0"
 
 #### Constant ###
-#Events Column definition
-
+#this was a constant, it should be an attribute you can pick
+# constants cannot use ENUMs...
 @Enum ("HealthFair", "CleanUps", "BlockParty", "SchoolPlayStreet", "SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent", "FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay")
-const inputName = ""
-
-#### Atribute ####
-attr eventName = input(inputName)
+attr eventName = ""
 
 #### Function ####
-input(inputName) =
+#name you function something you can remember and recognize
+eventCode(inputName) =
 	case inputName == "HealthFair": "HF"
 	case inputName == "CleanUps": "CU"
     case inputName == "BlockParty": "BP" 
