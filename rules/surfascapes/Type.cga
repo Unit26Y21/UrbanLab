@@ -116,7 +116,7 @@ serviceColor-->
  	scatter (surface, 5, uniform){grassObject}
  	
  grassObject-->
- s(1,1,3)
+ s(1,1,1)
  i(textureFolder + "WildGrass.dae")
 
 ###### Roundabout function isn't working########
