@@ -9,7 +9,7 @@ version "2019.0"
 @StartRule
 
 BlockDivision-->
-	offset(-2)OffsetSelector
+	offset(-3)OffsetSelector
 //	split(x){ { 2 : A | 3 : B }* }
  	
  OffsetSelector-->
@@ -20,8 +20,12 @@ First-->
  
 Second-->
 	color ("#e88079")
-	offset(-2)OffsetSelector2
-
+	offset(-3)OffsetSelector2
+	split(x){ { 2 : Kiosks | 3 : NIL }* }
+	
+Kiosks -->
+	primitiveQuad(2,3)
+	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
      
 OffsetSelector2-->
 	comp(f) { inside: Third | border: Second } 
@@ -29,6 +33,9 @@ OffsetSelector2-->
 Third-->
 	color("#c8f5a2")
 	
-Lot-->
-	comp(f){ top : Third }
-	print(scope.sx)
+	
+
+	
+
+	
+	
