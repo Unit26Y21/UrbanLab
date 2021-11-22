@@ -7,8 +7,9 @@
 version "2019.0"
 
 import EventClassRule: "EventClass.cga"
+#Problems applying eventName to the function below
 
-
+/* 
 #### Functions ####
 #Sales Permitted field
 SalesPermitted(eventName)=
@@ -25,10 +26,10 @@ Vendors-->
 #If True happens, then do Kiosks. Else, NoVendors
 	case SalesPermitted(eventName)== true : Street
 	else : NIL
+ */
  
 Street -->
 	scatter(surface, 30, uniform) { VendorsSpace }
-	#How to do rand(angleRotation)?
 	#split(x) {{5: VendorsSpace | 1: NIL}* | 5: VendorsSpace}
 
 VendorsSpace-->
@@ -47,12 +48,8 @@ MeetingSpace-->
 	i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
 	#How to do scatter { OurdoorFurniture.dae } within the primitiveQuad?		
 
-#SetBarriers-->
-#i("Event barrier.dae")
-#How to locate it on connectionEnd and/or connectionStart?
 
-#setback(3){StreetFront:Kiosk}
-#split(x) {10:Kiosk}
+
 
 
 
