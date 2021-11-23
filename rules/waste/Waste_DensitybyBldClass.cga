@@ -93,7 +93,7 @@ averageBuildingWaste(WasteTypeInput, NumberofHouseholds) = wastePerHH(WasteTypeI
 WalkupParcel -->
 	#we do not need to set Bldg Class because it already comes from the attributes
 	# samething with BldgColor
-	extrude(Height)
+	extrude(world.up.flatTop, Height)
 	color(BldgColor)
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
