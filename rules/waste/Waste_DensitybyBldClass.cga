@@ -9,6 +9,7 @@ version "2021.0"
 
 import ecologyLotLayout: "ecology/LotLayout.cga"
 import telecom: "telecom/telecomTower.cga"
+import events: "events/BalanceSpacesBldg.cga"
 
 ##### CONSTANTS ########
 
@@ -34,6 +35,9 @@ wastePerHH(WasteType) =
 const BldgClassType = ["Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise"]
 
 ##### ATTRIBUTES ######
+
+@Enum("Ecology", "BalanceSpace")
+attr selectNextSystem = ""
 
 @Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
 attr BldgClass = 
@@ -106,16 +110,26 @@ WalkupParcel -->
 	# samething with BldgColor
 	alignScopeToAxes(world.z)
 	extrude(world.up.flatTop,Height)
-	ecologyLotLayout.SplitBuilding
-	comp(f){object.top: Roof}
-	
+	ruleGate1
 	
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
 	report("Households per Bld", NumberofHouseholds)
 	report("Building Height", Height) #maybe include height???
 	reportWaste(0, WasteType)
-	#color(BldgColor)
+	
+
+ruleGate1 -->
+	case selectNextSystem == "Ecology":
+		ecologyLotLayout.SplitBuilding
+		comp(f){object.top: Roof}
+		
+	case selectNextSystem == "BalanceSpaces":
+		events.BdlgExtrusion
+		comp(f){object.top: Roof}
+	
+	else:
+		color(BldgColor)
 
 reportWaste(i, list) -->
 	case i < size(list):
