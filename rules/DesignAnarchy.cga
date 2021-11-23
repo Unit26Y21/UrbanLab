@@ -12,9 +12,12 @@ import events: "events/BalanceSpacesBldg.cga"
 @Enum("Waste", "BalanceSpace")
 attr selectSystemStart = "Waste"
 
+#example of how to import two rules
+# using the selectSystemStart we can direct the flow of what the next step is.
+
 @StartRule
 Parcel -->
-	case selectSystemStart == "Waster":
+	case selectSystemStart == "Waste":
 		waste.WalkupParcel
 	else:
 		events.BdlgExtrusion
