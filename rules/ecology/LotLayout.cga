@@ -34,7 +34,7 @@ Garden -->
 	color("#567d46")
 
 LowDensityBuilding --> 
-	extrude(world.up, rand(5, 15)) keep.
+	extrude(world.up, meterConverter.meterTofeet(rand(5, 15)) keep.
 
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
