@@ -9,12 +9,13 @@ version "2019.0"
 @StartRule
 BlockDivision-->
 	# you can use offset 
-	offset(-3)
-	OffsetSelector
+	#offset(-3)
+	#OffsetSelector
 //	split(x){ { 2 : A | 3 : B }* }
 
-	#OR you can use the setback funcion: 
-	setback(3){all: dividerExample1}
+	#OR you can use the setback funcion:
+	
+	setback(3){all: First | remainder: dividerExample}
 	
 	
  	
@@ -26,13 +27,14 @@ First-->
  
 Second-->
 	color ("#e88079")
-	offset(-3)
-	OffsetSelector2
-	split(x){2 : Kiosks | 3 : NIL }*
+	#offset(-3)
+	#OffsetSelector2
+	#split(x){2 : Kiosks | 3 : NIL }*
 	
 Kiosks -->
 	primitiveQuad(2,3)
-	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+	rotate(rel, object, 0, rand(360),0)
+	i("events/Street Vendor.dae", yUp, keepSizeAlignPosition)
      
 OffsetSelector2-->
 	comp(f) { inside: Third | border: Second } 
@@ -44,11 +46,37 @@ Third-->
 
 # you can use stochastic percentage assignment, similar to how you would do it in an attribute
 # to determine outcomes INSIDE the rule
+dividerExample -->
+	split(z){rand(5,10): divideEachLane}*
+	
+divideEachLane -->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		split(x){rand(5,20): selectOddLanes }*
+	else: 
+		Second
+		
+selectOddLanes -->
+	case float(listLast(getTreeKey())) % 5 == 0:
+		roofShed(byHeight, rand(2), rand(4))
+		
+		# if you want more variation
+		rotate(rel, object, 0, rand(360), 0)
+	case float(listLast(getTreeKey())) % 3 == 0:
+		label("bycicleRack")
+		extrude(1)
+		#inser bycle rack here for example
+		
+	case float(listLast(getTreeKey())) % 2 == 0:
+		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
+		scatter(surface,4, uniform){Kiosks}
+	else:
+		Third
+
 dividerExample1 -->
-	20%: split(x){rand(10,20): PotentialLocation}*
-	15%: split(x){rand(5,10): PotentialLocation}*
-	5%: split(x){rand(1,5): PotentialLocation}*
-	else: split(x){3: PotentialLocation}*
+	20%: split(y){rand(5,10): PotentialLocation}*
+	15%: split(y){rand(5,10): PotentialLocation}*
+	5%: split(y){rand(1,5): PotentialLocation}*
+	else: split(y){3: PotentialLocation}*
 	
 #or you can create a function that evaluates the area of the block and assigns a split area depending on the size of the blocl...
 subdivideBlock(input) = 
