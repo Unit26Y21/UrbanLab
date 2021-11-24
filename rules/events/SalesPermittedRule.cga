@@ -7,27 +7,33 @@
 version "2019.0"
 
 import EventClassRule: "EventClass.cga"
+#Problems applying eventName to the function below
+#This needs to be at a general level and not on each rule...
+@Enum ("HealthFair", "CleanUps", "BlockParty", "SchoolPlayStreet", "SummerPlayStreet", "PlazaEvent/PlazaPartnetEvent", "FarmersMarket", "SingleBlockFestival", "StreetFestival", "Rally", "SeasonalStreets", "OneDayPlaza", "WeekendWalks", "CommunityArt", "SummerStreets", "CarFreeDay")
+attr eventName = ""
+
+
 
 #### Functions ####
 #Sales Permitted field
-SalesPermitted(eventName)=
-	case eventName == "PE/PPE": true
-	case eventName == "FM": true
-	case eventName == "SBF": true
-	case eventName == "SF": true
-	case eventName == "SS": true
+SalesPermitted(input)=
+	case input == "PE/PPE": true
+	case input == "FM": true
+	case input == "SBF": true
+	case input == "SF": true
+	case input == "SS": true
 	else : false
 
 #### Rules ####
 @StartRule
 Vendors-->
 #If True happens, then do Kiosks. Else, NoVendors
-	case SalesPermitted(eventName)== true : Street
+	case SalesPermitted(EventClassRule.eventCode(eventName))== true : Street
 	else : NIL
+
  
 Street -->
 	scatter(surface, 30, uniform) { VendorsSpace }
-	#How to do rand(angleRotation)?
 	#split(x) {{5: VendorsSpace | 1: NIL}* | 5: VendorsSpace}
 
 VendorsSpace-->
@@ -46,12 +52,8 @@ MeetingSpace-->
 	i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
 	#How to do scatter { OurdoorFurniture.dae } within the primitiveQuad?		
 
-#SetBarriers-->
-#i("Event barrier.dae")
-#How to locate it on connectionEnd and/or connectionStart?
 
-#setback(3){StreetFront:Kiosk}
-#split(x) {10:Kiosk}
+
 
 
 
