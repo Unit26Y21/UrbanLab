@@ -7,15 +7,15 @@
 version "2021.0"
 
 import ecology: "ecology.cga"
-import meterConverter: "MeterToFeet.cga"
+import meterConverter: "meterToFeet.cga" #this needs to match exactly the name of the file
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 100)
-	attr blockRearYard = meterConverter.meterTofeet(5)
+	attr blockRearYard = meterConverter.feet(5) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 @Range(min = 3, max = 10)
-	attr arcadeDepth = meterConverter.meterTofeet(3)
+	attr arcadeDepth = meterConverter.feet(3)
 
 	attr columnMatrix = [3,4]
 
@@ -34,7 +34,8 @@ Garden -->
 	color("#567d46")
 
 LowDensityBuilding --> 
-	extrude(world.up, meterConverter.meterTofeet(rand(5, 15)) keep.
+	extrude(world.up, meterConverter.feet(rand(5, 15)))
+	keep.
 
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
