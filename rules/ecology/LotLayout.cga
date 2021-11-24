@@ -6,7 +6,7 @@
 
 version "2021.0"
 
-#import ecology: "ecology.cga"
+import ecology: "ecology.cga"
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
@@ -51,12 +51,12 @@ HighDensityBuilding -->
 # the problem here is that you need to deploy split() inside a RULE
 
 SplitBuilding -->
-	split(y){6: comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
+	split(y){4: comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
 						|object.bottom: FirstFloorColumns}  
 			| ~1: OtherFloors
 			}
 ####COLUMS###
-FirstFloorColumns -->
+/*FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
 			split(y){columnMatrix[1]:
 				PlaceColumn}}
@@ -85,19 +85,21 @@ Columnade -->
 
 TopColumade -->
 	offset(-1, all)
-	extrude(1)
+	extrude(1)*/
 ###
 
-OtherFloors --> split(y){5:SlideFloors |5:Floors keep.}*
-###Balcony Tiles
-Floors -->
+OtherFloors --> 
+	split(y){3:SlideFloors |3:Floors keep.}*
 
-		comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
+###Balcony Tiles
+
+Floors -->
+	comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
 
 	
 Tile --> 
-		split(x){ 3: Balcony | 3: Balcony | 3: Balcony }*
-		split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+	split(x){ 3: Balcony | 3: Balcony | 3: Balcony }*
+	split (y){3:Balcony | 3: Balcony | 3:Balcony}*
 		
 Balcony --> 
 	extrude(rand(1,3 ))		
@@ -108,32 +110,6 @@ BalconyTop -->
 	
 	splitBalcony
 	
-
-
-/*
-	
-Floors -->
-	#select the Tiles of the floor
-	comp(f){object.side: balconies | all: otherColor}
- 	
- 	
- balconies --> 
- 	print(getTreeKey())
- 	extrude(float(listItem(getTreeKey(),1)))
- 	topBalconies 
- 	
- topBalconies --> comp(f){top: ReportBalconieArea |	
- 						 all: NIL}
- 
-ReportBalconieArea -->
-	report("balconie area", geometry.area())					
- 	color(0,1,0)
- 
- 
- floorColor --> color(rand(1),rand(1), rand(1))  
- 
- otherColor --> color(1,0,0)	*/
-
 
 splitBalcony -->
 	split(y){1: removeCoveredBalcony}*
@@ -150,14 +126,14 @@ color -->
 	###
 
 SlideFloors -->
-case split.index < 1:
+	case split.index < 1:
 		DoNothing. #at first floor
 	else:
 		translate(rel, object, rand(8),0,rand(8) )
 		#split (y){1:Balcony | 1: Balcony | 1:Balcony}*
 		Floors
 		keep.
-		#Lot
+		Lot
 	
 #Reports 	
 Lot -->

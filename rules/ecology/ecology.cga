@@ -4,7 +4,7 @@
  * Author:  Nathan Laveu
  */
 
-version "2021.1"
+version "2021.0"
 
 import plants: "plants.cga"
 
@@ -74,15 +74,15 @@ CourtyardBuilding -->
 
 @StartRule
 Lot -->
-	extrude(rand(10, 80))
+	#extrude(rand(10, 80))
 	report("height", geometry.height())
 	report("volume", geometry.volume)
-	SelectVerticalSurfaces
+	#SelectVerticalSurfaces
 	SelectTopSurfaces
 	PlantOnFacades
 	
-SelectVerticalSurfaces-->
-comp(f){side: ReportVericalSurfaces}
+#SelectVerticalSurfaces-->
+	#comp(f){side: ReportVericalSurfaces}
 
 PlantOnFacades -->
 	plants.scatterSeeds(50,"#116530")

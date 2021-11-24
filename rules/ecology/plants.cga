@@ -4,7 +4,7 @@
  * Author:  User
  */
 
-version "2021.1"
+version "2021.0"
 
 scatterSeeds(amount, seedColor) -->
 	scatter(surface,amount, uniform){plant2D(seedColor)}
