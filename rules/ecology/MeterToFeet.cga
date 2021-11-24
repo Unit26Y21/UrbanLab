@@ -1,11 +1,10 @@
 /**
- * File:    meterToFeet.cga
- * Created: 5 Jun 2017 15:40:16 GMT
- * Author:  htarrido
+ * File:    MeterToFeet.cga
+ * Created: 24 Nov 2021 16:19:15 GMT
+ * Author:  nlaveau000
  */
 
 version "2021.0"
-
 ###################################################
 ## Attributes
 ###################################################
