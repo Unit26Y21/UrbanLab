@@ -1,0 +1,60 @@
+/**
+ * File:    rule.cg
+ * Created: 31 Oct 2021 19:11:12 GMT
+ * Author:  Sidnie Ancion
+ */
+ 
+version "2021.0"
+
+#attr Name - "String", Int, Float, Boolean
+attr maxHeight = 100
+
+@Range(min= 0,max= 10)
+attr Front_Depth = 1
+
+@Range(min= 0,max= 10)
+attr Rear_Depth = 1
+
+@Range(min= 0,max= 10)
+attr Side_Depth = 1
+
+@Range(min=300, max=1000)
+attr idealLotSize = 700
+
+@StartRule
+Lot -->
+	case (geometry.area()>20000):
+		# if the lot is too big, make more lots.
+		splitArea(x){idealLotSize: DoSetbacks}*
+		
+	case (geometry.area()<500):
+		# if lot is too small, reduce setbacks.
+		DoSetbacks
+		
+	else:
+		# make a building using usual setbacks.
+		DoSetbacks
+		#Trying to understand split tool
+		#split(z){ ~Lot_Width : DoSetbacks(1) | ~Distance_Seperation : NIL }*
+
+
+
+
+
+DoSetbacks -->
+	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace} #NIL means delete
+	  
+RearSpace -->
+	setback(Rear_Depth){ street.back:  RandomColor | remainder: SideSpace}
+	    
+
+SideSpace -->
+	setback(Side_Depth){ street.side:  RandomColor | remainder: Normal}
+
+Normal -->
+	extrude (10)
+
+RandomColor -->
+	color(rand(1), rand(1), rand(1)) #typo missing parenthesis
+	
+	
