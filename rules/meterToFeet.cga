@@ -9,7 +9,7 @@ version "2020.1"
 ###################################################
 ## Attributes
 ###################################################
-@Range("feet", "meter")
+@Enum("feet", "meter")
 @Order(0)
 attr MeasureSystem = "feet"
 
