@@ -6,15 +6,19 @@
 
 version "2021.0"
 
+#import ecology: "ecology.cga"
+
+#### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 100)
-attr blockRearYard = 10
+attr blockRearYard = 5
 
 @Range(min = 3, max = 10)
-
 attr arcadeDepth = 3
 
 attr columnMatrix = [3,4]
+
+#### RULES ####
 
 /*#Scenario 1: Setbacks on all Sides*/
 # use StartRule to manage your different scenarios. You can use the same rule but different starting points
@@ -29,11 +33,11 @@ Garden -->
 	color("#567d46")
 
 LowDensityBuilding --> 
-	extrude(world.up, rand(5, 15))
+	extrude(world.up, rand(5, 15))keep.
 
 
 #Scenario 2: Setbacks behind for internal couryard
-HighDensityLot --> setback(rand(10, blockRearYard)) { street.back = Garden
+HighDensityLot --> setback(rand(5, blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
         					   | remainder: HighDensityBuilding }
 
 HighDensityBuilding --> 
@@ -41,21 +45,21 @@ HighDensityBuilding -->
 	report("height", geometry.height())
 	SplitBuilding
 
+
 #Going up from ground floor
 #Split building sides into floors
 # the problem here is that you need to deploy split() inside a RULE
 
-
 SplitBuilding -->
-	split(y){6: comp(f){street.front: FirstFloor
+	split(y){6: comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
 						|object.bottom: FirstFloorColumns}  
 			| ~1: OtherFloors
 			}
-
+####COLUMS###
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
 			split(y){columnMatrix[1]:
-				PlaceColumn}*}*
+				PlaceColumn}}
 				
 PlaceColumn -->
 	comp(v){all: DrawColumn}
@@ -82,22 +86,86 @@ Columnade -->
 TopColumade -->
 	offset(-1, all)
 	extrude(1)
+###
 
-OtherFloors --> split(y){3: Floors}*
-	
+OtherFloors --> split(y){5:SlideFloors |5:Floors keep.}*
+###Balcony Tiles
 Floors -->
-	case split.index < 1:
-		NoBalcony. #at first floor
-	else:
-		comp(f){street.front: Tile
-				| all: DrawFloors}
+
+		comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
+
 	
 Tile --> 
-	#Balcony 
-	split(x){ 5: Balcony | 5: Balcony | 5: Balcony}*
-	
-	
-Balcony --> extrude(rand(1,3))
+		split(x){ 3: Balcony | 3: Balcony | 3: Balcony }*
+		split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+		
+Balcony --> 
+	extrude(rand(1,3 ))		
+	comp(f){object.top: BalconyTop | all: keep.}
+	#color 
 
-DrawFloors -->
-	color(1,1,1,0.3)
+BalconyTop -->
+	
+	splitBalcony
+	
+
+
+/*
+	
+Floors -->
+	#select the Tiles of the floor
+	comp(f){object.side: balconies | all: otherColor}
+ 	
+ 	
+ balconies --> 
+ 	print(getTreeKey())
+ 	extrude(float(listItem(getTreeKey(),1)))
+ 	topBalconies 
+ 	
+ topBalconies --> comp(f){top: ReportBalconieArea |	
+ 						 all: NIL}
+ 
+ReportBalconieArea -->
+	report("balconie area", geometry.area())					
+ 	color(0,1,0)
+ 
+ 
+ floorColor --> color(rand(1),rand(1), rand(1))  
+ 
+ otherColor --> color(1,0,0)	*/
+
+
+splitBalcony -->
+	split(y){1: removeCoveredBalcony}*
+		
+removeCoveredBalcony -->
+	case overlaps: NIL
+	else: 
+		color
+		report("Balcony Area", geometry.area())
+		
+
+color -->
+	color("#90EE90")
+	###
+
+SlideFloors -->
+case split.index < 1:
+		DoNothing. #at first floor
+	else:
+		translate(rel, object, rand(8),0,rand(8) )
+		#split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+		Floors
+		keep.
+		#Lot
+	
+#Reports 	
+Lot -->
+	ecology.Lot
+
+SelectTopSurfaces -->
+	ecology.SelectTopSurfaces
+
+ReportTopSurfaces -->
+	ecology.ReportTopSurfaces
+

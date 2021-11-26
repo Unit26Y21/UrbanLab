@@ -6,6 +6,8 @@
 
 version "2021.0"
 
+import ecology: "ecology/LotLayout.cga"
+import meterConverter: "meterToFeet.cga"
 
 ################################## CONSTANTS #########################################
 
@@ -72,15 +74,15 @@ attr BldgClass =
 # in this case the enum is a string and the output is an integer.
 @Enum("Walkup", "High Rise")
 attr BldgSize =
-	50%: "Walkup"
+	65%: "Walkup"
 	else: "High Rise" 
 	
 @Color
 BldgColor = assignBldgColor(BldgClass, BldgSize)
 	
 Height = 
-	case BldgSize == "Walkup": rand(30,50)
-	else: rand(60,150)
+	case BldgSize == "Walkup": rand (9.1,15.24)
+	else: rand (18.3,45.7)
 	
 	# The second error is that you are perfoming a logic operaton on the result of extracting a value from an array.
 	# You also use this attribute above to compare strings not numbers
@@ -90,15 +92,6 @@ Height =
 
 ######################################### FUNCTIONS #########################################
 
-/*
-#how to write?? 
-assignBldgDistribution(BldgClass, BldgSize) =
-	case BldgClassType[0]: BldgSizeType[0] == 20%, BldgSizeType[1] == 80%   
-	case BldgClassType[1]: (80% BldgSizeType[0], 20% BldgSizeType[1])
-	case BldgClassType[2]: 40% BldgSizeType[0], 60% BldgSizeType[1]
-	 
-	 */
-
 # you were missing using th einputs to make a logic comparison
 assignBldgColor(BldgClass, BldgSize) = 
 	case BldgClass == BldgClassType[0] && BldgSize == BldgSizeType[0]: "#FF0000"
@@ -106,9 +99,8 @@ assignBldgColor(BldgClass, BldgSize) =
 	case BldgClass == BldgClassType[2] && BldgSize ==  BldgSizeType[0]: "#0000FF"
 	case BldgClass == BldgClassType[0] && BldgSize ==  BldgSizeType[1]: "#00FF00"
 	case BldgClass == BldgClassType[1] && BldgSize ==  BldgSizeType[1]: "#FFA500"
-	case BldgClass ==BldgClassType[2] && BldgSize ==  BldgSizeType[1]: "#90EE90"
+	case BldgClass == BldgClassType[2] && BldgSize ==  BldgSizeType[1]: "#90EE90"
 	else: "000000"	
-
 
 #function that gives you total waste per houseHold lbs
 averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * NumberofHouseholds
@@ -117,14 +109,23 @@ averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * Nu
 ######################################### RULES #########################################
 
 @StartRule
-WalkupParcel -->
+
+BldgClassParcel -->
 	extrude(Height)
 	color(BldgColor)
+	assignFacade(BldgClass) 
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
 	report("Households per Bld", NumberofHouseholds)
 	report("Building Height", BldgSize)
 	reportWaste(0, WasteType)
+
+
+assignFacade(BldgClass) --> 
+	case BldgClass == BldgClassType[0]: ecology.LowDensityLot
+	case BldgClass == BldgClassType[1]: ecology.HighDensityLot
+	else: NIL
+
 
 reportWaste(i, list) -->
 	case i < size(list):

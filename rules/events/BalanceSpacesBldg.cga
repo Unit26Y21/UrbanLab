@@ -1,0 +1,183 @@
+/**
+ * File:    TheEquation.cga
+ * Created: 11 Nov 2021 21:33:26 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+import meterConverter: "meterToFeet.cga"
+#import Waste_DensitybyBldClass:"rules/waste/Waste_DensitybyBldClass.cga"
+
+########################################################################################
+###################################### CONSTANTS #######################################
+
+#Is better to calculate BalanceSpaces by floorArea percentages
+#const BalanceSpaceBuilding = 0.35
+
+#Building Contants
+const groundfloor_height = meterConverter.feet(15)
+const secondfloor_height = meterConverter.feet(12)
+const floor_height = meterConverter.feet(12)
+
+# How Call attr Height of Waste_DensitybyBldClass???
+#If not, below I am trying to define
+
+
+########################################################################################
+###################################### ATTRIBUTES ######################################
+
+@Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
+attr BldgClass = 
+	40%: "Low Walkup"
+	30%: "High Walkup"
+	20%: "Low High Rise"
+	9%: "Medium High Rise"
+	else: "Dense High Rise" 
+
+########################################################################################
+###################################### FUNCTION ########################################
+
+BdlgHeight(BldgClass)= 
+#defining BldgHeight according to BldgClass
+	case BldgClass == "Low Walkup" : rand(meterConverter.feet(12),meterConverter.feet(39))
+	case BldgClass == "High Walkup" : rand(meterConverter.feet(39),meterConverter.feet(63))
+	case BldgClass == "Low High Rise" : rand(meterConverter.feet(63), meterConverter.feet(111))
+	case BldgClass == "Medium High Rise" : rand(meterConverter.feet(111),meterConverter.feet(243))
+	case BldgClass == "Dense High Rise" : rand(meterConverter.feet(243),meterConverter.feet(363))
+	else : 0
+
+########################################################################################
+###################################### RULES ###########################################
+
+@StartRule
+BdlgExtrusion-->
+#Extruding the BldgFootprint depending on BldgClass
+	extrude(BdlgHeight(BldgClass))
+#	split(y){ groundfloor_height : GroundFloorSelector | { ~floor_height : RestFloorSelector }* }
+#	comp(f){ street.left : FacadeSplit }
+	split(y){ groundfloor_height : GroundFloorSelector | secondfloor_height : SecondFloorSelector |
+				{ floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				groundfloor_height : GroundFloorSelector}* }
+	  		
+Floors-->
+#Defining Floors according to the split index. 
+	case (split.index == 0) : GroundFloorSelector
+	else : RestFloorSelector
+
+BalanceSpaceColor-->
+	color("#dbf5a6")
+
+#############################
+######GroundFloorRules####### 
+
+GroundFloorSelector-->
+#Coloring the GroundFloor and selecting its bottom face
+	color("#FAD97D")
+	comp(f){ bottom : GFFloorArea }
+		
+GFFloorArea -->
+#Applying SplittingGroundFloorRule to the GroundFloor bottom face 
+   #print("total area = " + meterConverter.sqmeterTosqft(geometry.area))
+   SplitAreaGroundFloorBldg
+   
+GroundFloor-->
+	extrude (-(groundfloor_height))
+	
+SplitAreaGroundFloorBldg-->
+#Splitting GroundFloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.3 : GroundFloor | '0.7 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.3 : GroundFloor | '0.7 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.4 : GroundFloor | '0.6 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.5 : GroundFloor | '0.5 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.5 : GroundFloor | '0.5 : BalanceSpaceColor }
+	else: NIL
+
+  
+###########################	
+######RestFloorRules#######
+
+RestFloorSelector-->
+	color("#A3CCD1")
+	comp(f){ bottom : RFFloorArea }
+	
+RFFloorArea -->
+      SplitAreaRestFloorBldg
+	
+RestFloor-->
+	extrude (-(floor_height))	
+	
+SplitAreaRestFloorBldg-->
+#Splitting RestFloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.9 : RestFloor | '0.1 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.9 : RestFloor | '0.1 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.8 : RestFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.75 : RestFloor | '0.25 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.75 : RestFloor | '0.25 : BalanceSpaceColor }
+	else: NIL
+		
+#############################	
+######SecondFloorRules####### 
+
+SecondFloorSelector-->
+	color("#ff9c6b")
+	comp(f){ bottom : SecondFloorArea }
+	
+SecondFloorArea -->
+      SplitArea2FloorBldg
+	
+SecondFloor-->
+	extrude (-(secondfloor_height))
+
+SplitArea2FloorBldg-->
+#Splitting 2FloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.75 : SecondFloor | '0.25 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.75 : SecondFloor | '0.25 : BalanceSpaceColor }
+	else: NIL
+
+
+
+
+#############################	
+######Archive####### 
+
+/* 	
+BuildingFootprint-->
+	extrude (Height)	
+
+
+const BlockArea= 120000 #you dont need parenthesis
+const DensityPerBlock= 6.5 #you dont need parenthesis
+const EventDensity= 6 #you dont need parenthesis
+
+#####Functions#####
+BlockPopulationCalculator(BlockArea, DensityPerBlock)=
+	BlockArea/DensityPerBlock
+	
+# first, separate the function into an attribute that can be recalculated on the fly.
+attr blockPopulation = BlockPopulationCalculator(BlockArea, DensityPerBlock)
+
+RequiredArea(blockPopulation, EventDensity) = # then pass the attribute to the new function. this gives you more flexibility
+	blockPopulation*EventDensity
+	
+StreetArea(ST_WIDTH, SHAPE_Leng)=
+	ST_WIDTH*SHAPE_Leng
+	
+BalanceSpaceArea(RequiredArea, StreetArea)=
+	RequiredArea - StreetArea #added space for reading clarity
+
+
+#####Rules#####
+@StartRule
+BalanceSpace-->
+	#splitArea()
+	color ("#edffc2")  
+	*/	
+ 

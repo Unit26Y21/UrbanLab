@@ -7,7 +7,10 @@
 version "2021.0"
 
 
-import ecology: "ecology/LotLayout.cga"
+import ecologyLotLayout: "ecology/LotLayout.cga"
+import telecom: "telecom/telecomTower.cga"
+import events: "events/BalanceSpacesBldg.cga"
+
 ##### CONSTANTS ########
 
 const AvgHouseholdSize = 3
@@ -32,6 +35,9 @@ wastePerHH(WasteType) =
 const BldgClassType = ["Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise"]
 
 ##### ATTRIBUTES ######
+
+@Enum("Ecology", "BalanceSpace")
+attr selectNextSystem = ""
 
 @Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
 attr BldgClass = 
@@ -102,15 +108,28 @@ averageBuildingWaste(WasteTypeInput, NumberofHouseholds) = wastePerHH(WasteTypeI
 WalkupParcel -->
 	#we do not need to set Bldg Class because it already comes from the attributes
 	# samething with BldgColor
-	extrude(Height)
-	ecology.SplitBuilding
+	alignScopeToAxes(world.z)
+	extrude(world.up.flatTop,Height)
+	ruleGate1
 	
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
 	report("Households per Bld", NumberofHouseholds)
 	report("Building Height", Height) #maybe include height???
 	reportWaste(0, WasteType)
-	color(BldgColor)
+	
+
+ruleGate1 -->
+	case selectNextSystem == "Ecology":
+		ecologyLotLayout.SplitBuilding
+		comp(f){object.top: Roof}
+		
+	case selectNextSystem == "BalanceSpaces":
+		events.BdlgExtrusion
+		comp(f){object.top: Roof}
+	
+	else:
+		color(BldgColor)
 
 reportWaste(i, list) -->
 	case i < size(list):
@@ -120,4 +139,12 @@ reportWaste(i, list) -->
 	else:
 		NIL
 	
-	
+Roof --> 
+	20%:
+		center(xyz)
+		primitiveQuad(2, 2)
+		extrude(10)
+		telecom.SmallTower
+		
+	else:
+		NIL

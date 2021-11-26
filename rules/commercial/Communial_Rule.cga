@@ -1,0 +1,104 @@
+/**
+ * File:    Communial_Rule.cga
+ * Created: 10 Nov 2021 16:01:59 GMT
+ * Author:  sancion000
+ */
+
+version "2021.0"
+
+#attr Name - "String", Int, Float, Boolean
+attr maxHeight = 100
+
+@Range(min= 0,max= 10)
+attr Front_Depth = 1
+
+@Range(min= 0, max= 10)
+attr Rear_Depth = 1
+
+@Range(min= 0, max= 10)
+attr Side_Depth = 1
+
+@Range(min= 300, max= 1000)
+attr idealLotSize = 700
+
+
+@StartRule
+Lot -->
+	case (geometry.area()>1000):
+		#if the lot is too big, make more lots.
+		splitArea(x){idealLotSize: DoSetbacks}*
+		
+	case (geometry.area()<300):
+		#if the lot is to small, reduce setbacks.
+		DoSetbacks
+		
+	else:
+	
+		#make a building using usual setbacks.
+		DoSetbacks
+		#split(z){~Lot_Width : DoSetbacks(1)| ~Distance_Seperation: NIL}*
+		
+
+
+DoSetbacks -->
+ 	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace}
+ 	
+RearSpace -->
+ 	setback(Rear_Depth){ street.back: RandomColor | remainder : SideSpace}
+ 	
+ 
+SideSpace -->
+ 	setback(Side_Depth){ street.side: RandomColor | remainder: Normal}
+ 	
+Normal -->
+	extrude (10)
+	
+RandomColor -->
+	color(rand(1), rand(1), rand(1))
+	
+	
+	
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar"]
+	
+@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
+attr Commercial = 
+	20%: CommercialTypes[0]
+	20%:CommercialTypes[1]
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
+	else: CommercialTypes[6]
+	
+@Color
+attr BldgColor = assignBldgColor(Commercial)
+	
+#changing colors to not have the same as the waste team
+assignBldgColor(input) = 
+	case input == "Supermarket": "#A447FE"
+	case input == "Clothing Outlet": "#C140E6"
+	case input == "Restaurant": "#FE8C47"
+	case input == "School": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
+	else: "000000"	
+	
+reportSQFT(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportSQFT(i + 1, list)
+	else:
+		stop.
+		NIL
+
+@StartRule
+Parcel -->
+	extrude(maxHeight)
+	color(BldgColor)
+	report("Area"+"."+Commercial, geometry.area(bottom))
+	
+
+
+
+	
