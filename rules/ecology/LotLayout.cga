@@ -7,15 +7,15 @@
 version "2021.0"
 
 import ecology: "ecology.cga"
-import meterConverter: "meterToFeet.cga" #this needs to match exactly the name of the file
+import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 100)
-	attr blockRearYard = meterConverter.feet(5) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+	attr blockRearYard = meterConverter.feet(16) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 @Range(min = 3, max = 10)
-	attr arcadeDepth = meterConverter.feet(3)
+	attr arcadeDepth = meterConverter.feet(9)
 
 	attr columnMatrix = [3,4]
 
@@ -24,7 +24,7 @@ import meterConverter: "meterToFeet.cga" #this needs to match exactly the name o
 /*#Scenario 1: Setbacks on all Sides*/
 # use StartRule to manage your different scenarios. You can use the same rule but different starting points
 @StartRule
-LowDensityLot -->	setback(meterConverter.meterTofeet(5)){	  street.front = Garden
+LowDensityLot -->	setback(meterConverter.meterTofeet(16)){	  street.front = Garden
 					| street.back = Garden 
 					| street.left = Garden 
 					| street.right = Garden 
@@ -34,17 +34,17 @@ Garden -->
 	color("#567d46")
 
 LowDensityBuilding --> 
-	extrude(world.up, meterConverter.feet(rand(5, 15)))
+	extrude(world.up, meterConverter.feet(rand(16, 50)))
 	keep.
 
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
 HighDensityLot --> 
-	setback(rand(5, blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
+	setback(rand(meterConverter.feet(16), blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
         					   | remainder: HighDensityBuilding }
 
 HighDensityBuilding --> 
-	extrude(world.up, rand(50))
+	extrude(world.up, meterConverter.feet(rand(200)))
 	SplitBuilding
 
 
@@ -53,7 +53,7 @@ HighDensityBuilding -->
 # the problem here is that you need to deploy split() inside a RULE
 
 SplitBuilding -->
-	split(y){4: comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
+	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
 						|object.bottom: FirstFloorColumns}  
 			| ~1: OtherFloors
 			}
@@ -91,7 +91,7 @@ TopColumade -->
 ###
 
 OtherFloors --> 
-	split(y){3:SlideFloors |3:Floors keep.}*
+	split(y){meterConverter.feet(15):SlideFloors |meterConverter.feet(3):Floors keep.}*
 
 ###Balcony Tiles
 
@@ -100,11 +100,11 @@ Floors -->
 
 	
 Tile --> 
-	split(x){ 3: Balcony | 3: Balcony | 3: Balcony }*
-	split (y){3:Balcony | 3: Balcony | 3:Balcony}*
+	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3): Balcony }*
+	#split (y){meterConverter.feet():Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
 		
 Balcony --> 
-	extrude(rand(1,3 ))		
+	extrude (meterConverter.feet(rand(2,6 )))	
 	comp(f){object.top: BalconyTop | all: keep.}
 	#color 
 
@@ -114,13 +114,13 @@ BalconyTop -->
 	
 
 splitBalcony -->
-	split(y){1: removeCoveredBalcony}*
+	split(y){meterConverter.feet(3): removeCoveredBalcony}*
 		
 removeCoveredBalcony -->
 	case overlaps: NIL
 	else: 
 		color
-		#comp(f) {top : BalconyArea}
+		#comp(f) {top : BalconyArea}keep.
 		report("Balcony Area", geometry.area())
 		
 #BalconyArea-->
@@ -134,7 +134,7 @@ SlideFloors -->
 	case split.index < 1:
 		DoNothing. #at first floor
 	else:
-		translate(rel, object, rand(8),0,rand(8) )
+		translate(rel, object, meterConverter.feet (rand(25)),0,meterConverter.feet(rand(25)) )
 		#split (y){1:Balcony | 1: Balcony | 1:Balcony}*
 		Floors
 		keep.
