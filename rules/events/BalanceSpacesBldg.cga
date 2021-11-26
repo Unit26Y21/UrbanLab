@@ -54,8 +54,6 @@ BdlgHeight(BldgClass)=
 BdlgExtrusion-->
 #Extruding the BldgFootprint depending on BldgClass
 	extrude(BdlgHeight(BldgClass))
-#	split(y){ groundfloor_height : GroundFloorSelector | { ~floor_height : RestFloorSelector }* }
-#	comp(f){ street.left : FacadeSplit }
 	split(y){ groundfloor_height : GroundFloorSelector | secondfloor_height : SecondFloorSelector |
 				{ floor_height : RestFloorSelector |
 				floor_height : RestFloorSelector |

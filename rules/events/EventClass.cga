@@ -12,7 +12,7 @@ version "2019.0"
 
 
 #### Function ####
-#name you function something you can remember and recognize
+#name your function something you can remember and recognize
 eventCode(inputName) =
 	case inputName == "HealthFair": "HF"
 	case inputName == "CleanUps": "CU"

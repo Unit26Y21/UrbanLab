@@ -24,16 +24,21 @@ SplitSpace-->
 							|10 : NIL }*			
 							  	
 
-TablesChairsScatter -->
-	#Then you pass the dae object to the result of the scatter function inside the {}
-	scatter(surface, 10, uniform) { PlaceChairs  }
+///////////////////////////TABLES+CHAIRS/////////////////////////////////////////////////
 								
 TablesChairsArea-->
 	primitiveQuad(6,6)
 	#you need to assign the Scatter function after youcreate the area
 	TablesChairsScatter
 
+TablesChairsScatter -->
+	#Then you pass the dae object to the result of the scatter function inside the {}
+	scatter(surface, 10, uniform) { PlaceChairs  }
+
+
 PlaceChairs -->  i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
+
+
 
 Playground-->
 	primitiveQuad(8,8)

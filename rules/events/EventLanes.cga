@@ -7,58 +7,39 @@
 version "2019.0"
 
 @StartRule
+# you can use offset OR you can use the setback funcion:
 BlockDivision-->
-	# you can use offset 
-	#offset(-3)
-	#OffsetSelector
-//	split(x){ { 2 : A | 3 : B }* }
-
-	#OR you can use the setback funcion:
-	
-	setback(3){all: First | remainder: dividerExample}
-	
-	
- 	
-OffsetSelector-->
-	comp(f){ inside: Second | border: First } 
+setback(3){all: ExternalRing | remainder: AreaDivider}
  
-First-->
+ExternalRing-->
 	color ("#ffcf54")
  
 Second-->
 	color ("#e88079")
-	#offset(-3)
-	#OffsetSelector2
-	#split(x){2 : Kiosks | 3 : NIL }*
-	
-Kiosks -->
-	primitiveQuad(2,3)
-	rotate(rel, object, 0, rand(360),0)
-	i("events/Street Vendor.dae", yUp, keepSizeAlignPosition)
-     
-OffsetSelector2-->
-	comp(f) { inside: Third | border: Second } 
 	
 Third-->
 	color("#c8f5a2")
 	
+	
 # You can use a combination of split or splitArea to subdive a block or lot to have variation
-
 # you can use stochastic percentage assignment, similar to how you would do it in an attribute
 # to determine outcomes INSIDE the rule
-dividerExample -->
+
+AreaDivider -->
 	split(z){rand(5,10): divideEachLane}*
+
 	
 divideEachLane -->
 	case float(listLast(getTreeKey())) % 2 == 0:
-		split(x){rand(5,20): selectOddLanes }*
+		split(x){rand(5,20): selectOddLanes}* 
 	else: 
 		Second
+		
 		
 selectOddLanes -->
 	case float(listLast(getTreeKey())) % 5 == 0:
 		roofShed(byHeight, rand(2), rand(4))
-		
+		#example
 		# if you want more variation
 		rotate(rel, object, 0, rand(360), 0)
 	case float(listLast(getTreeKey())) % 3 == 0:
@@ -68,9 +49,21 @@ selectOddLanes -->
 		
 	case float(listLast(getTreeKey())) % 2 == 0:
 		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
-		scatter(surface,4, uniform){Kiosks}
+		scatter(surface, 4, uniform){CheckOverlap}
 	else:
 		Third
+
+//////////////////////////Not working CheckingOverlap rule		
+CheckOverlap --> 
+	case touches(all) : NIL
+	case overlaps(all) : NIL
+	else : Kiosks
+	
+Kiosks-->
+	primitiveQuad(2,3)
+ 	rotate(rel, object, 0, rand(360),0)
+ 	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+
 
 dividerExample1 -->
 	20%: split(y){rand(5,10): PotentialLocation}*
@@ -85,9 +78,11 @@ subdivideBlock(input) =
 	else: 10 #else subdivie Block by 10
 	
 #Then you use the function to determine the dimension of the split by passing the shapes geometry area
+@StartRule
 divideExample2 -->
 	splitArea(x){subdivideBlock(geometry.area()): PotentialLocation}*
 	
 # To choose a random location inside the matrix
 PotentialLocation -->
 	comp(f){rint(rand(0,comp.total)): Kiosks} #we use comp.total to access the total number of splits
+
