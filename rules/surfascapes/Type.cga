@@ -66,13 +66,13 @@ Types-->
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
-							| pedestrian_width : pedestrianColor 	 	// second pedestrian way
+							| pedestrian_width : pedestrianColor scatterATM	 	// second pedestrian way
 							| ~floraHydro_width  : floraHydroColor scatterTree scatterGrass}	// second greenway
 
 	case type == "D":
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
 				| bike_width : bikeColor 			// second bike path
-			 	| ~pedestrian_width : pedestrianColor} 	 	// pedestrian way
+			 	| ~pedestrian_width : pedestrianColor scatterATM} 	 	// pedestrian way
 		 	
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
@@ -105,19 +105,29 @@ serviceColor-->
  	tileUV(0,20,20) texture(textureFolder + "Service.png")
  	extrude (meterConverter.feet(.3))
  
+ #######TREES#########
  scatterTree-->
  	scatter (surface, 5, uniform){treeObject}
  	
  treeObject-->
- s(5,5,5)
- i(textureFolder + "Lowpoly_tree_sample.dae")
+	 s(5,5,5)
+ 	i(textureFolder + "Lowpoly_tree_sample.dae")
  
+ #######GRASS########
  scatterGrass-->
  	scatter (surface, 5, uniform){grassObject}
- 	
+ 
  grassObject-->
- s(1,1,1)
- i(textureFolder + "WildGrass.dae")
+ 	s(1,1,1)
+ 	i(textureFolder + "WildGrass.dae")
+ 
+ #######ATM#########
+ scatterATM-->
+ 	scatter (surface, 2, uniform){ATMObject}
+ 	
+ ATMObject-->
+ 	s (5,5,5)
+ 	i(textureFolder + "ATM.dae")
 
 ###### Roundabout function isn't working########
 #Roundabout--> 
