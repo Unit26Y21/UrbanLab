@@ -120,8 +120,11 @@ removeCoveredBalcony -->
 	case overlaps: NIL
 	else: 
 		color
+		#comp(f) {top : BalconyArea}
 		report("Balcony Area", geometry.area())
 		
+#BalconyArea-->
+	#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 
 color -->
 	color("#90EE90")
