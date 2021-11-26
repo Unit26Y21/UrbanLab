@@ -1,0 +1,131 @@
+/**
+ * File:    BalanceSpacesBldg2.cga
+ * Created: 26 Nov 2021 18:58:05 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+
+import meterConverter: "meterToFeet.cga"
+
+
+########################################################################################
+###################################### CONSTANTS #######################################
+
+#Building Contants
+const groundfloor_height = meterConverter.feet(15)
+const secondfloor_height = meterConverter.feet(12)
+const floor_height = meterConverter.feet(12)
+const BldgSizeType = ["Walkup", "High Rise"]
+
+########################################################################################
+###################################### ATTRIBUTES ######################################
+	
+@Enum("Walkup", "High Rise")
+attr BldgSize =
+	65%: "Walkup"
+	else: "High Rise" 
+
+Height = 
+	case BldgSize == "Walkup": rand (meterConverter.feet (30),(50))
+	else: rand (meterConverter.feet (60),(150))
+
+
+########################################################################################
+###################################### RULES ###########################################
+
+@StartRule
+ResidentialBdlgExtrusion-->
+#Setting BalanceSpaces according to BldgSize
+	case BldgSize == "Walkup" :	
+		split(y){ groundfloor_height : GroundFloorSelector | 
+				{ floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				groundfloor_height : GroundFloorSelector}* }
+		
+	case BldgSize == "High Rise" :	
+		split(y){ groundfloor_height : GroundFloorSelector | secondfloor_height : SecondFloorSelector |
+				{ floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				groundfloor_height : GroundFloorSelector}* }
+	  	
+	  	else : NIL				
+
+Floors-->
+#Defining Floors according to the split index. 
+	case (split.index == 0) : GroundFloorSelector
+	case (split.index == 1) : SecondFloorSelector
+	else : RestFloorSelector
+
+BalanceSpaceColor-->
+	color("#dbf5a6")
+
+#############################
+######GroundFloorRules####### 
+
+GroundFloorSelector-->
+#Coloring the GroundFloor and selecting its bottom face
+	color("#FAD97D")
+	comp(f){ bottom : GFFloorArea }
+		
+GFFloorArea -->
+#Applying SplittingGroundFloorRule to the GroundFloor bottom face 
+   #print("total area = " + meterConverter.sqmeterTosqft(geometry.area))
+   SplitAreaGroundFloorBldg
+   
+GroundFloor-->
+	extrude (-(groundfloor_height))
+	
+SplitAreaGroundFloorBldg-->
+#Splitting GroundFloorArea depending on the building type
+	case BldgSize == "Walkup" : splitArea(x) { '0.3 : GroundFloor | '0.7 : BalanceSpaceColor }
+	case BldgSize == "High Rise" : splitArea(x) { 'rand(0.4, 0.5) : GroundFloor | 'rand(0.5, 0.6) : BalanceSpaceColor }
+	else: NIL
+
+  
+###########################	
+######RestFloorRules#######
+
+RestFloorSelector-->
+	color("#A3CCD1")
+	comp(f){ bottom : RFFloorArea }
+	
+RFFloorArea -->
+      SplitAreaRestFloorBldg
+	
+RestFloor-->
+	extrude (-(floor_height))	
+	
+SplitAreaRestFloorBldg-->
+#Splitting RestFloorArea depending on the building type
+	case BldgSize == "Walkup" : splitArea(x) { '0.9 : RestFloor | '0.1 : BalanceSpaceColor }
+	case BldgSize == "High Rise" : splitArea(x) { 'rand(0.75, 0.8) : RestFloor | 'rand(0.25, 0.2) : BalanceSpaceColor }
+	else: NIL
+		
+#############################	
+######SecondFloorRules####### 
+
+SecondFloorSelector-->
+	color("#ff9c6b")
+	comp(f){ bottom : SecondFloorArea }
+	
+SecondFloorArea -->
+      SplitArea2FloorBldg
+	
+SecondFloor-->
+	extrude (-(secondfloor_height))
+
+SplitArea2FloorBldg-->
+#Splitting 2FloorArea depending on the building type
+	case BldgSize == "Walkup" : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgSize == "High Rise" : splitArea(x) { 'rand(0.5, 0.8) : RestFloor | 'rand(0.2, 0.5) : BalanceSpaceColor }
+	else: NIL
+
+ 
