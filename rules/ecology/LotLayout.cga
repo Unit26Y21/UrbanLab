@@ -112,12 +112,19 @@ Floors -->
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
 	#split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
-		
+
+
+	
 Balcony --> 
 	extrude (meterConverter.feet(rand(2,6 )))	
-	comp(f){object.top: BalconyTop | all: keep.}
-	color 
+	comp(f){object.top: BalconyTop | side:Facade | all:keep.}
+	#texture(FacadeTexture)
 
+Facade -->	
+	setupProjection(0, scope.xy, 5, 5)
+	texture(FacadeTexture)
+	projectUV(0)
+	
 BalconyTop -->
 	splitBalcony
 	
@@ -144,16 +151,9 @@ SlideFloors -->
 		DoNothing. #at first floor
 	else:
 		translate(rel, object, meterConverter.feet (rand(25)),0,meterConverter.feet(rand(25)) )
-		
 		Floors
 		keep.
 		Lot
-	
-Facade -->	
-	setupProjection(0, scope.xy, 5, 5)
-	texture(FacadeTexture)
-	// = set(material.colormap,brickMap)
-	projectUV(0)
 	
 #Reports 	
 Lot -->
