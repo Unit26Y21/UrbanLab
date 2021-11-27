@@ -7,7 +7,7 @@
 version "2021.0"
 
 import ecology: "ecology/LotLayout.cga"
-import balanced: "BalanceSpacesBldg.cga" 
+#import balanced: "BalanceSpacesBldg.cga" 
 import meterConverter: "meterToFeet.cga"
 
 ################################## CONSTANTS #########################################
@@ -59,8 +59,8 @@ const NumberofHouseholds =
 ##distribute this mix within every 0.5 mile radius (inspo from 15 min city) >> what rule can we use? 
 @Enum("SetBack", "Courtyard", "Flexible") 
 attr BldgClass = 
-	30%:BldgClassType[0]
-	60%:BldgClassType[1]
+	20%:BldgClassType[0]
+	70%:BldgClassType[1]
 	10%:BldgClassType[2]
 	else:BldgClassType[3]
 
@@ -112,6 +112,7 @@ assignFacade(BldgClass) -->
 	case BldgClass == BldgClassType[0]: ecology.LowDensityLot
 	case BldgClass == BldgClassType[1]: ecology.HighDensityLot
 	else: NIL
+
 
 
 reportWaste(i, list) -->
