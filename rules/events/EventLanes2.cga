@@ -1,0 +1,39 @@
+/**
+ * File:    EventLanes2.cga
+ * Created: 26 Nov 2021 21:40:35 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+import meterConverter: "meterToFeet.cga"
+
+
+#function that evaluates the area of the block and assigns a split area depending on the size of the block
+
+subdivideBlock(input) = 
+	case input > meterConverter.sqmeterTosqft (1000) : rand(meterConverter.sqmeterTosqft(75), meterConverter.sqmeterTosqft(100)) #subdivie Block by 100 or rand(75,100) if the block is 1000 sqmeters
+	case input < meterConverter.sqmeterTosqft (1000) && input > meterConverter.sqmeterTosqft (500) : rand(meterConverter.sqmeterTosqft(20), meterConverter.sqmeterTosqft(50)) #subdivie Block by 50 or rand(25,50) if the block is less than 1000 sqmeters and above 500 sqm
+	else: rand(meterConverter.sqmeterTosqft(20), meterConverter.sqmeterTosqft(30))  #else subdivie Block by 10
+	
+#Then you use the function to determine the dimension of the split by passing the shapes geometry area
+@StartRule
+divideExample2-->
+	splitArea(x){subdivideBlock(geometry.area()): PotentialLocation}*
+#	splitArea(x){subdivideBlock(geometry.area()) : Color }*
+ 
+#Color--> color( rand(1), rand(1), rand(1) ) 
+
+ 	
+# To choose a random location inside the matrix
+PotentialLocation -->
+#choose the face, then randomly between 0 and the total number of components
+#	comp(f){rint(rand(0,comp.total)): Kiosks} #I think the rint is not necessary
+#	comp(f){5 : Kiosks} #we use comp.total to access the total number of splits
+ 	comp(f){comp.index : Kiosks} #we use comp.total to access the total number of splits. Currently is selectings everything
+
+Kiosks-->
+	primitiveQuad(2,3)
+ 	rotate(rel, object, 0, rand(360),0)
+# 	i("Street Vendor.dae", yUp, keepSizeAlignPosition) 
+
