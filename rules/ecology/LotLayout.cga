@@ -66,7 +66,7 @@ SplitBuilding -->
 			| ~1: OtherFloors
 			}
 			
-####COLUMS###
+####COLUMNS###
 /*FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
 			split(y){columnMatrix[1]:
@@ -106,9 +106,11 @@ OtherFloors -->
 ###Balcony Tiles
 
 Floors -->
-	comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
-		
-	
+	comp(f){object.top: FloorTop | street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
+
+FloorTop -->
+	color ("#800080")
+	#subtract balcony area from floors 
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
 	#split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
@@ -135,15 +137,23 @@ splitBalcony -->
 removeCoveredBalcony -->
 	case overlaps: NIL
 	else: 
-		color
-		#comp(f) {top : BalconyArea}keep.
+		#color
+		comp(f) {top : BalconyArea}keep.
 		report("Balcony Area", geometry.area())
+		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 		
 #BalconyArea-->
-	#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+#	color("#800080")
+#	splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 
-color -->
-	color("#90EE90")
+EnvironmentalSpace -->
+	color("#567d46")
+
+BalanceSpace -->
+	color("#800080")
+	
+#color -->
+#	color("#90EE90")
 	###
 
 SlideFloors -->
