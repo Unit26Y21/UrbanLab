@@ -23,8 +23,7 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 	
 ### TEXTURES ###
 
-FacadeTexture = "facades/textures/Wintercreeper.jpg"
-	
+#FacadeTexture = (textures + "Wintercreeper.jpg")	
 
 #### RULES ####
 
@@ -123,9 +122,10 @@ Balcony -->
 	#texture(FacadeTexture)
 
 Facade -->	
-	setupProjection(0, scope.xy, 5, 5)
-	texture(FacadeTexture)
-	projectUV(0)
+#	setupProjection(0, scope.xy, 5, 5)
+#	texture(FacadeTexture)
+#	projectUV(0)*/
+	i ("Wintercreeper.jpg")
 	
 BalconyTop -->
 	splitBalcony
