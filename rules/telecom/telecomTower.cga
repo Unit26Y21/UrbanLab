@@ -1,24 +1,25 @@
 /**
  * File:    telecomTower.cga
  * Created: 11 Nov 2021 19:52:25 GMT
- * Author:  User
+ * Author:  Xiaoneng Tang
  */
 
 version "2021.1"
 
 @StartRule
 TowerLot -->
-	i("assets/telecom/TelecomTowerShell.dae", yUp, keepSizeAlignPosition)
-	comp(f){object.side: SolarPanels}
+	i("assets/telecom/MainTower.dae", yUp, keepSizeAlignPosition)
+
+	
 	
 @StartRule 
-HabitableTower -->
-	i("assets/telecom/TelecomTower_inside.dae", yUp, keepSizeAlignPosition)
-	Floors 
-	#NIL
+###HabitableTower -->
+	###i("assets/telecom/TelecomTower_inside.dae", yUp, keepSizeAlignPosition)
+	###Floors 
+	###NIL
 	
-SolarPanels --> 
-	color(rand(1),rand(1), rand(1))
+###SolarPanels --> 
+	###color(rand(1),rand(1), rand(1))
 
-Floors -->
-	split(y){3: SolarPanels}*
+###Floors -->
+	###split(y){3: SolarPanels}*
