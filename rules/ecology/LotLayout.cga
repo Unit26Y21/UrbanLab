@@ -6,12 +6,12 @@
 
 version "2021.0"
 
-import ecology: "ecology.cga"
+#import ecology: "ecology.cga"
 import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
-@Range(min = 0, max = 100)
+@Range(min = 0, max = 50)
 	attr blockRearYard = meterConverter.feet(16) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 @Range(min = 3, max = 10)
@@ -99,7 +99,7 @@ TopColumade -->
 ###
 
 OtherFloors --> 
-	split(y){meterConverter.feet(15):SlideFloors |meterConverter.feet(3):Floors keep.}*
+	split(y){meterConverter.feet(12):SlideFloors |meterConverter.feet(3):Floors keep.}*
 
 
 ###Balcony Tiles

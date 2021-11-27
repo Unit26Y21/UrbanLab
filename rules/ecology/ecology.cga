@@ -7,7 +7,7 @@
 version "2021.0"
 
 import plants: "plants.cga"
-
+import meterConverter: "MeterToFeet.cga"
 
 ####### CONSTANTS ########
 
@@ -17,15 +17,15 @@ import plants: "plants.cga"
 #Rainfall Intensity to be 3 scenarios (0.025m,0.050m, 0.075m)
 
 ####### ATTRIBUTES #######
-@Enum(0.025, 0.05, 0.07) 
+@Enum(meterConverter.feet(0.083, 0.16, 0.25)) 
 #use enum to capture the three options
-attr rainfallIntensity = 0.025
+attr rainfallIntensity = meterConverter.feet (0.083)
 
 @Hidden
-attr runoffSavings = 0
+attr runoffSavings = meterConverter.feet (0)
 
 @Hidden 
-attr roofArea = 0
+attr roofArea = meterConverter.feet(0)
 
 
 #AssignSoilGrade
@@ -79,6 +79,7 @@ Lot -->
 	report("volume", geometry.volume)
 	#SelectVerticalSurfaces
 	SelectTopSurfaces
+	SelectBalconies
 	PlantOnFacades
 	
 #SelectVerticalSurfaces-->
@@ -93,7 +94,7 @@ SelectTopSurfaces -->
 	
 	
 ReportTopSurfaces -->
-	set(roofArea, geometry.area()) #lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
+	set(roofArea, meterConverter.feet(geometry.area())#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
 	report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 	report("Soil Grade", soilGrade)
 	
