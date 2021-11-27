@@ -109,6 +109,14 @@ Floors -->
 
 FloorTop -->
 	color ("#800080")
+	SelectBalcony
+	
+SelectBalcony -->
+	case overlaps: NIL
+	else: comp(f) {top : FloorArea}keep.
+		report("FloorArea", geometry.area())
+		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+		
 	#subtract balcony area from floors 
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
