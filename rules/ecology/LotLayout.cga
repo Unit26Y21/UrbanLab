@@ -18,8 +18,16 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 	attr arcadeDepth = meterConverter.feet(9)
 
 	attr columnMatrix = [3,4]
+	
+	
+	
+### TEXTURES ###
+
+FacadeTexture = "facades/textures/Wintercreeper.jpg"
+	
 
 #### RULES ####
+
 
 /*#Scenario 1: Setbacks on all Sides*/
 # use StartRule to manage your different scenarios. You can use the same rule but different starting points
@@ -57,6 +65,7 @@ SplitBuilding -->
 						|object.bottom: FirstFloorColumns}  
 			| ~1: OtherFloors
 			}
+			
 ####COLUMS###
 /*FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
@@ -93,23 +102,23 @@ TopColumade -->
 OtherFloors --> 
 	split(y){meterConverter.feet(15):SlideFloors |meterConverter.feet(3):Floors keep.}*
 
+
 ###Balcony Tiles
 
 Floors -->
 	comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
-
+		
 	
 Tile --> 
-	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3): Balcony }*
-	#split (y){meterConverter.feet():Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
+	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
+	#split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
 		
 Balcony --> 
 	extrude (meterConverter.feet(rand(2,6 )))	
 	comp(f){object.top: BalconyTop | all: keep.}
-	#color 
+	color 
 
 BalconyTop -->
-	
 	splitBalcony
 	
 
@@ -135,11 +144,16 @@ SlideFloors -->
 		DoNothing. #at first floor
 	else:
 		translate(rel, object, meterConverter.feet (rand(25)),0,meterConverter.feet(rand(25)) )
-		#split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+		
 		Floors
 		keep.
 		Lot
-		#Changes made
+	
+Facade -->	
+	setupProjection(0, scope.xy, 5, 5)
+	texture(FacadeTexture)
+	// = set(material.colormap,brickMap)
+	projectUV(0)
 	
 #Reports 	
 Lot -->
