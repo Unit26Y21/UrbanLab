@@ -1,0 +1,15 @@
+/**
+ * File:    Soils.cga
+ * Created: 11 Nov 2021 18:30:47 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+
+scatterSoils(amount, soilColor) -->
+	scatter(surface,amount, uniform){plant2D(soilColor)}
+	
+plant2D(soilColor)-->
+	primitiveQuad(50, 0.3)
+	extrude(.1)
+	color(soilColor)

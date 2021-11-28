@@ -1,0 +1,125 @@
+/**
+ * File:    Density BldgClass_Waste_111621.cga
+ * Created: 17 Nov 2021 04:21:56 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+import ecology: "ecology/LotLayout.cga"
+#import balanced: "BalanceSpacesBldg.cga" 
+import meterConverter: "meterToFeet.cga"
+
+################################## CONSTANTS #########################################
+
+const AvgHouseholdSize = 3
+
+const InhabitantsPerBld = AvgHouseholdSize * NumberofHouseholds 
+
+const WasteType = ["Refuse", "Organics", "Paper", "Metal", "Plastic", "Glass", "Textiles", "Other"] 
+
+#lbs of waste per HH by waste type per week
+wastePerHH(WasteType) = 
+	case WasteType == "Refuse": 7.09
+	case WasteType == "Organics": 7.93
+	case WasteType == "Paper": 9.64
+	case WasteType == "Metal": 1.18
+	case WasteType == "Plastic": 1.47
+	case WasteType == "Glass": 4.41
+	case WasteType == "Textiles": 2.41
+	case WasteType == "Other": 4.11
+	else: 1
+
+						
+#Setback: residential 
+#Courtyard: other 
+#FLEXIBLE: open ended
+
+const BldgClassType = ["SetBack", "Courtyard", "Flexible"]
+
+const BldgSizeType = ["Walkup", "High Rise"]
+
+const NumberofHouseholds =
+	case BldgClass == "SetBack" && BldgSize == "Walkup" && Height <=40: rand(10,18)
+	case BldgClass == "SetBack" && BldgSize == "Walkup" && Height >40: rand(16, 30)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height <=70: rand(60, 120)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >70 && Height <=80: rand(70, 140)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >80 && Height <=90: rand(80, 160)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >90 && Height <=100: rand(90, 180)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >100 && Height <=110: rand(100, 200)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >110 && Height <=120: rand(110, 220)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >120 && Height <=130: rand(120, 240)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >130 && Height <=140: rand(130, 260)
+	case BldgClass == "SetBack" && BldgSize == "High Rise" && Height >140 && Height <=150: rand(140, 300)
+	else: 10
+
+######################################### ATTRIBUTES #########################################
+
+
+##distribute this mix within every 0.5 mile radius (inspo from 15 min city) >> what rule can we use? 
+@Enum("SetBack", "Courtyard", "Flexible") 
+attr BldgClass = 
+	20%:BldgClassType[0]
+	70%:BldgClassType[1]
+	10%:BldgClassType[2]
+	else:BldgClassType[3]
+
+@Enum("Walkup", "High Rise")
+attr BldgSize =
+	65%: "Walkup"
+	else: "High Rise" 
+	
+@Color
+BldgColor = assignBldgColor(BldgClass, BldgSize)
+	
+Height = 
+	case BldgSize == "Walkup": rand (9.1,15.24)
+	else: rand (18.3,45.7)
+	
+
+######################################### FUNCTIONS #########################################
+
+assignBldgColor(BldgClass, BldgSize) = 
+	case BldgClass == BldgClassType[0] && BldgSize == BldgSizeType[0]: "#FFFFFF"
+	case BldgClass == BldgClassType[1] && BldgSize ==  BldgSizeType[0]: "#808080"
+	case BldgClass == BldgClassType[2] && BldgSize ==  BldgSizeType[0]: "#FF0000"
+	case BldgClass == BldgClassType[0] && BldgSize ==  BldgSizeType[1]: "#FFFFFF"
+	case BldgClass == BldgClassType[1] && BldgSize ==  BldgSizeType[1]: "#808080"
+	case BldgClass == BldgClassType[2] && BldgSize ==  BldgSizeType[1]: "#FF0000"
+	else: "000000"	
+
+#function that gives you total waste per houseHold lbs
+averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * NumberofHouseholds
+
+
+######################################### RULES #########################################
+
+@StartRule
+
+BldgClassParcel -->
+	extrude(Height)
+	color(BldgColor)
+	assignFacade(BldgClass) 
+	#assignBalancedSpace(
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+	report("Building Height", BldgSize)
+	reportWaste(0, WasteType)
+
+
+assignFacade(BldgClass) --> 
+	case BldgClass == BldgClassType[0]: ecology.LowDensityLot
+	case BldgClass == BldgClassType[1]: ecology.HighDensityLot
+	else: NIL
+
+
+
+reportWaste(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportWaste(i + 1, list)
+	else:
+		stop.
+		NIL
+

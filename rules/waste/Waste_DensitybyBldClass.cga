@@ -6,6 +6,8 @@
 
 version "2021.0"
 
+
+import ecology: "ecology/LotLayout.cga"
 ##### CONSTANTS ########
 
 const AvgHouseholdSize = 3
@@ -22,7 +24,7 @@ wastePerHH(WasteType) =
 	case WasteType == "Glass": 4.41
 	case WasteType == "Textiles": 2.41
 	case WasteType == "Other": 4.11
-	else: 1
+	else: 0
 
 #This list of BldgClass is powerfull
 #Consider creating a const so you instatiated once and access it at all points
@@ -38,6 +40,9 @@ attr BldgClass =
 	10%: BldgClassType[3]
 	5%: BldgClassType[2]
 	else: BldgClassType[4]
+
+# is this per floor or per building
+# if per floor talk to ecology
 
 attr NumberofHouseholds =
 	case BldgClass == "Low Walkup": rand(4,10)
@@ -65,8 +70,12 @@ attr Height =
 # Do you want to give the user the option to change the color??
 # If the answer is no, then this should be a function
 @Color
-attr BldgColor = assignBldgColor(BldgClass)
+attr BldgColor = 
+	case ColorBldgByUse:  assignBldgColor(BldgClass)
+	else: "FFFFFF"
 
+@Enum(true, false)
+attr ColorBldgByUse = false
 
 ##### FUNCTIONS ######
 ###consider adding attribute for avg squarefootage per HH###
@@ -93,20 +102,22 @@ averageBuildingWaste(WasteTypeInput, NumberofHouseholds) = wastePerHH(WasteTypeI
 WalkupParcel -->
 	#we do not need to set Bldg Class because it already comes from the attributes
 	# samething with BldgColor
-	extrude(world.up.flatTop, Height)
-	color(BldgColor)
+	extrude(Height)
+	ecology.SplitBuilding
+	
 	report("Building Class", BldgClass)
 	report("People per Bld", InhabitantsPerBld) 
 	report("Households per Bld", NumberofHouseholds)
 	report("Building Height", Height) #maybe include height???
 	reportWaste(0, WasteType)
+	color(BldgColor)
 
 reportWaste(i, list) -->
 	case i < size(list):
+		NIL
 		report(list[i], i)
 		reportWaste(i + 1, list)
 	else:
-		stop.
 		NIL
 	
 	
