@@ -24,13 +24,13 @@ attr shapeType = "H"
 ### Attributes ###
 
 #create attrubute widths for the type splits
-@Range (min=2, max=10)
-attr floraHydro_width = meterConverter.feet(2)
+@Range (min=1.87, max=3.05)
+attr floraHydro_width = meterConverter.feet(3)
 attr service_width = meterConverter.feet(10)
 
-@Range (min=6, max=10)
+@Range (min=1.87, max=3.05)
 attr pedestrian_width = meterConverter.feet(6)
-attr shoulder_width = meterConverter.feet(9)
+attr shoulder_width = meterConverter.feet(8)
 attr bike_width = meterConverter.feet(6)
 
 
