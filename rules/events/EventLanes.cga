@@ -56,7 +56,7 @@ selectOddLanes -->
 #		scatter(surface, 2, uniform){ Benches }
 	Seven
 	
-	//FURNITURE/////////////////////////////////
+
 	//Five//////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 5 == 0:
 		Five
@@ -69,10 +69,12 @@ selectOddLanes -->
 		scatter(surface, 3, uniform){ CheckOverlap }		
 		Three	
 	
+	//FURNITURE/////////////////////////////////
 	//Two///////////////////////////////////////			
 	case float(listLast(getTreeKey())) % 2 == 0:
 		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
 		scatter(surface, 2, uniform){ Benches }
+		scatter(surface, 2, uniform){ Trees }
 		Two
 	
 	//One//////////////////////////////////////		
@@ -106,6 +108,13 @@ LittleBench-->
 BigBench-->
 	rotate(rel, object, 0, rand(360),0)
 	i("Garden+Bench2.dae", yUp, keepSizeAlignPosition)
+
+/////////////////////////////////////
+//TREES/////////////////////////////
+
+Trees-->
+	rotate(rel, object, 0, rand(360),0)
+	i("Tree.dae", yUp, keepSizeAlignPosition)
 
 
 ///////////////////////////////////////////////////////////////////////////////
