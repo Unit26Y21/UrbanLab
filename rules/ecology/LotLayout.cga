@@ -121,7 +121,7 @@ SelectBalcony -->
 	#subtract balcony area from floors 
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
-    split (y){meterConverter.feet(9):Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9):Balcony}*
+    split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
 	
 	
 Balcony --> 
@@ -168,10 +168,10 @@ color -->
 	###
 
 SlideFloors -->
-	case split.index < 1:
+	case split.index < 0:
 		DoNothing. #at first floor
 	else:
-		translate(rel, object, meterConverter.feet (rand(25)),0,meterConverter.feet(rand(25)) )
+		translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 		Floors
 		keep.
 		Lot
