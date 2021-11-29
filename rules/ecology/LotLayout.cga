@@ -121,16 +121,16 @@ SelectBalcony -->
 	#subtract balcony area from floors 
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
-    split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
-	colorTiles
+    split (y){meterConverter.feet(9):Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9):Balcony}*
 	
-colorTiles -->
-	color rand("")
 	
 Balcony --> 
 	extrude (meterConverter.feet(rand(2,6 )))	
 	comp(f){object.top: BalconyTop | side:Facade | all:keep.}
-	#texture(FacadeTexture)
+	colorTiles
+	
+colorTiles -->
+	color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
 
 #Facade -->	
 #	setupProjection(0, scope.xy, 5, 5)
