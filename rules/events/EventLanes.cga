@@ -113,7 +113,11 @@ BigBench-->
 	rotate(rel, object, 0, rand(360),0)
 	i("Garden+Bench2.dae", yUp, keepSizeAlignPosition)
 
+<<<<<<< Updated upstream
 /*
+=======
+/* 
+>>>>>>> Stashed changes
 /////////////////////////////////////
 //TREES/////////////////////////////
 
@@ -121,11 +125,21 @@ Trees-->
 	case LOD == 2:
 		rotate(rel, object, 0, rand(360),0)
 		i("Tree.dae", yUp, keepSizeAlignPosition)
+<<<<<<< Updated upstream
 		
 	else: 
 		rotate(rel, object, 0, rand(360),0)
 		primitiveDisk(16, .5)
 		extrude(4)
+=======
+		reduceGeometry(0.5)
+
+	else:¨
+		rotate(rel, object, 0, rand(360),0)
+		primtiveCylinder(0.25,0.25)
+		extrude(4)
+		
+>>>>>>> Stashed changes
 */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -161,6 +175,6 @@ dividerExample1 -->
 	else: split(y){3: PotentialLocation}*
 	
 	 
-	PotentialLocation -->
+PotentialLocation -->
 #choose the face, then randomly between 0 and the total number of components
 	comp(f){rint(rand(0,comp.total)): Kiosks} #we use comp.total to access the total number of splits
