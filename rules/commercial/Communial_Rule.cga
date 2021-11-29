@@ -6,6 +6,15 @@
 
 version "2021.0"
 
+import commercial: "commercial/myfirstrule.cga"
+import meterConverter: "meterToFeet.cga"
+
+
+
+#### Want to make a rule on randomizing commercials on each of the first 3 floors ####
+
+
+####Constants####
 #attr Name - "String", Int, Float, Boolean
 attr maxHeight = 100
 
@@ -21,6 +30,7 @@ attr Side_Depth = 1
 @Range(min= 300, max= 1000)
 attr idealLotSize = 700
 
+attr floorNumber = 3
 
 @StartRule
 Lot -->
@@ -37,9 +47,27 @@ Lot -->
 		#make a building using usual setbacks.
 		DoSetbacks
 		#split(z){~Lot_Width : DoSetbacks(1)| ~Distance_Seperation: NIL}*
-		
 
 
+#### Trying to Split Floors ####
+
+extrude(12) A
+
+A --> 	split(y){3 : B}*
+
+B -->	case (split.index == 0) : 
+     		color("#ff0000") x
+     		
+     	case (split.index == 1) : 
+     		color("#ff0000") X
+   
+     	case (split.index == split.total-1) :
+     		color("#0000ff") X
+   
+     	else:
+     		X
+
+#### Setbacks ####
 DoSetbacks -->
  	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace}
  	
@@ -56,10 +84,14 @@ Normal -->
 RandomColor -->
 	color(rand(1), rand(1), rand(1))
 	
+
+#### Commerical and Residental Types ####
 	
-	
-const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar"]
-	
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "Rec Center", "Bar"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
+const floorHeight = 2
+
+
 @Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
 attr Commercial = 
 	20%: CommercialTypes[0]
@@ -70,25 +102,40 @@ attr Commercial =
 	10%: CommercialTypes[5]
 	else: CommercialTypes[6]
 	
+@Enum ("Apartment", "Condominium")
+attr Residental = 
+	50%: ResidentalTypes [0]
+	else: ResidentalTypes [1]
+	
+	
 @Color
 attr BldgColor = assignBldgColor(Commercial)
 	
 assignBldgColor(input) = 
-	case input == "Supermarket": "#FF0000"
-	case input == "Clothing Outlet": "#800000"
-	case input == "Restaurant": "#0000FF"
-	case input == "School": "#00FF00"
-	case input == "Small Business": "#FFA500"
-	case input == "Office": "#44ff44"
-	case input == "Bar": "#FFF000"
+	case input == "Supermarket": "#A447FE"
+	case input == "Clothing Outlet": "#C140E6"
+	case input == "Restaurant": "#FE8C47"
+	case input == "School": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
 	else: "000000"	
 	
+	
+	reportSQFT(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportSQFT(i + 1, list)
+	else:
+		stop.
+		NIL
+
+
+
+
 
 @StartRule
 Parcel -->
 	extrude(maxHeight)
 	color(BldgColor)
-	
-	
-
-	
+	report("Area"+"."+Commercial, geometry.area(bottom))
