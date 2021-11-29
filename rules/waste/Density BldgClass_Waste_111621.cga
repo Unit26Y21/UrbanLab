@@ -126,7 +126,6 @@ assignFacade(BldgClass) -->
 	case BldgClass == BldgClassType[1]: ecology.HighDensityLot
 	else: NIL
 
-
 reportWaste(i, list) -->
 	case i < size(list):
 		report(list[i], i)
