@@ -1,0 +1,65 @@
+/**
+ * File:    WiFiNetwork.cga
+ * Created: 21 Oct 2021 19:01:19 GMT
+ * Author:  Xiaoneng Tang
+ */
+
+version "2021.0"
+
+@StartRule
+TowerStructure -->
+	i("assets/telecom/Structures.dae", yUp, keepSizeAlignPosition)
+	
+TowerElevator --> 
+	i("assets/telecom/Elevator.dae", yUp, keepSizeAlignPosition)
+
+
+SchoolOut -->
+	i("assets/telecom/SchoolOut.dae", yUp, keepSizeAlignPosition)
+	t(0,3.048,0)
+	color(1,0,0)
+
+
+Schoolin -->
+	i("assets/telecom/SchoolIn.dae", yUp, keepSizeAlignPosition)
+	t(0,3.048,0)
+	color(1,0,0)
+	
+EnergyOut -->
+	i("assets/telecom/EnergyOut.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	color(1,0,0)
+	
+EnergyIn -->
+	i("assets/telecom/EnergyIn.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	color(1,0,0)
+	
+DatacenterOut -->
+	i("assets/telecom/DatacenterOut.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	color(1,0,0)
+	
+DatacenterIn -->
+	i("assets/telecom/DatacenterIn.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	color(1,0,0)
+	
+WifComponent -->
+	i("assets/telecom/WifiComponet.dae", yUp, keepSizeAlignPosition)
+	t(0,36.576,0)
+	color(1,0,0)
+
+	
+
+	
+
+	
+
+	
+###SolarPanels --> 
+	###color(rand(1),rand(1), rand(1))
+
+###Floors -->
+	###split(y){3: SolarPanels}*
+	
