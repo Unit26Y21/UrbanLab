@@ -6,6 +6,9 @@
 
 version "2019.0"
 
+@Enum(1,2,3)
+attr LOD = 1
+
 const textureFolder =  "assets/textures/" 
 
 @StartRule
@@ -66,7 +69,9 @@ selectOddLanes -->
 	//KIOSKS////////////////////////////////////
 	//Three/////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 3 == 0:
-		scatter(surface, 3, uniform){ CheckOverlap }		
+		scatter(surface, 3, uniform){ primitiveQuad(2,3)
+										label("kiosk")
+										CheckOverlap }		
 		Three	
 	
 	//FURNITURE/////////////////////////////////
@@ -83,14 +88,13 @@ selectOddLanes -->
 
 	
 CheckOverlap --> //////////////////////////Not working CheckingOverlap rule	
-	case touches(all) : NIL
-	case overlaps(all) : NIL
+	case touches(inter, "kiosk") : NIL
+	case overlaps(inter, "kiosk") : NIL
 	else : Kiosks
 	
 Kiosks-->
-	primitiveQuad(2,3)
  	rotate(rel, object, 0, rand(360),0)
- 	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+ 	#i("Street Vendor.dae", yUp, keepSizeAlignPosition)
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -113,8 +117,14 @@ BigBench-->
 //TREES/////////////////////////////
 
 Trees-->
-	rotate(rel, object, 0, rand(360),0)
-	i("Tree.dae", yUp, keepSizeAlignPosition)
+	case LOD == 2:
+		rotate(rel, object, 0, rand(360),0)
+		i("Tree.dae", yUp, keepSizeAlignPosition)
+		
+	else: 
+		rotate(rel, object, 0, rand(360),0)
+		primitiveDisk(16, .5)
+		extrude(4)
 
 
 ///////////////////////////////////////////////////////////////////////////////
