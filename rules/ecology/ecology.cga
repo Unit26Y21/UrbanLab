@@ -17,7 +17,7 @@ import meterConverter: "MeterToFeet.cga"
 #Rainfall Intensity to be 3 scenarios (0.025m,0.050m, 0.075m)
 
 ####### ATTRIBUTES #######
-@Enum(meterConverter.feet(0.083, 0.16, 0.25)) 
+@Enum(0.083, 0.16, 0.25) 
 #use enum to capture the three options
 attr rainfallIntensity = meterConverter.feet (0.083)
 
@@ -25,7 +25,7 @@ attr rainfallIntensity = meterConverter.feet (0.083)
 attr runoffSavings = meterConverter.feet (0)
 
 @Hidden 
-attr roofArea = meterConverter.feet(0)
+attr roofArea = 0
 
 
 #AssignSoilGrade
@@ -86,7 +86,7 @@ Lot -->
 	#comp(f){side: ReportVericalSurfaces}
 
 PlantOnFacades -->
-	plants.scatterSeeds(50,"#116530")
+	plants.ScatterFacadeVeg(50,"#116530")
 
 @StartRule#Roofs
 SelectTopSurfaces -->
@@ -94,19 +94,21 @@ SelectTopSurfaces -->
 	
 	
 ReportTopSurfaces -->
-	set(roofArea, meterConverter.feet(geometry.area())#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
+	set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
 	report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 	report("Soil Grade", soilGrade)
 	
+	set(rainfallIntensity, meterConverter.feet(geometry.height()))
 	#report runoff saving will go here:
 	set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 	report("Runoff Savings", runoffSavings)
 	PlantSeedsOnRoof
+	
 PlantSeedsOnRoof -->
 	plants.scatterSeeds(50, "#EB5279")
 	plants.scatterSeeds(50, "#EBA052")
 	plants.scatterSeeds(50, "#00D100")
-	keep.
+	
 	
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function

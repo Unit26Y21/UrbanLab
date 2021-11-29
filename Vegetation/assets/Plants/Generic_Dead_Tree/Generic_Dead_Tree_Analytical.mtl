@@ -1,0 +1,9 @@
+newmtl AnalyticalTrunk
+    Kd 0.505882 0.490196 0.439216
+    Ka 0 0 0
+     d 1
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 3
+    Ks 0 0 0
+    Ns 0

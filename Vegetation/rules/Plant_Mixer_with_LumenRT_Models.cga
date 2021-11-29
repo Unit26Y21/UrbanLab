@@ -1,0 +1,95 @@
+/**
+ * Created: 28 Oct 2013 21:32:05 GMT
+ * Modified: Jan 2013, Redlands
+ * Author:  Esri Redlands, based on Plant_Distributor by Esri R&D, Zurich
+ */
+
+version "2013.1"
+
+######################################################
+# Imported Rules
+#
+
+import Plant_Display: "Plant_Loader_with_LumenRT_Models.cga" (Name, Height, Radius)
+import Ground_Cover : "Ground_Cover.cga"
+
+######################################################
+# Attributes 
+#
+
+
+
+
+@Group("PLANT MIX",1) @Order(1) @Range("Alder Buckthorn","Amazon Sword Plant","American Chestnut","American Sycamore","Apricot","Australian Pine","Baldcypress","Balsam Fir","Bamboo","Banana Tree","Basswood","Bay Laurel","Black Locust","Blue Gum Eucalyptus","Boxwood","Cabbage Palm Fern","California Bay","California Incense Cedar","California Palm","California Redwood","California Walnut","Coconut Palm","Common Hawthorn","Common Whitebeam","Conker Tree","Date Palm","Desert Willow","Douglas Fir","European Beech","European Larch","Ficus","Field Elm","Flannelbush","Flowering Dogwood","Giant Sequoia","Hedgehog Agave","Japanese Angelica Tree","Lacy Tree Philodendron","Leyland Cypress","Lily of the Valley","Lodgepole Pine","Mediterranean Buckthorn","Mexican Palmetto","Mountain Mahogany","Northern Red Oak","Norway Maple","Norway Spruce","Orange Tree","Orchid","Oval-leaved Privet","Palm Lily","Palo Verde","Paper Birch","Parlour Palm","Prickly Pear Cactus","Red Alder","Red Hickory","Rhododendron Azaleas","Rose","Ruffle Palm","Saguaro Cactus","Sassafras","Scots Pine","Sea Islands Yucca","Shadbush","Snake Plant","Southern Magnolia","Spanish Broom","Strawberry Tree","Sugar Maple","Sunflower","Sweetgum","Umbrella Acacia","Western Juniper","White Ash","White Oak","White Poplar","White Willow","Witch Hazel","","_____________________________","GENERICS","","Generic Dead Tree","Generic Stump","Generic Unknown","","_____________________________","PROXIES","","Algarrobo","American Elderberry","American Pepper","American Silverberry","Athel Tamarisk","Avocado","Black Tupelo","Buttonbush","Canada Buffaloberry","Chinaberry Tree","Chinese Tallow Tree","Common Hackberry","Common Holly","Common Persimmon","Desert Bitterbrush","European Hornbeam","Giant Chinquapin","Honey Locust","Hophornbeam","Huckleberry Shrub","Japanese Hemlock","Japanese Nutmeg","Judas Tree","Lawson Cypress","Loblolly Bay","Mexican Buckeye","Necklacepod","Northern Bilberry","Northern White Cedar","Octopus Tree","Osage Orange","Paper Bark Tree","Pawpaw","Persian Silk Tree","Princess Tree","Smooth Sumac","Sourwood","Southern Wax Myrtle","Tanoak","Tree of Heaven","Turkish Hazel","Western Soapberry","White Mulberry","Yellow Poplar","Yew","","_____________________________","LATIN NAME","","Abies balsamea","Acacia tortilis","Acer platanoides","Acer saccharum","Aesculus hippocastanum","Agave stricta","Ailanthus altissima","Aiphanes horrida","Albizia julibrissin","Alnus rubra","Amelanchier canadensis","Aralia elata","Arbutus unedo","Asimina triloba","Betula papyrifera","Bulbophyllum phalaenopsis","Buxus sempervirens","Calocedrus decurrens","Carnegiea saguaro","Carpinus betulus","Carya ovalis","Castanea dentata","Casuarina equisetifolia","Celtis occidentalis","Cephalanthus occidentalis","Cercis siliquastrum","Cercocarpus montanus","Chamaecyparis lawsoniana","Chamaedorea elegans","Chilopsis linearis","Chrysolepis chrysophylla","Citrus sinensis","Cocos nucifera","Convallaria majalis","Cordyline petiolaris","Cornus florida","Corylus colurna","Crataegus monogyna","Cupressus leylandii","Cyrilla racemiflora","Diospyros virginiana","Echinodorus bleheri","Elaeagnus commutata","Eucalyptus globulus","Fagus sylvatica","Ficus benjamina","Frangula alnus","Fraxinus americana","Fremontodendron californicum","Generic deadtree","Generic stump","Generic unknown","Gleditsia triacanthos","Gordonia lasianthus","Hamamelis virginiana","Helianthus annuus","Ilex aquifolium","Juglans regia","Juniperus occidentalis","Larix decidua","Laurus nobilis","Ligustrum ovalifolium","Liquidambar styraciflua","Liriodendron tulipifera","Lithocarpus densiflorus","Maclura pomifera","Magnolia grandiflora","Melaleuca quinquenervia","Melia azedarach","Morus alba","Musa acuminata","Myrica cerifera","Nyssa sylvatica","Opuntia aciculata","Ostrya virginiana","Oxydendrum arboreum","Parkinsonia aculeata","Paulownia tomentosa","Persea americana","Philodendron selloum","Phlebodium aureum","Phoenix dactylifera","Phyllostachys aurea","Picea abies","Pinus contorta","Pinus sylvestris","Platanus occidentalis","Populus tremuloides","Prosopis nigra","Prunus armeniaca","Pseudotsuga menziesii","Purshia glandulosa","Quercus alba","Quercus rubra","Rhamnus alaternus","Rhododendron tsutsuji","Rhus glabra","Robinia pseudoacacia","Rosa grandiflora","Sabal mexicana","Salix alba","Sambucus canadensis","Sansevieria trifasciata","Sapindus saponaria","Sassafras albidum","Schefflera actinophylla","Schinus molle","Sequoia sempervirens","Sequoiadendron giganteum","Shepherdia canadensis","Sophora tomentosa","Sorbus aria","Spartium junceum","Tamarix aphylla","Taxodium distichum","Taxus baccata","Thuja occidentalis","Tilia americana","Torreya nucifera","Triadica sebifera","Tsuga diversifolia","Ulmus minor","Umbellularia californica","Ungnadia speciosa","Vaccinium uliginosum","Washingtonia filifera","Yucca gloriosa")
+attr Mix_Plant_1 = "Orchid"
+@Group("PLANT MIX") @Order(2)
+@Range(0,100)
+attr Mix_Weight_1 = 100
+
+@Group("PLANT MIX") @Order(3) @Range("Alder Buckthorn","Amazon Sword Plant","American Chestnut","American Sycamore","Apricot","Australian Pine","Baldcypress","Balsam Fir","Bamboo","Banana Tree","Basswood","Bay Laurel","Black Locust","Blue Gum Eucalyptus","Boxwood","Cabbage Palm Fern","California Bay","California Incense Cedar","California Palm","California Redwood","California Walnut","Coconut Palm","Common Hawthorn","Common Whitebeam","Conker Tree","Date Palm","Desert Willow","Douglas Fir","European Beech","European Larch","Ficus","Field Elm","Flannelbush","Flowering Dogwood","Giant Sequoia","Hedgehog Agave","Japanese Angelica Tree","Lacy Tree Philodendron","Leyland Cypress","Lily of the Valley","Lodgepole Pine","Mediterranean Buckthorn","Mexican Palmetto","Mountain Mahogany","Northern Red Oak","Norway Maple","Norway Spruce","Orange Tree","Orchid","Oval-leaved Privet","Palm Lily","Palo Verde","Paper Birch","Parlour Palm","Prickly Pear Cactus","Red Alder","Red Hickory","Rhododendron Azaleas","Rose","Ruffle Palm","Saguaro Cactus","Sassafras","Scots Pine","Sea Islands Yucca","Shadbush","Snake Plant","Southern Magnolia","Spanish Broom","Strawberry Tree","Sugar Maple","Sunflower","Sweetgum","Umbrella Acacia","Western Juniper","White Ash","White Oak","White Poplar","White Willow","Witch Hazel","","_____________________________","GENERICS","","Generic Dead Tree","Generic Stump","Generic Unknown","","_____________________________","PROXIES","","Algarrobo","American Elderberry","American Pepper","American Silverberry","Athel Tamarisk","Avocado","Black Tupelo","Buttonbush","Canada Buffaloberry","Chinaberry Tree","Chinese Tallow Tree","Common Hackberry","Common Holly","Common Persimmon","Desert Bitterbrush","European Hornbeam","Giant Chinquapin","Honey Locust","Hophornbeam","Huckleberry Shrub","Japanese Hemlock","Japanese Nutmeg","Judas Tree","Lawson Cypress","Loblolly Bay","Mexican Buckeye","Necklacepod","Northern Bilberry","Northern White Cedar","Octopus Tree","Osage Orange","Paper Bark Tree","Pawpaw","Persian Silk Tree","Princess Tree","Smooth Sumac","Sourwood","Southern Wax Myrtle","Tanoak","Tree of Heaven","Turkish Hazel","Western Soapberry","White Mulberry","Yellow Poplar","Yew","","_____________________________","LATIN NAME","","Abies balsamea","Acacia tortilis","Acer platanoides","Acer saccharum","Aesculus hippocastanum","Agave stricta","Ailanthus altissima","Aiphanes horrida","Albizia julibrissin","Alnus rubra","Amelanchier canadensis","Aralia elata","Arbutus unedo","Asimina triloba","Betula papyrifera","Bulbophyllum phalaenopsis","Buxus sempervirens","Calocedrus decurrens","Carnegiea saguaro","Carpinus betulus","Carya ovalis","Castanea dentata","Casuarina equisetifolia","Celtis occidentalis","Cephalanthus occidentalis","Cercis siliquastrum","Cercocarpus montanus","Chamaecyparis lawsoniana","Chamaedorea elegans","Chilopsis linearis","Chrysolepis chrysophylla","Citrus sinensis","Cocos nucifera","Convallaria majalis","Cordyline petiolaris","Cornus florida","Corylus colurna","Crataegus monogyna","Cupressus leylandii","Cyrilla racemiflora","Diospyros virginiana","Echinodorus bleheri","Elaeagnus commutata","Eucalyptus globulus","Fagus sylvatica","Ficus benjamina","Frangula alnus","Fraxinus americana","Fremontodendron californicum","Generic deadtree","Generic stump","Generic unknown","Gleditsia triacanthos","Gordonia lasianthus","Hamamelis virginiana","Helianthus annuus","Ilex aquifolium","Juglans regia","Juniperus occidentalis","Larix decidua","Laurus nobilis","Ligustrum ovalifolium","Liquidambar styraciflua","Liriodendron tulipifera","Lithocarpus densiflorus","Maclura pomifera","Magnolia grandiflora","Melaleuca quinquenervia","Melia azedarach","Morus alba","Musa acuminata","Myrica cerifera","Nyssa sylvatica","Opuntia aciculata","Ostrya virginiana","Oxydendrum arboreum","Parkinsonia aculeata","Paulownia tomentosa","Persea americana","Philodendron selloum","Phlebodium aureum","Phoenix dactylifera","Phyllostachys aurea","Picea abies","Pinus contorta","Pinus sylvestris","Platanus occidentalis","Populus tremuloides","Prosopis nigra","Prunus armeniaca","Pseudotsuga menziesii","Purshia glandulosa","Quercus alba","Quercus rubra","Rhamnus alaternus","Rhododendron tsutsuji","Rhus glabra","Robinia pseudoacacia","Rosa grandiflora","Sabal mexicana","Salix alba","Sambucus canadensis","Sansevieria trifasciata","Sapindus saponaria","Sassafras albidum","Schefflera actinophylla","Schinus molle","Sequoia sempervirens","Sequoiadendron giganteum","Shepherdia canadensis","Sophora tomentosa","Sorbus aria","Spartium junceum","Tamarix aphylla","Taxodium distichum","Taxus baccata","Thuja occidentalis","Tilia americana","Torreya nucifera","Triadica sebifera","Tsuga diversifolia","Ulmus minor","Umbellularia californica","Ungnadia speciosa","Vaccinium uliginosum","Washingtonia filifera","Yucca gloriosa")
+attr Mix_Plant_2 = ""
+@Group("PLANT MIX") @Order(4)
+@Range(0,100)
+attr Mix_Weight_2 = 0
+
+@Group("PLANT MIX") @Order(5) @Range("Alder Buckthorn","Amazon Sword Plant","American Chestnut","American Sycamore","Apricot","Australian Pine","Baldcypress","Balsam Fir","Bamboo","Banana Tree","Basswood","Bay Laurel","Black Locust","Blue Gum Eucalyptus","Boxwood","Cabbage Palm Fern","California Bay","California Incense Cedar","California Palm","California Redwood","California Walnut","Coconut Palm","Common Hawthorn","Common Whitebeam","Conker Tree","Date Palm","Desert Willow","Douglas Fir","European Beech","European Larch","Ficus","Field Elm","Flannelbush","Flowering Dogwood","Giant Sequoia","Hedgehog Agave","Japanese Angelica Tree","Lacy Tree Philodendron","Leyland Cypress","Lily of the Valley","Lodgepole Pine","Mediterranean Buckthorn","Mexican Palmetto","Mountain Mahogany","Northern Red Oak","Norway Maple","Norway Spruce","Orange Tree","Orchid","Oval-leaved Privet","Palm Lily","Palo Verde","Paper Birch","Parlour Palm","Prickly Pear Cactus","Red Alder","Red Hickory","Rhododendron Azaleas","Rose","Ruffle Palm","Saguaro Cactus","Sassafras","Scots Pine","Sea Islands Yucca","Shadbush","Snake Plant","Southern Magnolia","Spanish Broom","Strawberry Tree","Sugar Maple","Sunflower","Sweetgum","Umbrella Acacia","Western Juniper","White Ash","White Oak","White Poplar","White Willow","Witch Hazel","","_____________________________","GENERICS","","Generic Dead Tree","Generic Stump","Generic Unknown","","_____________________________","PROXIES","","Algarrobo","American Elderberry","American Pepper","American Silverberry","Athel Tamarisk","Avocado","Black Tupelo","Buttonbush","Canada Buffaloberry","Chinaberry Tree","Chinese Tallow Tree","Common Hackberry","Common Holly","Common Persimmon","Desert Bitterbrush","European Hornbeam","Giant Chinquapin","Honey Locust","Hophornbeam","Huckleberry Shrub","Japanese Hemlock","Japanese Nutmeg","Judas Tree","Lawson Cypress","Loblolly Bay","Mexican Buckeye","Necklacepod","Northern Bilberry","Northern White Cedar","Octopus Tree","Osage Orange","Paper Bark Tree","Pawpaw","Persian Silk Tree","Princess Tree","Smooth Sumac","Sourwood","Southern Wax Myrtle","Tanoak","Tree of Heaven","Turkish Hazel","Western Soapberry","White Mulberry","Yellow Poplar","Yew","","_____________________________","LATIN NAME","","Abies balsamea","Acacia tortilis","Acer platanoides","Acer saccharum","Aesculus hippocastanum","Agave stricta","Ailanthus altissima","Aiphanes horrida","Albizia julibrissin","Alnus rubra","Amelanchier canadensis","Aralia elata","Arbutus unedo","Asimina triloba","Betula papyrifera","Bulbophyllum phalaenopsis","Buxus sempervirens","Calocedrus decurrens","Carnegiea saguaro","Carpinus betulus","Carya ovalis","Castanea dentata","Casuarina equisetifolia","Celtis occidentalis","Cephalanthus occidentalis","Cercis siliquastrum","Cercocarpus montanus","Chamaecyparis lawsoniana","Chamaedorea elegans","Chilopsis linearis","Chrysolepis chrysophylla","Citrus sinensis","Cocos nucifera","Convallaria majalis","Cordyline petiolaris","Cornus florida","Corylus colurna","Crataegus monogyna","Cupressus leylandii","Cyrilla racemiflora","Diospyros virginiana","Echinodorus bleheri","Elaeagnus commutata","Eucalyptus globulus","Fagus sylvatica","Ficus benjamina","Frangula alnus","Fraxinus americana","Fremontodendron californicum","Generic deadtree","Generic stump","Generic unknown","Gleditsia triacanthos","Gordonia lasianthus","Hamamelis virginiana","Helianthus annuus","Ilex aquifolium","Juglans regia","Juniperus occidentalis","Larix decidua","Laurus nobilis","Ligustrum ovalifolium","Liquidambar styraciflua","Liriodendron tulipifera","Lithocarpus densiflorus","Maclura pomifera","Magnolia grandiflora","Melaleuca quinquenervia","Melia azedarach","Morus alba","Musa acuminata","Myrica cerifera","Nyssa sylvatica","Opuntia aciculata","Ostrya virginiana","Oxydendrum arboreum","Parkinsonia aculeata","Paulownia tomentosa","Persea americana","Philodendron selloum","Phlebodium aureum","Phoenix dactylifera","Phyllostachys aurea","Picea abies","Pinus contorta","Pinus sylvestris","Platanus occidentalis","Populus tremuloides","Prosopis nigra","Prunus armeniaca","Pseudotsuga menziesii","Purshia glandulosa","Quercus alba","Quercus rubra","Rhamnus alaternus","Rhododendron tsutsuji","Rhus glabra","Robinia pseudoacacia","Rosa grandiflora","Sabal mexicana","Salix alba","Sambucus canadensis","Sansevieria trifasciata","Sapindus saponaria","Sassafras albidum","Schefflera actinophylla","Schinus molle","Sequoia sempervirens","Sequoiadendron giganteum","Shepherdia canadensis","Sophora tomentosa","Sorbus aria","Spartium junceum","Tamarix aphylla","Taxodium distichum","Taxus baccata","Thuja occidentalis","Tilia americana","Torreya nucifera","Triadica sebifera","Tsuga diversifolia","Ulmus minor","Umbellularia californica","Ungnadia speciosa","Vaccinium uliginosum","Washingtonia filifera","Yucca gloriosa")
+attr Mix_Plant_3 = ""
+@Group("PLANT MIX") @Order(6)
+@Range(0,100)
+attr Mix_Weight_3 = 0
+
+@Group("PLANT DISTRIBUTION",2) @Order(1)
+@Order(2) @Range(Sparse = 0.2, Moderate = 0.5, Natural = 1.0, Dense = 3, Overgrown = 6)
+attr Plant_Density = 0.5
+
+@Group("PLANT DISTRIBUTION") @Order(2)
+attr Plant_Max_Count_per_Species = 100  # to avoid small plants creating huge polycounts
+
+
+
+
+
+######################################################
+# Internal Functions
+#
+
+# In case weights do not add to 100, make them do so.
+totalOfMixWeights = Mix_Weight_1 + Mix_Weight_2 + Mix_Weight_3
+adjusted_Mix_Weight_1 = rint(100 * (Mix_Weight_1 / totalOfMixWeights)) 
+adjusted_Mix_Weight_2 = rint(100 * (Mix_Weight_2 / totalOfMixWeights)) 
+adjusted_Mix_Weight_3 = rint(100 * (Mix_Weight_3 / totalOfMixWeights))
+ 
+
+_getMix = Mix_Plant_1 + ";" + adjusted_Mix_Weight_1 + ";"
+	+ Mix_Plant_2 + ";" + adjusted_Mix_Weight_2 + ";"
+	+ Mix_Plant_3 + ";" + adjusted_Mix_Weight_3 + ";"
+
+_circleArea(r)	= r*r*3.14159265359
+
+_checkCount(c)	= case c > Plant_Max_Count_per_Species : Plant_Max_Count_per_Species else: c
+
+
+
+######################################################
+# RULES 
+#
+
+@StartRule
+PlantMix -->
+	Ground_Cover.GroundCover
+	PlantMix(_getMix)
+	
+PlantMix(mix) -->
+	case mix != "":
+		DistributePlant(listFirst(mix),float(listItem(mix,1))/100)
+		PlantMix(listRange(mix,2,100))		# recursive call until list is empty
+	else:
+		NIL
+
+DistributePlant(plant,coverage) -->
+	scatter(surface, _checkCount(geometry.area*coverage* Plant_Density / _circleArea(Plant_Display.getStandardRadius(plant))), uniform)
+		{ Plant_Display.Generate(plant) }
+		NIL
+
+
+

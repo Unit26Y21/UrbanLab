@@ -13,3 +13,12 @@ plant2D(seedColor)-->
 	primitiveDisk(20, 0.6)
 	extrude(.1)
 	color(seedColor)
+
+@StartRule	
+ScatterFacadeVeg(amount, vegColor) -->
+	scatter(surface,100, uniform){apply2D(vegColor)}
+	
+apply2D(vegColor) -->
+	primitiveCube(0.6, 0.6,0.6)
+	#extrude(.1)
+	color(vegColor)

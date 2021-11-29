@@ -1,0 +1,45 @@
+/**
+ * File:    Fountain.cga
+ * Created: 25 Apr 2013 01:42:49 GMT
+ * Author:  chri7180
+ */
+
+version "2013.1"
+
+# This creates a fountain from a shape.
+
+@Order(1)
+@Range(0.1,1)
+attr Height = 0.5
+
+@Order(2)
+@Range(0.1,1)
+attr Ledge_Width = 0.3
+
+@Order(3)
+@Color
+attr Fountain_Color = "#999999"
+
+@Order(4)
+@Color
+attr Water_Color = "#0099FF"
+
+const waterHeight = Height - 0.05 
+
+@StartRule
+Fountain -->
+	offset (-Ledge_Width)
+	comp(f) { inside: Inside | border: Border }
+
+Inside -->
+	# Set material name to create animated water effects in WebScene.
+	# See this page on the forum for more info: http://forums.arcgis.com/threads/88493-Animated-Water-Shader-in-WebScene
+	set(material.name, "watermaterial__waterparams_2_5")
+	color(Water_Color)
+	extrude(waterHeight)
+	
+Border -->
+	color(Fountain_Color)
+	extrude(Height)
+
+

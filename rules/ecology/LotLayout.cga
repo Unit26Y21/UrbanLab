@@ -6,7 +6,7 @@
 
 version "2021.0"
 
-#import ecology: "ecology.cga"
+import ecology: "ecology.cga"
 import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
 
 #### ATTRIBUTES ####
@@ -32,11 +32,11 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 # use StartRule to manage your different scenarios. You can use the same rule but different starting points
 @StartRule
 LowDensityLot -->	setback(meterConverter.meterTofeet(16)){	  street.front = Garden
-					| street.back = Garden 
+					| street.back = Garden
 					| street.left = Garden 
 					| street.right = Garden 
 					| remainder: LowDensityBuilding }
-    	
+
 Garden --> 
 	color("#567d46")
 
@@ -47,7 +47,7 @@ LowDensityBuilding -->
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
 HighDensityLot --> 
-	setback(rand(meterConverter.feet(16), blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
+	setback(rand(meterConverter.feet(16))) { street.back = blockrearyard| street.right = Garden | street.left = Garden|street.front = Garden 
         					   | remainder: HighDensityBuilding }
 
 HighDensityBuilding --> 
@@ -99,7 +99,7 @@ TopColumade -->
 ###
 
 OtherFloors --> 
-	split(y){meterConverter.feet(12):SlideFloors |meterConverter.feet(3):Floors keep.}*
+	split(y){meterConverter.feet(12):SlideFloors |meterConverter.feet(12):Floors keep.}*
 
 
 ###Balcony Tiles
@@ -118,29 +118,29 @@ SelectBalcony -->
 		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 		
 	#subtract balcony area from floors 
-Tile --> 
-	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
+#Tile --> 
+#	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
 	#split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
 
 
 	
-Balcony --> 
-	extrude (meterConverter.feet(rand(2,6 )))	
-	comp(f){object.top: BalconyTop | side:Facade | all:keep.}
+#Balcony --> 
+	#extrude (meterConverter.feet(rand(2,6 )))	
+	#comp(f){object.top: BalconyTop | side:Facade | all:keep.}
 	#texture(FacadeTexture)
 
-Facade -->	
+#Facade -->	
 #	setupProjection(0, scope.xy, 5, 5)
 #	texture(FacadeTexture)
 #	projectUV(0)*/
-	i ("Wintercreeper.jpg")
+#	i ("Wintercreeper.jpg")
 	
-BalconyTop -->
-	splitBalcony
+#BalconyTop -->
+#	splitBalcony
 	
 
 splitBalcony -->
-	split(y){meterConverter.feet(3): removeCoveredBalcony}*
+	split(y){meterConverter.feet(12): removeCoveredBalcony}*
 		
 removeCoveredBalcony -->
 	case overlaps: NIL
@@ -150,9 +150,9 @@ removeCoveredBalcony -->
 		report("Balcony Area", geometry.area())
 		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 		
-#BalconyArea-->
-#	color("#800080")
-#	splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+BalconyArea-->
+	color("#800080")
+	splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 
 EnvironmentalSpace -->
 	color("#567d46")
