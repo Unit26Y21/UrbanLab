@@ -85,8 +85,8 @@ Lot -->
 #SelectVerticalSurfaces-->
 	#comp(f){side: ReportVericalSurfaces}
 
-PlantOnFacades -->
-	plants.ScatterFacadeVeg(50,"#116530")
+#PlantOnFacades -->
+#	plants.ScatterFacadeVeg(50,"#116530")
 
 @StartRule#Roofs
 SelectTopSurfaces -->
