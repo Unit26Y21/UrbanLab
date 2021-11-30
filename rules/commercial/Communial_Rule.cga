@@ -8,51 +8,67 @@ version "2021.0"
 
 import commercial: "commercial/myfirstrule.cga"
 import meterConverter: "meterToFeet.cga"
+import functions: "commercial/commercialFunctions.cga"
 
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
+attr Commercial = 
+	20%: CommercialTypes[0]
+	20%:CommercialTypes[1]
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
+	else: CommercialTypes[6]
+	
 
-
-#### Want to make a rule on randomizing commercials on each of the first 3 floors ####
-
-
-####Constants####
-#attr Name - "String", Int, Float, Boolean
-attr maxHeight = 100
-
-@Range(min= 0,max= 10)
-attr Front_Depth = 1
-
-@Range(min= 0, max= 10)
-attr Rear_Depth = 1
-
-@Range(min= 0, max= 10)
-attr Side_Depth = 1
-
+@Color
+attr BldgColor = functions.assignBldgColor(Commercial)
+	
 @Range(min= 300, max= 1000)
 attr idealLotSize = 700
 
-attr floorNumber = 3
+@Range(min= 10000, max= 30000)
+attr totalPopulation = 700
 
-@StartRule
-Lot -->
-	case (geometry.area()>1000):
-		#if the lot is too big, make more lots.
-		splitArea(x){idealLotSize: DoSetbacks}*
-		
-	case (geometry.area()<300):
-		#if the lot is to small, reduce setbacks.
-		DoSetbacks
-		
-	else:
+@Enum("S","M","L")
+attr commercialSize =
+	10%: "L"
+	30%: "M"
+	else: "S"
+
+@Enum ("Apartment", "Condominium")
+attr Residental = 
+	50%: ResidentalTypes [0]
+	else: ResidentalTypes [1]
 	
-		#make a building using usual setbacks.
-		DoSetbacks
-		#split(z){~Lot_Width : DoSetbacks(1)| ~Distance_Seperation: NIL}*
+	
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "Rec Center", "Bar"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
 
 
+const commercialFloors = 3
+const floorHeight = 2
+#### Commerical and Residental Types ####
+	
+
+
+
+
+
+
+#################### RULES #############################
+@StartRule
+Parcel -->
+	#extrude(maxHeight)
+	color(BldgColor)
+	report("Area"+"."+Commercial, geometry.area(bottom))
+
+CommercialSizeRule -->
+	print( functions.programSize(commercialSize, totalPopulation))
+	
 #### Trying to Split Floors #####
-
-extrude(12) A
-
 A --> 	split(y){3 : B}*
 
 B -->	case (split.index == 0) : 
@@ -67,75 +83,4 @@ B -->	case (split.index == 0) :
      	else:
      		X
 
-#### Setbacks ####
-DoSetbacks -->
- 	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace}
- 	
-RearSpace -->
- 	setback(Rear_Depth){ street.back: RandomColor | remainder : SideSpace}
- 	
- 
-SideSpace -->
- 	setback(Side_Depth){ street.side: RandomColor | remainder: Normal}
- 	
-Normal -->
-	extrude (10)
 	
-RandomColor -->
-	color(rand(1), rand(1), rand(1))
-	
-
-#### Commerical and Residental Types ####
-	
-const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "Rec Center", "Bar"]
-const ResidentalTypes = ["Apartment", "Condominium"]	
-const floorHeight = 2
-
-
-@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
-attr Commercial = 
-	20%: CommercialTypes[0]
-	20%:CommercialTypes[1]
-	10%:CommercialTypes[3]
-	15%:CommercialTypes[2]
-	15%: CommercialTypes[4]
-	10%: CommercialTypes[5]
-	else: CommercialTypes[6]
-	
-@Enum ("Apartment", "Condominium")
-attr Residental = 
-	50%: ResidentalTypes [0]
-	else: ResidentalTypes [1]
-	
-	
-@Color
-attr BldgColor = assignBldgColor(Commercial)
-	
-assignBldgColor(input) = 
-	case input == "Supermarket": "#A447FE"
-	case input == "Clothing Outlet": "#C140E6"
-	case input == "Restaurant": "#FE8C47"
-	case input == "School": "#FC53EC"
-	case input == "Small Business": "#E64082"
-	case input == "Office": "#FE4C47"
-	case input == "Bar": "#5E74FF"
-	else: "000000"	
-	
-	
-	reportSQFT(i, list) -->
-	case i < size(list):
-		report(list[i], i)
-		reportSQFT(i + 1, list)
-	else:
-		stop.
-		NIL
-
-
-
-
-
-@StartRule
-Parcel -->
-	extrude(maxHeight)
-	color(BldgColor)
-	report("Area"+"."+Commercial, geometry.area(bottom))
