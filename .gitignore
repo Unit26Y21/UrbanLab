@@ -4,19 +4,6 @@ assets/wifiCell.dae
 assets/wifiCell.obj
 assets/wifiMediumTower.dae
 assets/wifiMediumTower.log
-bin/ATM.cgb
-bin/ecology.cgb
-bin/events.cgb
-bin/eventsClosure.cgb
-bin/meterToFeet.cgb
-bin/MyFirstRule.cgb
-bin/MyRule-Workshop2.cgb
-bin/MyRule-Workshop3.cgb
-bin/mySplit.cgb
-bin/PermittedStreetUse.cgb
-bin/waste.cgb
-bin/WiFiNetwork.cgb
-bin/workshop/MyFirstRule.cgb
 data/TheSite.gdb/_gdb.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/a00000001.freelist
 data/TheSite.gdb/a00000001.gdbindexes
@@ -142,4 +129,3 @@ data/TheSite.gdb/gdb
 data/TheSite.gdb/SiteOutline.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/StreetCenterline_TheSite.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/timestamps
-scenes/TheSite.cej
