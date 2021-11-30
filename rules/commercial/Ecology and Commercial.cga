@@ -1,0 +1,94 @@
+/**
+ * File:    Ecology and Commercial.cga
+ * Created: 29 Nov 2021 16:47:40 GMT
+ * Author:  sancion000
+ */
+
+version "2021.0"
+
+@Range(min = 3, max = 10)
+attr arcadeDepth = 3
+
+attr columnMatrix = [3,4]
+
+@Range(min=2.4, max=15)
+attr floorHeight = 10
+
+
+@Range(min=0, max=185)
+attr smallretail = 185
+
+const superMarketArea = 2000
+
+attr idealRetailGroundFloorsize = 185
+
+attr idealFacadeWidth = 4
+attr retailDepth = 5
+
+attr entranceWidth = 6
+
+attr categorizeRetail = ""
+
+@StartRule
+FirstFloorColumns -->
+	split(x){columnMatrix[0]: 
+			split(y){columnMatrix[1]:
+				PlaceColumn}}
+				
+PlaceColumn -->
+	comp(v){all: DrawColumn}
+
+DrawColumn -->
+	rotateScope(270,0,0)
+	primitiveQuad(0.5,0.5)
+	extrude(6)
+				
+FirstFloor --> 	
+	extrude(arcadeDepth)
+	alignScopeToAxes(y)
+	comp(f){0: Columnade
+			| 1: Columnade
+			| 4: TopColumade}
+
+Columnade -->
+	split(x){ 0.5: keep.
+			| 3: NIL
+			| 0.5: keep.
+			| 4: NIL
+			}*
+
+TopColumade -->
+	offset(-1, all)
+	extrude(1)
+	
+	
+Retailsize --> 
+# if retailsize is bigger than 185 square meter ,
+# keep ground floor 185 and make leftover size as second floor
+	case geometry.area() > superMarketArea:
+		set(categorizeRetail, "SuperMarket")
+		report("reatilType", categorizeRetail)
+		SmallRetailDepth
+		
+	else:
+		set(categorizeRetail, "SmallRetail")
+		
+		report("reatilType", categorizeRetail)
+		
+	
+
+SmallRetailDepth -->
+	#if retailsizefrontfacade > 12 meter 
+	#split(x){retailDepth: facadeRetail | ~1: supermarket}
+	setback(retailDepth){street.front: facadeRetail | remainder: supermarket}
+	
+facadeRetail -->
+	split(x){ 	idealFacadeWidth: smallRetailStore |
+			 	idealFacadeWidth: smallRetailStore |
+			 	entranceWidth: entrance
+			}*
+
+smallRetailStore --> color(1,1,0)
+	
+	
+	
