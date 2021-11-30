@@ -65,8 +65,10 @@ Parcel -->
 	color(BldgColor)
 	report("Area"+"."+Commercial, geometry.area(bottom))
 
+@StartRule
 CommercialSizeRule -->
-	print( functions.programSize(commercialSize, totalPopulation))
+	functions.programSizeReport(Commercial, totalPopulation) 
+	
 	
 #### Trying to Split Floors #####
 A --> 	split(y){3 : B}*

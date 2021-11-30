@@ -6,6 +6,8 @@
 
 version "2021.1"
 
+import meterConverter: "meterToFeet.cga"
+
 # to assign color per commercial use
 assignBldgColor(input) = 
 	case input == "Supermarket": "#A447FE"
@@ -26,59 +28,42 @@ reportSQFT(i, list) -->
 		stop.
 		NIL
 
-# go to program Size
-# check each line in the list it gives me
-# report the unit of that list
-#continue until the list is finished
-
-/*
-reportUnitOfUse(i, list, population) -->
-	case i < size(list):
-		report(programSize(list[i], population), )
-		
-			[
-				["DayCare", str(6/population * 1500)],
-				["Small Business", str(30/population * 1000)]
-			]
-		
-		
-		reportUnitOfUse(i + 1, list)
-	else:
-		stop.
-		NIL
-
-
-# reportProgramSIze(commercialSize, totalPopulation)
-reportProgramSize(inputList, population) -->
-	reportUnitOfUse(i, inputList, population)
-	
-	*/
-	
 
 # input: population | output: unique unit of use
 # function is meant for goals
 # it should be used for reporting
-programSize(input, population) = 
-	case input == "S": 
-		[
-			["DayCare", str(6/population * 1500)],
-			["Small Business", str(30/population * 1000)]
-		]
-		
-	case input == "M": 
-		#I need 8-10 bodegas and 6-7 minimarts per 1.5k
-		[
-			["Bodega", str(10/population * 1500)],
-			["MiniMart", str(7/population * 1500)]
-		]
-	case input == "L": 
-		# 3 supermakets per 5k people, then somewhere else you determine sqft
-		[
-			["Supermarkets", str(3/population * 5000)]
-		]
-		
+categorizeProgamSizePerUse(input) =
+	case count("Supermarket", input) >=1: "M"
+	case count("Bodega; Minimarket", input) >=1: "L"
 	else:
-		#what is the unit of use for this?
-		[
-			["Flexible", str(3/population * 5000)]
-		]
+		"S"
+		
+programSizeReport(input, population) -->
+	programSizeSupply(input, population)
+	programSizeDemand(input, population)
+
+programSizeSupply(input, population) -->
+	report(input + "_" + "supply", meterConverter.sqmeterTosqft(geometry.area())) #reports size: S,M,L
+
+programSizeDemand(input, population) -->
+	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
+	report(input + "_" + "minDemand" , minProgramSize(input, population)) #reports minimumNeeded: 6 Daycares
+	report(input + "_" + "maxDemand" , maxProgramSize(input, population)) #reports size: 7 Daycares	
+	
+minProgramSize(input, population) = 
+	case input == "DayCare": 6/population * 1500
+	case input == "Small Business": 30/population * 1000
+	case input == "Bodega": 8/population * 1500
+	case input == "MiniMart": 6/population * 1500
+	case input == "Supermarket": 1/population * 5000
+	else:
+		3/population * 5000 #Flexible
+		
+maxProgramSize(input, population) = 
+	case input == "DayCare": 7/population * 1500
+	case input == "Small Business": 30/population * 1000
+	case input == "Bodega": 10/population * 1500
+	case input == "MiniMart": 7/population * 1500
+	case input == "Supermarket": 3/population * 5000
+	else:
+		3/population * 5000 #Flexible
