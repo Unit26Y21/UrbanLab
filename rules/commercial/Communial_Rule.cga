@@ -70,6 +70,10 @@ attr Commercial =
 	10%: CommercialTypes[5]
 	else: CommercialTypes[6]
 	
+	
+	--> 3 Supermarket per  5K
+	    30 Small Businesses Per 1K
+	
 @Color
 attr BldgColor = assignBldgColor(Commercial)
 	
@@ -84,6 +88,15 @@ assignBldgColor(input) =
 	case input == "Bar": "#5E74FF"
 	else: "000000"	
 	
+	
+	const Buildingtypes = ["Community", "Healthcare" , "Mobilty" , "Sustainabilty" , "Businesses" , "Housing"
+	assignBldgColor(input) = 
+	
+	
+	
+	
+	
+	
 reportSQFT(i, list) -->
 	case i < size(list):
 		report(list[i], i)
@@ -97,6 +110,9 @@ Parcel -->
 	extrude(maxHeight)
 	color(BldgColor)
 	report("Area"+"."+Commercial, geometry.area(bottom))
+	
+	
+	
 	
 
 
