@@ -15,7 +15,9 @@ This repository is a collaboration of different teams assembled in **Unit26’s 
 
 A preview of the systems can bee seen in the webscene below.
 
+<div>
 <iframe width="500" height="400" frameborder="0" scrolling="no" allowfullscreen src="https://arcg.is/1jz948"></iframe>
+</div>
 
 To view a highlevel preview of the systems in a web scene *[click here](https://arcg.is/1OeKDP0)*
 
