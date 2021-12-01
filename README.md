@@ -28,24 +28,28 @@ You can download the sample data the class used to develop the system rules [as 
 
 ### Waste and Density
 
-![waste_example](../examples/waste)
+![waste_example](examples/waste.jpg)
 
 A semi-decentralized waste system that is distributed around a neighborhood lots and the streets.
 
 
 ### Events and Community(Balance Spaces)
-![event1_example](../examples/event1)
+![event1_example](examples/events1.png)
 
-![event2_example](../examples/event2)
+![event2_example](examples/events2.png)
 
 
 ### Telecommunications
+![telecom_example](examples/telecom.png)
 
 ### Surfacescapes (“Streets”)
+![surfacescapes_example](examples/surfacescapes.png)
 
 ### Economic Activity (“Commercial”)
+![commercial_example](examples/commercial.PNG)
 
 ### Urban Ecology
+![ecology_examples](examples/ecology.jpg)
 
 ## Feedback
 Any feedback can be sent to the repository owners: htarridopicart@ccny.cuny.edu, srickenbacker@ccny.cuny.edu
