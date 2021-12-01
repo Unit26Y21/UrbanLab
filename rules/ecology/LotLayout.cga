@@ -53,7 +53,8 @@ HighDensityLot -->
 HighDensityBuilding --> 
 	extrude(world.up, meterConverter.feet(rand(200)))
 	SplitBuilding
-
+	#PlantsSeedsOnRoof
+	
 Garden --> 
 	color("#567d46")
 	
@@ -64,13 +65,15 @@ Garden -->
 SplitBuilding -->
 	label("building")
 	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor 
-											 |street.back: FirstFloor	 
-											 |street.right: FirstFloor 
-											 |street.left: FirstFloor
+											 |street.back: NIL	 
+											 |street.right: NIL
+											 |street.left: NIL
 											 |object.bottom: FirstFloorColumns}  
-											 | ~1: OtherFloors
+			| ~1: 	 OtherFloors
+					comp(f){ object.top: PlantsSeedsOnRoof keep.
+						 }
 			} 
-			
+	
 			
 ####COLUMNS###
 FirstFloorColumns -->
@@ -108,25 +111,25 @@ TopColumade -->
 
 
 OtherFloors --> 
-	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors keep.}*
+	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors print(split.index + ", " + split.total) keep.}*
 
 
 ###Balcony Tiles
 
 Floors -->
-	comp(f){ object.top: FloorTop 
-		   | street.front: Tile 
-		   | street.back:Tile 
-		   | street.right: Tile 
-		   | street.left: Tile}
+		comp(f){ object.top: FloorTop 
+			   | street.front: Tile 
+			   | street.back:Tile 
+			   | street.right: Tile 
+			   | street.left: Tile}
 
 FloorTop -->
-	color("#3B5323")
-	SelectBalcony
-	
-PlantSeedsOnRoof -->
-	ecology.PlantSeedsOnRoof
+	keep.
+		
 
+PlantsSeedsOnRoof-->
+	 ecology.ReportTopSurfaces("Roofs")
+	
 ###Attempting to select Horizontal space as a result of sliding
 ###and calculate the area for run off savings
 
@@ -189,7 +192,7 @@ removeCoveredBalcony -->
 	# queries between 3D and 2D shapes
 	case touches(intra, "balcony"): keep.
 	else: 
-		ecology.ReportTopSurfaces
+		ecology.ReportTopSurfaces("Balcony")
 		
 BalconyArea-->
 	color("#800080")
@@ -198,7 +201,7 @@ BalconyArea-->
 SlideFloors -->
 	case split.index < 0:
 		DoNothing. #at first floor
-		 
+
 	else:
 		translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 		Floors

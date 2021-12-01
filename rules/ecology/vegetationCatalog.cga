@@ -6,13 +6,21 @@
  
 version "2021.0"
 
+import meterConverter: "meterToFeet.cga" #this needs to match exactly the name of the file
+
+
 const VegetationList= ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl"]
+
+@Angle
+@Range(min=0, max=360)
+attr rotationRoofGarden = 0
 
 @Enum("SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl")
 attr Vegetation = ""
 
 
 attr VegetationGroup1 = ["WaMi","SoRu","WaLi","Cab","Ho"]
+
 
 
 scatterGroupPlants(i, list) -->
@@ -26,6 +34,23 @@ scatterGroupPlants(i, list) -->
 balconyPlantMachine(list) -->
 		vegetationVisualization(list[rint(rand(0,size(list)))])
 
+balconyPlantMachineRoof(list) -->
+	splitArea(x){geometry.area()/rand(10):
+					splitArea(y){geometry.area()/rand(10): 
+						oudolfLayout(list)
+					}*}*
+
+oudolfLayout(list) -->
+	offset(-meterConverter.feet(2), inside)
+	oudolfCircle(list)
+	
+oudolfCircle(list) -->
+		center(xy)
+		primitiveDisk()
+		extrude(0.5)
+		r(scopeCenter, 0,0,rotationRoofGarden)
+		vegetationVisualization(list[rint(rand(0,size(list)))])
+					 
 # scatterForLoop(0,VegetationGroup1)
 # return:
 	# scatter(surface, 20, uniform) { vegetationVisualization("WaMi")}
