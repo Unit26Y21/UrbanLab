@@ -44,6 +44,7 @@ Here you can find a high level description of the systems that make up the Urban
 ![A fully decentralized system of events to balance interscidial vertical and horizontal spaces.](rules/events)
 
 ### Telecommunications
+
 ![telecom_example](examples/telecom.png)
 
 ![A fully decentralized Internet Service Provider for the community.](rules/telecom)
@@ -54,16 +55,19 @@ Here you can find a high level description of the systems that make up the Urban
 ![A semi-decentralized system of reorganizing “streets” to accomodate Climate Change.](rules/surfascapes)
 
 ### Economic Activity (“Commercial”)
+
 ![commercial_example](examples/commercial.png)
 
 ![A semi-decentralized system of economic allocation use that uses demand and supply dynamics.](rules/commercial)
 
 ### Urban Ecology
+
 ![ecology_example](examples/ecology.jpg)
 
 ![A fully autonomous and decentralized approach that leverages urban ecology for retaining water at a neighborhood level.](rules/ecology)
 
 ## Feedback
+
 Any feedback can be sent to the repository owners: htarridopicart@ccny.cuny.edu, srickenbacker@ccny.cuny.edu
 
 —
