@@ -12,7 +12,7 @@ const VegetationList= ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","
 attr Vegetation = ""
 
 
-attr VegetationGroup1 = ["WaMi;SoRu;WaLi;Cab;Ho"]
+attr VegetationGroup1 = ["WaMi","SoRu","WaLi","Cab","Ho"]
 
 
 scatterGroupPlants(i, list) -->
@@ -23,12 +23,8 @@ scatterGroupPlants(i, list) -->
 		stop.
 		NIL
 		
-scatterGroupPlants2(i, list) -->
-	case i < size(list):
-		vegetationVisualization(list[i])
-	else:
-		stop.
-		NIL
+balconyPlantMachine(list) -->
+		vegetationVisualization(list[rint(rand(0,size(list)))])
 
 # scatterForLoop(0,VegetationGroup1)
 # return:

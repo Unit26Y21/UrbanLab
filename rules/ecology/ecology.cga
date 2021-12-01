@@ -103,10 +103,10 @@ ReportTopSurfaces -->
 	#report runoff saving will go here:
 	set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 	report("Runoff Savings", runoffSavings)
-	#PlantSeedsOnRoof
+	PlantSeedsOnRoof
 
 PlantSeedsOnRoof -->
-	vegetation.scatterGroupPlants(0, vegetation.VegetationGroup1)
+	vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
 	
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
