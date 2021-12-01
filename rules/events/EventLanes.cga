@@ -6,6 +6,8 @@
 
 version "2019.0"
 
+import meterConverter: "meterToFeet.cga"
+
 @Enum(1,2,3)
 attr LOD = 1
 
@@ -63,23 +65,24 @@ selectOddLanes -->
 	//Five//////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 5 == 0:
 		Five
-#		roofShed(byHeight, rand(2), rand(4))
+		Rack
 #		rotate(rel, object, 0, rand(360), 0)
 	
 	//KIOSKS////////////////////////////////////
 	//Three/////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 3 == 0:
-		scatter(surface, 3, uniform){ primitiveQuad(2,3)
-										label("kiosk")
-										CheckOverlap }		
-		Three	
+		#scatter(surface, 3, uniform){ primitiveQuad(2,3)
+										#label("kiosk")
+										#CheckOverlap }		
+		Three
+		Kiosks	
 	
 	//FURNITURE&TREES/////////////////////////////////
 	//Two////////////////////////////////////////////			
 	case float(listLast(getTreeKey())) % 2 == 0:
 		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
 		scatter(surface, 2, uniform){ Benches }
-	#	scatter(surface, 2, uniform){ Trees }
+		scatter(surface, 2, uniform){ Trees }
 		Two
 	
 	//One//////////////////////////////////////		
@@ -93,8 +96,30 @@ CheckOverlap --> //////////////////////////Not working CheckingOverlap rule
 	else : Kiosks
 	
 Kiosks-->
+	case LOD == 2 :
  	rotate(rel, object, 0, rand(360),0)
- 	#i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+ 	i("StreetVendor.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 	#	rotate(rel, object, 0, rand(360),0)
+		primitiveQuad(meterConverter.feet(6), meterConverter.feet(9))
+		extrude(meterConverter.feet(6))
+	#	reduceGeometry(0.5) This makes half of the box. Commenting it.
+ 	
+
+///////////////////////////////////////////////////////////////////////////////
+//RACK/////////////////////////////////////////////////////////////////////////
+
+Rack-->
+	case LOD == 2 :
+ 	rotate(rel, object, 0, rand(360),0)
+ 	i("RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		rotate(rel, object, 0, rand(360),0)
+		primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
+		extrude(meterConverter.feet(10))
+		reduceGeometry(0.5)
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,39 +133,28 @@ Benches-->
 LittleBench-->
 	rotate(rel, object, 0, rand(360),0)
 	i("Garden+Bench.dae", yUp, keepSizeAlignPosition)
+	reduceGeometry(0.5)
 
 BigBench-->
 	rotate(rel, object, 0, rand(360),0)
-	i("Garden+Bench2.dae", yUp, keepSizeAlignPosition)
+	i("Garden+Bench3.dae", yUp, keepSizeAlignPosition)
+	reduceGeometry(0.5)
 
-<<<<<<< Updated upstream
-/*
-=======
-/* 
->>>>>>> Stashed changes
-/////////////////////////////////////
-//TREES/////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//TREES////////////////////////////////////////////////////////////////////////
 
 Trees-->
-	case LOD == 2:
+	case LOD == 2 :
 		rotate(rel, object, 0, rand(360),0)
 		i("Tree.dae", yUp, keepSizeAlignPosition)
-<<<<<<< Updated upstream
-		
+	
 	else: 
 		rotate(rel, object, 0, rand(360),0)
 		primitiveDisk(16, .5)
 		extrude(4)
-=======
 		reduceGeometry(0.5)
 
-	else:¨
-		rotate(rel, object, 0, rand(360),0)
-		primtiveCylinder(0.25,0.25)
-		extrude(4)
-		
->>>>>>> Stashed changes
-*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //TEXTURES/////////////////////////////////////////////////////////////////////
@@ -150,24 +164,39 @@ Second-->
 	
 	
 Five-->
+	case LOD == 2 :
 	tileUV(0,2,2) texture(textureFolder + "ConcreteTiles.jpg")
+	
+	else : color("#919191")
 	
 Three-->
-#	color("#c8f5a2")
+	case LOD == 2 :
 	tileUV(0,2,2) texture(textureFolder + "ConcreteTiles.jpg")
 	
+	else : color("#919191")
+	
 Two-->
-#	color("#c94450")
+	case LOD == 2 :
 	tileUV(0,2,2) texture(textureFolder + "Grass+Concrete.jpg")
 	
+	else : color("#82a671")
+	
 One-->
-	color ("#cfcfcf")
+	#color ("#cfcfcf")
+	split(z){ 0.5 : split(x){ rand(1,3) : Separator | ~7 : Two } 
+			| 0.5 : Separator }*
 	
 Seven-->
-	split(z){ 0.5 : Two | 0.5 : Separator }*
+	split(z){ 0.5 : split(x){ rand(1,3) : Two | ~7 : Separator } 
+			| 0.5 : Separator }*
 	
-	
-	
+
+
+ 
+
+
+/*   
+Archive	 
 dividerExample1 -->
 	20%: split(y){rand(5,10): PotentialLocation}*
 	15%: split(y){rand(5,10): PotentialLocation}*
@@ -178,3 +207,4 @@ dividerExample1 -->
 PotentialLocation -->
 #choose the face, then randomly between 0 and the total number of components
 	comp(f){rint(rand(0,comp.total)): Kiosks} #we use comp.total to access the total number of splits
+*/ 
