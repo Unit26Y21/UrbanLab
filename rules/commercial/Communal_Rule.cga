@@ -61,7 +61,7 @@ const floorHeight = 2
 #################### RULES #############################
 @StartRule
 Parcel -->
-	#extrude(maxHeight)
+	extrude(rand(20,30))
 	color(BldgColor)
 	report("Area"+"."+Commercial, geometry.area(bottom))
 
