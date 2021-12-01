@@ -1,0 +1,91 @@
+/**
+ * File:    commercialFunctions.cga
+ * Created: 30 Nov 2021 19:44:03 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+import meterConverter: "meterToFeet.cga"
+
+# to assign color per commercial use
+assignBldgColor(input) = 
+	case input == "Supermarket": "#A447FE"
+	case input == "Clothing Outlet": "#C140E6"
+	case input == "Restaurant": "#FE8C47"
+	case input == "School": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
+	else: "000000"	
+	
+# to report sqft of use
+reportSQFT(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportSQFT(i + 1, list)
+	else:
+		stop.
+		NIL
+
+
+#categorization of size is determined by the use
+# not sure how you plan on using this, but it is best captured in a function.
+categorizeProgamSizePerUse(input) =
+	case count("Supermarket", input) >=1: "M"
+	case count("Bodega; Minimarket", input) >=1: "L"
+	else:
+		"S"
+		
+		
+# input: population | output: unique unit of use
+# function is meant for goals
+# it should be used for reporting
+	
+#instead of having to call 3 rules, you group them into one to get supply and demand
+programSizeReport(input, population) -->
+	programSizeSupply(input, population)
+	programSizeDemand(input, population)
+
+# you report the ACTUAL supply in sqft per sqft per floor to get supply.
+programSizeSupply(input, population) -->
+	report(input + "_" + "supply", meterConverter.sqmeterTosqft(geometry.area())) #reports size: S,M,L
+
+# when you multiply unit need * avg size = total demand
+# you report this in sqft.
+programSizeDemand(input, population) -->
+	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
+	report(input + "_" + "minDemand" , minProgramSize(input, population) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
+	report(input + "_" + "maxDemand" , maxProgramSize(input, population) *  programSizeSqFt(input)) #reports size: 7 Daycares	
+	
+### These are per unit ###
+# in other words i need  3supermarkets
+# this is the same for minimum and maximum
+# if you do not need the minimum or the maxmimum, you can delete it or comment it out
+minProgramSize(input, population) = 
+	case input == "DayCare": 6/population * 1500
+	case input == "Small Business": 30/population * 1000
+	case input == "Bodega": 8/population * 1500
+	case input == "MiniMart": 6/population * 1500
+	case input == "Supermarket": 1/population * 5000
+	else:
+		3/population * 5000 #Flexible
+		
+maxProgramSize(input, population) = 
+	case input == "DayCare": 7/population * 1500 
+	case input == "Small Business": 30/population * 1000
+	case input == "Bodega": 10/population * 1500
+	case input == "MiniMart": 7/population * 1500
+	case input == "Supermarket": 3/population * 5000
+	else:
+		3/population * 5000 #Flexible
+
+### This is avg sqft of unit ###
+# in other words 1 supermarket is, on average, 300,000 sqft.
+programSizeSqFt(input) = 
+	case input == "DayCare": 1000
+	case input == "Small Business": 2000
+	case input == "Bodega": 800
+	case input == "MiniMart": 10000
+	case input == "Supermarket": 300000
+	else: 1

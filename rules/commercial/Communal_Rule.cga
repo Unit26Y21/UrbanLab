@@ -1,0 +1,88 @@
+/**
+ * File:    Communial_Rule.cga
+ * Created: 10 Nov 2021 16:01:59 GMT
+ * Author:  sancion000
+ */
+
+version "2021.0"
+
+import commercial: "commercial/myfirstrule.cga"
+import meterConverter: "meterToFeet.cga"
+import functions: "commercial/commercialFunctions.cga"
+
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
+attr Commercial = 
+	20%: CommercialTypes[0]
+	20%:CommercialTypes[1]
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
+	else: CommercialTypes[6]
+	
+
+@Color
+attr BldgColor = functions.assignBldgColor(Commercial)
+	
+@Range(min= 300, max= 1000)
+attr idealLotSize = 700
+
+@Range(min= 10000, max= 30000)
+attr totalPopulation = 700
+
+@Enum("S","M","L")
+attr commercialSize =
+	10%: "L"
+	30%: "M"
+	else: "S"
+
+@Enum ("Apartment", "Condominium")
+attr Residental = 
+	50%: ResidentalTypes [0]
+	else: ResidentalTypes [1]
+	
+	
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "Rec Center", "Bar"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
+
+
+const commercialFloors = 3
+const floorHeight = 2
+#### Commerical and Residental Types ####
+	
+
+
+
+
+
+
+#################### RULES #############################
+@StartRule
+Parcel -->
+	extrude(rand(20,30))
+	color(BldgColor)
+	report("Area"+"."+Commercial, geometry.area(bottom))
+
+@StartRule
+CommercialSizeRule -->
+	functions.programSizeReport(Commercial, totalPopulation) 
+	
+	
+#### Trying to Split Floors #####
+A --> 	split(y){3 : B}*
+
+B -->	case (split.index == 0) : 
+     		color("#ff0000") x
+     		
+     	case (split.index == 1) : 
+     		color("#ff0000") X
+   
+     	case (split.index == split.total-1) :
+     		color("#0000ff") X
+   
+     	else:
+     		X
+
+	
