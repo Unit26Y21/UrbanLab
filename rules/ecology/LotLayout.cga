@@ -70,8 +70,6 @@ SplitBuilding -->
 											 |street.left: NIL
 											 |object.bottom: FirstFloorColumns}  
 			| ~1: 	 OtherFloors
-					comp(f){ object.top: PlantsSeedsOnRoof keep.
-						 }
 			} 
 	
 			
@@ -111,20 +109,20 @@ TopColumade -->
 
 
 OtherFloors --> 
-	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors print(split.index + ", " + split.total) keep.}*
+	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors  keep.}*
 
 
 ###Balcony Tiles
 
 Floors -->
-		comp(f){ object.top: FloorTop 
+	comp(f){ object.top: FloorTop 
 			   | street.front: Tile 
 			   | street.back:Tile 
 			   | street.right: Tile 
 			   | street.left: Tile}
 
 FloorTop -->
-	keep.
+	color(1,1,1,0.5)
 		
 
 PlantsSeedsOnRoof-->
@@ -203,9 +201,16 @@ SlideFloors -->
 		DoNothing. #at first floor
 
 	else:
-		translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
-		Floors
-		keep.
+		case split.index +1 == split.total:
+			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
+			Floors
+			comp(f){object.top: PlantsSeedsOnRoof}
+			keep.
+			
+		else:
+			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
+			Floors
+			keep.
 	
 #Reports 	
 Lot -->
