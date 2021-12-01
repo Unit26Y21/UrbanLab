@@ -187,9 +187,6 @@ SoilGradeCoefficient(gradeType) =
 ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade) = rainfallIntensity * roofArea - (soilGrade * rainfallIntensity * roofArea)
 	
 	
-#Courtyard
-#Horizontal plants
-#Vertical Plants
-#Split roof surfaces
+
 
 	
