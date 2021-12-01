@@ -3,8 +3,6 @@ CUNY Spitzer School of Architecture - 2021
 
 Repository to place all CityEngine code for Unit26 for the Spitzer School of Architecture. A syllabus for the class that created this repository *[click here](https://docs.google.com/document/d/1OeA53enEJdavxhBFRCKM4Jie3uw_BkkP8MtLnRKEhug/edit?usp=sharing)*
 
-
-
 ## Intro
 This repository is a collaboration of different teams assembled in **Unit26’s Design Anarchy Studio**. The repository contains the code for each individual system created by the groups of students of 2021. These systems are the result of viewing the city as a series of self-assembled systems that interact and integrate with one another. The following systems were identified:
 
@@ -30,7 +28,16 @@ You can download the sample data the class used to develop the system rules [as 
 
 ### Waste and Density
 
+![waste_example](../examples/waste)
+
+A semi-decentralized waste system that is distributed around a neighborhood lots and the streets.
+
+
 ### Events and Community(Balance Spaces)
+![event1_example](../examples/event1)
+
+![event2_example](../examples/event2)
+
 
 ### Telecommunications
 
