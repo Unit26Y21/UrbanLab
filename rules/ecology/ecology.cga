@@ -107,9 +107,15 @@ ReportTopSurfaces -->
 PlantSeedsOnRoof -->
 	plants.scatterSeeds(50, "#EB5279")
 	plants.scatterSeeds(50, "#EBA052")
-	plants.scatterSeeds(50, "#00D100")
-	
-	
+	#plants.scatterSeeds(50, "#00D100")#neon green
+	plants.scatterSeeds(50, "#131c25")#fern-grey1
+	plants.scatterSeeds(50, "#d0d6dd")#fern-grey2
+	plants.scatterSeeds(50, "#ff84a6")#filter-pink1      
+	plants.scatterSeeds(50, "#ff84a6")#shrub-purple1
+    plants.scatterSeeds(50, "#ff84a6")#shrub-purple2
+ 	plants.scatterSeeds(50, "#5b9aa0")#blue
+ 	plants.scatterSeeds(50, "#FF0000")
+    plants.scatterSeeds(50, "#7BCC70")   green
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =

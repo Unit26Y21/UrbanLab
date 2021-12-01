@@ -19,7 +19,8 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 
 	attr columnMatrix = [3,4]
 	
-	
+@Range(min=0, max=1)
+attr colorValue = 1	
 	
 ### TEXTURES ###
 
@@ -64,7 +65,8 @@ SplitBuilding -->
 	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
 						|object.bottom: FirstFloorColumns}  
 			| ~1: OtherFloors
-			}
+			} 
+			
 			
 ####COLUMNS###
 /*FirstFloorColumns -->
@@ -109,8 +111,13 @@ Floors -->
 	comp(f){object.top: FloorTop | street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
 
 FloorTop -->
-	color ("#800080")
+	color("#3B5323")
+	#color ("#800080")
 	SelectBalcony
+	PlantSeedsOnRoof
+
+PlantSeedsOnRoof -->
+	ecology.PlantSeedsOnRoof
 	
 SelectBalcony -->
 	case overlaps: NIL
@@ -120,18 +127,28 @@ SelectBalcony -->
 		
 	#subtract balcony area from floors 
 Tile --> 
-	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
-    split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
+	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony| meterConverter.feet(9): Balcony }*
+    split (y){meterConverter.feet(3):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony |meterConverter.feet(3):Balcony }*
 	
 	
 Balcony --> 
 	extrude (meterConverter.feet(rand(2,6 )))	
-	comp(f){object.top: BalconyTop | side:Facade | all:keep.}
+	#comp(f){object.top: BalconyTop | side:Facade | all:keep.}
 	colorTiles
 	
 colorTiles -->
-	color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
+	color("#608341")
+	#color("#83F52C")
+	
+	
+	
+	
+	
+	#color ( colorRamp("spectrum",colorValue))
+	
+	#color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
 
+    
 #Facade -->	
 #	setupProjection(0, scope.xy, 5, 5)
 	#texture(FacadeTexture)
@@ -153,8 +170,8 @@ removeCoveredBalcony -->
 		report("Balcony Area", geometry.area())
 		#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 		
-BalconyArea-->
-	color("#800080")
+#BalconyArea-->
+	#color("#800080")
 	#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 
 #EnvironmentalSpace -->
@@ -164,12 +181,13 @@ BalconyArea-->
 #	color("#800080")
 	
 color -->
-	color("#90EE90")
-	###
+	color("#3B5323")
+	###color("#90EE90")
 
 SlideFloors -->
 	case split.index < 0:
 		DoNothing. #at first floor
+		 
 	else:
 		translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 		Floors
