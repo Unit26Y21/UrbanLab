@@ -114,17 +114,33 @@ FloorTop -->
 	color("#3B5323")
 	SelectBalcony
 	PlantSeedsOnRoof
-
+	#SplitHspace
+	
 PlantSeedsOnRoof -->
 	ecology.PlantSeedsOnRoof
+
+###Attempting to select Horizontal space as a result of sliding
+###and calculate the area for run off savings
+
+#SplitHspace -->
+#	comp(f) {top : FloorArea}keep.
+
 	
+#removeCoveredHspace -->
+	#case overlaps: NIL
+	#else: 
+	#	 comp(f) {top : BalconyArea}keep.
+	#	report("Balcony Area", geometry.area())
+
+
+########This was done for the "balcony" which is now not the area that is regarded as the horizontal space. 	
 SelectBalcony -->
 	case overlaps: NIL
 	else: comp(f) {top : FloorArea}keep.
 		report("FloorArea", geometry.area())
 		
-		
-	#subtract balcony area from floors 
+	
+	
 Tile --> 
 	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony| meterConverter.feet(9): Balcony }*
     split (y){meterConverter.feet(3):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony |meterConverter.feet(3):Balcony }*
@@ -141,12 +157,6 @@ colorTiles -->
 	#color ( colorRamp("spectrum",colorValue))
 	#color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
 
-    
-#Facade -->	
-#	setupProjection(0, scope.xy, 5, 5)
-	#texture(FacadeTexture)
-#	projectUV(0)
-#	i ("Wintercreeper.jpg")
 	
 BalconyTop -->
 	splitBalcony
@@ -165,13 +175,7 @@ removeCoveredBalcony -->
 		
 #BalconyArea-->
 	#color("#800080")
-	#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
 
-#EnvironmentalSpace -->
-#	color("#567d46")
-
-#BalanceSpace -->
-#	color("#800080")
 	
 color -->
 	color("#3B5323")
