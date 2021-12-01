@@ -11,8 +11,8 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
-@Range(min = 0, max = 50)
-	attr blockRearYard = meterConverter.feet(16) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+#@Range(min = 0, max = 50)
+#	attr blockRearYard = meterConverter.feet(20) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 @Range(min = 3, max = 10)
 	attr arcadeDepth = meterConverter.feet(9)
@@ -47,7 +47,7 @@ LowDensityBuilding -->
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
 HighDensityLot --> 
-	setback(rand(meterConverter.feet(16))) { street.back = blockrearyard| street.right = Garden | street.left = Garden|street.front = Garden 
+	setback(meterConverter.feet(20)) { street.back = Garden | street.right = Garden | street.left = Garden|street.front = Garden 
         					   | remainder: HighDensityBuilding }
 
 HighDensityBuilding --> 
@@ -112,7 +112,6 @@ Floors -->
 
 FloorTop -->
 	color("#3B5323")
-	#color ("#800080")
 	SelectBalcony
 	PlantSeedsOnRoof
 
@@ -123,7 +122,7 @@ SelectBalcony -->
 	case overlaps: NIL
 	else: comp(f) {top : FloorArea}keep.
 		report("FloorArea", geometry.area())
-		#splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+		
 		
 	#subtract balcony area from floors 
 Tile --> 
@@ -139,13 +138,7 @@ Balcony -->
 colorTiles -->
 	color("#608341")
 	#color("#83F52C")
-	
-	
-	
-	
-	
 	#color ( colorRamp("spectrum",colorValue))
-	
 	#color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
 
     
