@@ -8,6 +8,7 @@ version "2021.0"
 
 import plants: "plants.cga"
 import meterConverter: "MeterToFeet.cga"
+import vegetation: "vegetationCatalog.cga"
 
 ####### CONSTANTS ########
 
@@ -105,74 +106,8 @@ ReportTopSurfaces -->
 	#PlantSeedsOnRoof
 
 PlantSeedsOnRoof -->
-	###pinks###
+	vegetation.scatterGroupPlants(0, vegetation.VegetationGroup1)
 	
-	/*plants.scatterSeeds(50, "#EB5279")
-	plants.scatterSeeds(50, "#EBA052")
-	#plants.scatterSeeds(50, "#00D100")#neon green
-	plants.scatterSeeds(50, "#131c25")#fern-grey1
-	plants.scatterSeeds(50, "#d0d6dd")#fern-grey2
-	plants.scatterSeeds(50, "#ff84a6")#filter-pink1      
-	plants.scatterSeeds(50, "#ff84a6")#shrub-purple1
-    plants.scatterSeeds(50, "#ff84a6")#shrub-purple2
- 	plants.scatterSeeds(50, "#5b9aa0")#blue
- 	plants.scatterSeeds(50, "#FF0000")
-    plants.scatterSeeds(50, "#7BCC70")  */
-    
- ###Greens###
- #00FFFF	
-	 plants.scatterSeeds(50,"#7FFFD4" ) #Aquamarine	
-	 plants.scatterSeeds(50,"#454B1B" )#Army Green		
-	 plants.scatterSeeds(50, "#088F8F")#Blue Green		
-	 plants.scatterSeeds(50, "#AAFF00")#Bright Green		
-	 plants.scatterSeeds(50, "#5F9EA0")Cadet Blue		
-	 plants.scatterSeeds(50, "#097969")Cadmium Green		
-	 plants.scatterSeeds(50,"#AFE1AF" )Celadon		
-	 plants.scatterSeeds(50, "#DFFF00")Chartreuse		
-	 plants.scatterSeeds(50, "#E4D00A")Citrine		
-	 plants.scatterSeeds(50, "#00FFFF")Cyan		
-	 plants.scatterSeeds(50, "#023020")Dark Green		
-	 plants.scatterSeeds(50, "#7DF9FF")Electric Blue		
-	#Emerald Green	#50C878	
-	#Eucalyptus	#5F8575	
-	#Fern Green	#4F7942	
-	#Forest Green	#228B22	
-	#Grass Green	#7CFC00	
-	#Green	#008000	
-	#Hunter Green	#355E3B	
-	#jade	#00A36C	
-	
-	
-	/*
-	Jungle Green	#2AAA8A	rgb(42, 170, 138)
-	Kelly Green	#4CBB17	rgb(76, 187, 23)
-	Light Green	#90EE90	rgb(144, 238, 144)
-	Lime Green	#32CD32	rgb(50, 205, 50)
-	Lincoln Green	#478778	rgb(71, 135, 120)
-	Malachite	#0BDA51	rgb(11, 218, 81)
-	Mint Green	#98FB98	rgb(152, 251, 152)
-	Moss Green	#8A9A5B	rgb(138, 154, 91)
-	Neon Green	#0FFF50	rgb(15, 255, 80)
-	Nyanza	#ECFFDC	rgb(236, 255, 220)
-	Olive Green	#808000	rgb(128, 128, 0)
-	Pastel Green	#C1E1C1	rgb(193, 225, 193)
-	Pear	#C9CC3F	rgb(201, 204, 63)
-	Peridot	#B4C424	rgb(180, 196, 36)
-	Pistachio	#93C572	rgb(147, 197, 114)
-	Robin Egg Blue	#96DED1	rgb(150, 222, 209)
-	Sage Green	#8A9A5B	rgb(138, 154, 91)
-	Sea Green	#2E8B57	rgb(46, 139, 87)
-	Seafoam Green	#9FE2BF	rgb(159, 226, 191)
-	Shamrock Green	#009E60	rgb(0, 158, 96)
-	Spring Green	#00FF7F	rgb(0, 255, 127)
-	Teal	#008080	rgb(0, 128, 128)
-	Turquoise	#40E0D0	rgb(64, 224, 208)
-	Vegas Gold	#C4B454	rgb(196, 180, 84)
-	Verdigris	#40B5AD	rgb(64, 181, 173)
-	Viridian	#40826D	rgb(64, 130, 109)   
-	    
-	  */  
- 
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =

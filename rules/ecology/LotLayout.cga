@@ -24,7 +24,7 @@ attr colorValue = 1
 	
 ### TEXTURES ###
 
-#FacadeTexture = (textures + "Wintercreeper.jpg")	
+const FacadeTexture = "facades/textures/" + "Wintercreeper.jpg"	
 
 #### RULES ####
 
@@ -159,8 +159,14 @@ CheckClashOtherBuildings -->
 	case overlaps(inter, "building"): NIL
 	else:
 		comp(f){ object.top: BalconyTop 
-		   		| all: keep.}
+		   	   | street.front: Facade
+		   	   | all: keep.}
 
+Facade -->
+	setupProjection(0, scope.xy, 5, 5)
+	texture(FacadeTexture)
+	projectUV(0)
+	
 colorTiles -->
 	color("#608341")
 	#color("#83F52C")
@@ -183,7 +189,6 @@ removeCoveredBalcony -->
 	# queries between 3D and 2D shapes
 	case touches(intra, "balcony"): keep.
 	else: 
-		BalconyArea
 		ecology.ReportTopSurfaces
 		
 BalconyArea-->
@@ -198,7 +203,6 @@ SlideFloors -->
 		translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 		Floors
 		keep.
-		#Lot
 	
 #Reports 	
 Lot -->

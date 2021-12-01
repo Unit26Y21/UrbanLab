@@ -15,7 +15,7 @@ attr Vegetation = ""
 attr VegetationGroup1 = ["WaMi;SoRu;WaLi;Cab;Ho"]
 
 
-scatterForLoop(i, list) -->
+scatterGroupPlants(i, list) -->
 	case i < size(list):
 		scatter(surface, 100/size(list), uniform) { vegetationVisualization(list[i])}
 		#split()
@@ -23,6 +23,13 @@ scatterForLoop(i, list) -->
 		stop.
 		NIL
 		
+scatterGroupPlants2(i, list) -->
+	case i < size(list):
+		vegetationVisualization(list[i])
+	else:
+		stop.
+		NIL
+
 # scatterForLoop(0,VegetationGroup1)
 # return:
 	# scatter(surface, 20, uniform) { vegetationVisualization("WaMi")}
