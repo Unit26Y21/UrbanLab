@@ -114,10 +114,9 @@ assignFacade(BldgClass) -->
 	else: NIL
 
 
-
 reportWaste(i, list) -->
 	case i < size(list):
-		report(list[i], i)
+		report("Waste"+"."+list[i], averageBuildingWaste(list[i], NumberofHouseholds))
 		reportWaste(i + 1, list)
 	else:
 		stop.
