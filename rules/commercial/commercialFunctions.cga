@@ -80,12 +80,21 @@ maxProgramSize(input, population) =
 	else:
 		3/population * 5000 #Flexible
 
+
+ "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "DayCare"]
 ### This is avg sqft of unit ###
 # in other words 1 supermarket is, on average, 300,000 sqft.
 programSizeSqFt(input) = 
-	case input == "DayCare": 1000
-	case input == "Small Business": 2000
+	case input == "DayCare": 1500
+	case input == "SmallBusiness": 2000
 	case input == "Bodega": 800
 	case input == "MiniMart": 10000
 	case input == "Supermarket": 300000
+	case input == "LightManufacturing": 10000
+	case input == "Department": 30000
+	case input == "Hotel": 20000
+	case input == "Office": 5000
+	case input == "FoodBank": 300000
+	case input == "Resaturant": 10000
+	case input == "Popupstore": 2000
 	else: 1
