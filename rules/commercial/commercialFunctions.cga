@@ -8,7 +8,7 @@ version "2021.1"
 
 import meterConverter: "meterToFeet.cga"
 
-# to assign color per commercial use
+# to assign color per commercial use/ how can we color code on first 3 floors? ###
 assignBldgColor(input) = 
 	case input == "Supermarket": "#A447FE"
 	case input == "Clothing Outlet": "#C140E6"
