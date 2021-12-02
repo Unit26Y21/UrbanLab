@@ -1,0 +1,54 @@
+/**
+ * File:    BlockParty.cga
+ * Created: 22 Nov 2021 03:22:49 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+	
+SplitSpace-->
+	split(u, unitSpace, 0){ 6 : TablesChairsArea 
+							| 10 : Playground
+							| 5 : NIL
+							| 6 : AmebaBench 
+							| 6 : TablesChairsArea 
+							| 2 : MediaTotem
+							| 9 : LightPlaza
+							|10 : NIL 
+							| 6 : AmebaBench 
+							| 6 : TablesChairsArea
+							| 10 : Playground
+							| 6 : AmebaBench 
+							| 6 : TablesChairsArea
+							|10 : NIL }*			
+							  	
+
+TablesChairsScatter -->
+	#Then you pass the dae object to the result of the scatter function inside the {}
+	scatter(surface, 10, uniform) { PlaceChairs  }
+								
+TablesChairsArea-->
+	primitiveQuad(6,6)
+	#you need to assign the Scatter function after youcreate the area
+	TablesChairsScatter
+
+PlaceChairs -->  i("OutdoorFurniture.dae", yUp, keepSizeAlignPosition)
+
+Playground-->
+	primitiveQuad(8,8)
+	color("#e88279")
+	
+MediaTotem-->
+	primitiveCube(0.4, 2, 0.4)
+		
+LightPlaza-->
+	primitiveQuad(9,9)
+	color("#757575")		
+	
+AmebaBench-->
+	primitiveQuad(6,4)
+	color("#e6fcc0")
+
+							
+							

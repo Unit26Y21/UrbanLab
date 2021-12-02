@@ -1,9 +1,3 @@
-
-assets/lightpost.dae
-assets/wifiCell.dae
-assets/wifiCell.obj
-assets/wifiMediumTower.dae
-assets/wifiMediumTower.log
 data/TheSite.gdb/_gdb.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/a00000001.freelist
 data/TheSite.gdb/a00000001.gdbindexes
@@ -129,3 +123,4 @@ data/TheSite.gdb/gdb
 data/TheSite.gdb/SiteOutline.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/StreetCenterline_TheSite.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/timestamps
+

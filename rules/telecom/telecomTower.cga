@@ -1,0 +1,29 @@
+/**
+ * File:    telecomTower.cga
+ * Created: 11 Nov 2021 19:52:25 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+@StartRule
+TowerLot -->
+	i("assets/telecom/TelecomTowerShell.dae", yUp, keepSizeAlignPosition)
+	comp(f){object.side: SolarPanels}
+	
+@StartRule 
+HabitableTower -->
+	i("assets/telecom/TelecomTower_inside.dae", yUp, keepSizeAlignPosition)
+	Floors 
+	#NIL
+	
+@StartRule
+SmallTower -->
+	i("assets/telecom/TelecomTowerShell.dae", yUp, alignSizeAndPosition)
+	
+	
+SolarPanels --> 
+	color(rand(1),rand(1), rand(1))
+
+Floors -->
+	split(y){3: SolarPanels}*
