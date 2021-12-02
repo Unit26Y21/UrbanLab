@@ -1,0 +1,58 @@
+/**
+ * File:    SolarStation.cga
+ * Created: 2 Dec 2021 19:48:11 GMT
+ * Author:  xiaoneng tang
+ */
+
+version "2021.0"
+
+attr SolarStationStructureColor = "#A8EA9C"
+attr SolarStationPanelColor = "#F9EB00"
+attr SolarStationBankColor = "#EEAAF8"
+
+
+@Enum("MainSolarStation", "SolarStationStructure", "SolarStationPanel", "SolarStationBank")
+attr StationType = "MainSolarStation"
+
+grabStation(input) = 
+	case input == "SolarStationStructure" : "assets/telecom/SolarStationStructure.dae"
+	case input == "SolarStationPanel" : "assets/telecom/SolarStationPanel.dae"
+	case input == "SolarStationBank" : "assets/telecom/SolarStationBank.dae"
+	
+	else: "assets/telecom/MainSolarStation.dae"
+
+@StartRule
+SolarStation -->
+	case StationType == "MainSolarStation": 
+	     SolarStationStructure
+		 SolarStationPanel
+		 SolarStationBank
+		
+	else: 
+		MainSolarStation
+	#i(grabStation(StationType), yUp, keepSizeAlignPosition)
+	#TowerElevator
+	
+MainSolarStation -->
+	i("telecom/MainTower.dae", yUp, keepSizeAlignPosition)
+	t(0,-9.144,0)
+	
+@StartRule
+SolarStationStructure -->
+	i("telecom/SolarStationStructure.dae", yUp, keepSizeAlignPosition)
+    t(0,6.096,0)
+	set(material.opacity, 0.9)
+	color(SolarStationStructureColor )	
+	
+SolarStationPanel -->
+	i("assets/telecom/SolarStationPanel.dae", yUp, keepSizeAlignPosition)
+	t(0,-9.144,0)
+	set(material.opacity, 0.9)
+	color(SolarStationPanelColor)
+	
+SolarStationBank -->
+	i("assets/telecom/SolarStationBank.dae", yUp, keepSizeAlignPosition)
+	t(0,6.096,0)
+	set(material.opacity, 0.9)
+	color(SolarStationBankColor)
+	
