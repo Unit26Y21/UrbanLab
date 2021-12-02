@@ -17,7 +17,7 @@ const textureFolder =  "assets/textures/"
 # you can use offset OR you can use the setback funcion:
 BlockDivision-->
 	setback(3){all: ExternalRing | remainder: AreaDivider}
-	report ("BalanceSpaceArea", geometry.area)
+	report ("BalanceSpaceArea", geometry.area())
  
 ExternalRing-->
 	setback(3){all: ExternalRing | remainder: AreaDivider}
@@ -194,11 +194,7 @@ Seven-->
 	split(z){ 0.5 : split(x){ rand(1,3) : Two | ~7 : Separator } 
 			| 0.5 : Separator }*
 	
-//////////////////////////////////////////////////////////////
-//REPORTS////////////////////////////////////////////////////
  
-BalanceSpaceArea-->
-	report ("Total Balance Space", geometry.area) 
 
 
 /*   
