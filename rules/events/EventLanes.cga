@@ -58,7 +58,7 @@ WideLanes -->
 selectOddLanes -->
 	//Seven/////////////////////////////////////
 	case float(listLast(getTreeKey())) % 7 == 0:
-#		scatter(surface, 2, uniform){ Benches }
+		scatter(surface, 2, uniform){ Benches }
 	Seven
 	
 
@@ -66,16 +66,16 @@ selectOddLanes -->
 	case float(listLast(getTreeKey())) % 5 == 0:
 		Five
 		Rack
-#		rotate(rel, object, 0, rand(360), 0)
+		rotate(rel, object, 0, rand(360), 0)
 	
 	//KIOSKS////////////////////////////////////
 	//Three/////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 3 == 0:
-		#scatter(surface, 3, uniform){ primitiveQuad(2,3)
-										#label("kiosk")
-										#CheckOverlap }		
+		scatter(surface, 3, uniform){ primitiveQuad(2,3)
+										label("kiosk")
+										CheckOverlap }		
 		Three
-		Kiosks	
+		#Kiosks	
 	
 	//FURNITURE&TREES/////////////////////////////////
 	//Two////////////////////////////////////////////			
@@ -104,6 +104,7 @@ Kiosks-->
  	#	rotate(rel, object, 0, rand(360),0)
 		primitiveQuad(meterConverter.feet(6), meterConverter.feet(9))
 		extrude(meterConverter.feet(6))
+		color ("#eb4034")
 	#	reduceGeometry(0.5) This makes half of the box. Commenting it.
  	
 
@@ -112,14 +113,15 @@ Kiosks-->
 
 Rack-->
 	case LOD == 2 :
- 	rotate(rel, object, 0, rand(360),0)
+ 	#rotate(rel, object, 0, rand(360),0)
  	i("RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
  	
  	else :
- 		rotate(rel, object, 0, rand(360),0)
+ 		#rotate(rel, object, 0, rand(360),0)
 		primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
 		extrude(meterConverter.feet(10))
-		reduceGeometry(0.5)
+		color ("#3cbdcf")
+		#reduceGeometry(0.5)
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -127,6 +129,7 @@ Rack-->
  	
 Benches-->
 	primitiveQuad(rand(5, 7), rand (5,7))
+	color ("#3d694b")
 	#LittleBench
 	#BigBench
 
