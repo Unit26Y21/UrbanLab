@@ -41,14 +41,14 @@ attr bike_width = meterConverter.feet(6)
 Types-->
 	case type == "A":
 		split(v, unitSpace, 0){ ~pedestrian_width : pedestrianColor  // first sidewalk
-							|floraHydro_width : floraHydroColor	scatterGrass // first greenway
+							|floraHydro_width : floraHydroColor scatterTree // first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
 							| shoulder_width : shoulderColor	 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 	// second service road
 							| shoulder_width : shoulderColor 		 	// second shoulder
-							| floraHydro_width  : floraHydroColor scatterGrass // second greenway
+							| floraHydro_width  : floraHydroColor scatterTree // second greenway
 							| ~pedestrian_width : pedestrianColor } 	// second sidewalk
 							
 	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
@@ -62,12 +62,12 @@ Types-->
 
 
 	case type == "C":
-		split(v, unitSpace, 0){ ~floraHydro_width : floraHydroColor	scatterTree scatterGrass// first greenway
+		split(v, unitSpace, 0){ ~floraHydro_width : floraHydroColor	scatterTree// first greenway
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
 							| pedestrian_width : pedestrianColor scatterATM	 	// second pedestrian way
-							| ~floraHydro_width  : floraHydroColor scatterTree scatterGrass}	// second greenway
+							| ~floraHydro_width  : floraHydroColor scatterTree}	// second greenway
 
 	case type == "D":
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
@@ -79,7 +79,7 @@ Types-->
 		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor} 	 	// pedestrian way
 	
 	case type == "F":
-		split(v, unitSpace, 0){~floraHydro_width : floraHydroColor scatterTree scatterGrass // greenway
+		split(v, unitSpace, 0){~floraHydro_width : floraHydroColor scatterTree // greenway
 							| pedestrian_width : pedestrianColor }		 	// pedestrian way
 
 	else:
@@ -111,23 +111,23 @@ serviceColor-->
  	
  treeObject-->
 	 s(5,5,5)
- 	i(textureFolder + "Lowpoly_tree_sample.dae")
+ 	i(textureFolder + "ecology/Black Alder Tree.dae")
  
  #######GRASS########
- scatterGrass-->
- 	scatter (surface, 5, uniform){grassObject}
+ #scatterGrass-->
+ 	#scatter (surface, 5, uniform){grassObject}
  
- grassObject-->
- 	s(1,1,1)
- 	i(textureFolder + "WildGrass.dae")
+ #grassObject-->
+ 	#s(.25,.25,.25)
+ 	#i(textureFolder + "WildGrass.dae")
  
  #######ATM#########
  scatterATM-->
- 	scatter (surface, 2, uniform){ATMObject}
+ 	scatter (surface, 1, uniform){ATMObject}
  	
  ATMObject-->
- 	s (5,5,5)
- 	i(textureFolder + "ATM.dae")
+ 	s (1,1,1)
+ 	i(textureFolder + "Mini_ATM_ExportModel.dae")
 
 ###### Roundabout function isn't working########
 #Roundabout--> 
