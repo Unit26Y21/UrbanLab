@@ -26,32 +26,52 @@ You can download the sample data the class used to develop the system rules [as 
 
 ## About the systems
 
+Here you can find a high level description of the systems that make up the Urban Lab. They have been designed as autonomous systems with different degrees of decentralization. The systems stand alone by themselves and are not meant to fully integrate into one another. Nevertheless, an attempt has been made to coordinate the different systems to show their combined potential.
+
 ### Waste and Density
 
 ![waste_example](examples/waste.jpg)
 
-A semi-decentralized waste system that is distributed around a neighborhood lots and the streets.
+![A semi-decentralized waste system that is distributed around a neighborhood lots and the streets.](rules/waste)
 
 
 ### Events and Community(Balance Spaces)
+
 ![event1_example](examples/events1.png)
 
 ![event2_example](examples/events2.png)
 
+![A fully decentralized system of events to balance interscidial vertical and horizontal spaces.](rules/events)
 
 ### Telecommunications
 ![telecom_example](examples/telecom.png)
 
+![telecom_example](examples/telecom.png)
+
+![A fully decentralized Internet Service Provider for the community.](rules/telecom)
+
 ### Surfacescapes (“Streets”)
 ![surfacescapes_example](examples/surfacescapes.png)
+
+![A semi-decentralized system of reorganizing “streets” to accomodate Climate Change.](rules/surfascapes)
+
 
 ### Economic Activity (“Commercial”)
 ![commercial_example](examples/commercial.PNG)
 
+![commercial_example](examples/commercial.png)
+
+![A semi-decentralized system of economic allocation use that uses demand and supply dynamics.](rules/commercial)
+
 ### Urban Ecology
 ![ecology_examples](examples/ecology.jpg)
 
+![ecology_example](examples/ecology.jpg)
+
+![A fully autonomous and decentralized approach that leverages urban ecology for retaining water at a neighborhood level.](rules/ecology)
+
 ## Feedback
+
 Any feedback can be sent to the repository owners: htarridopicart@ccny.cuny.edu, srickenbacker@ccny.cuny.edu
 
 —
