@@ -7,8 +7,17 @@
 version "2021.0"
 
 import waste: "waste/Waste_DensitybyBldClass.cga"
+import events: "events/BalanceSpacesBldg.cga"
+
+@Enum("Waste", "BalanceSpace")
+attr selectSystemStart = "Waste"
+
+#example of how to import two rules
+# using the selectSystemStart we can direct the flow of what the next step is.
 
 @StartRule
 Parcel -->
-	waste.WalkupParcel
-	
+	case selectSystemStart == "Waste":
+		waste.WalkupParcel
+	else:
+		events.BdlgExtrusion

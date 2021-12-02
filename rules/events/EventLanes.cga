@@ -1,0 +1,65 @@
+/**
+ * File:    EventLanes.cga
+ * Created: 20 Nov 2021 21:04:44 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+@StartRule
+BlockDivision-->
+	# you can use offset 
+	offset(-3)
+	OffsetSelector
+//	split(x){ { 2 : A | 3 : B }* }
+
+	#OR you can use the setback funcion: 
+	setback(3){all: dividerExample1}
+	
+	
+ 	
+OffsetSelector-->
+	comp(f){ inside: Second | border: First } 
+ 
+First-->
+	color ("#ffcf54")
+ 
+Second-->
+	color ("#e88079")
+	offset(-3)
+	OffsetSelector2
+	split(x){2 : Kiosks | 3 : NIL }*
+	
+Kiosks -->
+	primitiveQuad(2,3)
+	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
+     
+OffsetSelector2-->
+	comp(f) { inside: Third | border: Second } 
+	
+Third-->
+	color("#c8f5a2")
+	
+# You can use a combination of split or splitArea to subdive a block or lot to have variation
+
+# you can use stochastic percentage assignment, similar to how you would do it in an attribute
+# to determine outcomes INSIDE the rule
+dividerExample1 -->
+	20%: split(x){rand(10,20): PotentialLocation}*
+	15%: split(x){rand(5,10): PotentialLocation}*
+	5%: split(x){rand(1,5): PotentialLocation}*
+	else: split(x){3: PotentialLocation}*
+	
+#or you can create a function that evaluates the area of the block and assigns a split area depending on the size of the blocl...
+subdivideBlock(input) = 
+	case input > 1000: 100 #subdivie Block by 100 or rand(75,100) if the block is 1000 sqmeters
+	case input < 1000 && input > 500: 50 #subdivie Block by 50 or rand(25,50) if the block is less than 1000 sqmeters and above 500 sqm
+	else: 10 #else subdivie Block by 10
+	
+#Then you use the function to determine the dimension of the split by passing the shapes geometry area
+divideExample2 -->
+	splitArea(x){subdivideBlock(geometry.area()): PotentialLocation}*
+	
+# To choose a random location inside the matrix
+PotentialLocation -->
+	comp(f){rint(rand(0,comp.total)): Kiosks} #we use comp.total to access the total number of splits

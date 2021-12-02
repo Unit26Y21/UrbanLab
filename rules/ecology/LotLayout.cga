@@ -6,74 +6,56 @@
 
 version "2021.0"
 
-import ecology: "ecology.cga"
-import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
+#import ecology: "ecology.cga"
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
-@Range(min = 0, max = 50)
-attr blockRearYard = 20 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+@Range(min = 0, max = 100)
+attr blockRearYard = 5
 
 @Range(min = 3, max = 10)
-	attr arcadeDepth = meterConverter.feet(9)
+attr arcadeDepth = 3
 
-	attr columnMatrix = [3,4]
-	
-@Range(min=0, max=1)
-attr colorValue = 1	
-	
-### TEXTURES ###
-
-const FacadeTexture = "facades/textures/" + "Wintercreeper.jpg"	
+attr columnMatrix = [3,4]
 
 #### RULES ####
 
-/*#Scenario 1: Setbacks on all Sides
+/*#Scenario 1: Setbacks on all Sides*/
 # use StartRule to manage your different scenarios. You can use the same rule but different starting points
 @StartRule
-LowDensityLot -->	setback(meterConverter.meterTofeet(16)){	  street.front = Garden
-					| street.back = Garden
+LowDensityLot -->	setback(5){	  street.front = Garden
+					| street.back = Garden 
 					| street.left = Garden 
 					| street.right = Garden 
-					| remainder: LowDensityBuilding } 
+					| remainder: LowDensityBuilding }
+    	
+Garden --> 
+	color("#567d46")
+
 LowDensityBuilding --> 
-	extrude(world.up, meterConverter.feet(rand(16, 50)))
-	keep.*/
-
-
-
+	extrude(world.up, rand(5, 15))keep.
 
 
 #Scenario 2: Setbacks behind for internal couryard
-@StartRule
-HighDensityLot --> 
-	setback(meterConverter.feet(blockRearYard)) { 	street.back = Garden | 
-													remainder: HighDensityBuilding }
+HighDensityLot --> setback(rand(5, blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
+        					   | remainder: HighDensityBuilding }
 
 HighDensityBuilding --> 
-	extrude(world.up, meterConverter.feet(rand(200)))
+	extrude(world.up, (50))
+	report("height", geometry.height())
 	SplitBuilding
-	#PlantsSeedsOnRoof
-	
-Garden --> 
-	color("#567d46")
-	
+
+
 #Going up from ground floor
 #Split building sides into floors
 # the problem here is that you need to deploy split() inside a RULE
 
 SplitBuilding -->
-	label("building")
-	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor 
-											 |street.back: NIL	 
-											 |street.right: NIL
-											 |street.left: NIL
-											 |object.bottom: FirstFloorColumns}  
-			| ~1: 	 OtherFloors
-			} 
-	
-			
-####COLUMNS###
+	split(y){6: comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
+						|object.bottom: FirstFloorColumns}  
+			| ~1: OtherFloors
+			}
+####COLUMS###
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
 			split(y){columnMatrix[1]:
@@ -95,122 +77,87 @@ FirstFloor -->
 			| 4: TopColumade}
 
 Columnade -->
-	split(x){ 0.5: DrawColumnHorizontally
+	split(x){ 0.5: keep.
 			| 3: NIL
-			| 0.5: DrawColumnHorizontally
+			| 0.5: keep.
 			| 4: NIL
 			}*
-DrawColumnHorizontally -->
-	extrude(-0.5)
 
 TopColumade -->
 	offset(-1, all)
 	extrude(1)
+###
 
-
-OtherFloors --> 
-	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors  keep.}*
-
-
+OtherFloors --> split(y){5:SlideFloors |5:Floors keep.}*
 ###Balcony Tiles
-
 Floors -->
-	comp(f){ object.top: FloorTop 
-			   | street.front: Tile 
-			   | street.back:Tile 
-			   | street.right: Tile 
-			   | street.left: Tile}
 
-FloorTop -->
-	color(1,1,1,0.5)
-		
-
-PlantsSeedsOnRoof-->
-	 ecology.ReportTopSurfaces("Roofs")
-	
-###Attempting to select Horizontal space as a result of sliding
-###and calculate the area for run off savings
-
-#SplitHspace -->
-#	comp(f) {top : FloorArea}keep.
+		comp(f){street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
 
 	
-#removeCoveredHspace -->
-	#case overlaps: NIL
-	#else: 
-	#	 comp(f) {top : BalconyArea}keep.
-	#	report("Balcony Area", geometry.area())
-
-
-
 Tile --> 
-	# you need to split this on x only
-	# keep in mind that if you do a split on y it might render the balcony uninhabitable. just saying
-	# you do not need to repeat 9 feet 4 times unless you plan on having different dimensions
-	split(x){ meterConverter.feet(9): Balcony }*
-    
-	
+		split(x){ 3: Balcony | 3: Balcony | 3: Balcony }*
+		split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+		
 Balcony --> 
-	extrude(meterConverter.feet(rand(2,6 )))
-	label("balcony")
-	CheckClashOtherBuildings
-	
-#Checking for balconies when the sideyard is 0 feet
-CheckClashOtherBuildings -->
-	case overlaps(inter, "building"): NIL
-	else:
-		comp(f){ object.top: BalconyTop 
-		   	   | street.front: Facade
-		   	   | all: keep.}
+	extrude(rand(1,3 ))		
+	comp(f){object.top: BalconyTop | all: keep.}
+	#color 
 
-Facade -->
-	setupProjection(0, scope.xy, 5, 5)
-	texture(FacadeTexture)
-	projectUV(0)
-	
-colorTiles -->
-	color("#608341")
-	#color("#83F52C")
-	#color ( colorRamp("spectrum",colorValue))
-	#color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
-
-	
 BalconyTop -->
+	
 	splitBalcony
 	
-########This was done for the "balcony" which is now not the area that is regarded as the horizontal space. 	
-# we moved this to here...
+
+
+/*
+	
+Floors -->
+	#select the Tiles of the floor
+	comp(f){object.side: balconies | all: otherColor}
+ 	
+ 	
+ balconies --> 
+ 	print(getTreeKey())
+ 	extrude(float(listItem(getTreeKey(),1)))
+ 	topBalconies 
+ 	
+ topBalconies --> comp(f){top: ReportBalconieArea |	
+ 						 all: NIL}
+ 
+ReportBalconieArea -->
+	report("balconie area", geometry.area())					
+ 	color(0,1,0)
+ 
+ 
+ floorColor --> color(rand(1),rand(1), rand(1))  
+ 
+ otherColor --> color(1,0,0)	*/
+
+
 splitBalcony -->
-	# the finer the grane the smaller the split for the top of the balcony
-	split(y){meterConverter.feet(0.5): removeCoveredBalcony}*
+	split(y){1: removeCoveredBalcony}*
 		
-
 removeCoveredBalcony -->
-	# make sure you use touches instead of overlaps for occlusion
-	# queries between 3D and 2D shapes
-	case touches(intra, "balcony"): keep.
+	case overlaps: NIL
 	else: 
-		ecology.ReportTopSurfaces("Balcony")
+		color
+		report("Balcony Area", geometry.area())
 		
-BalconyArea-->
-	color("#800080")
 
+color -->
+	color("#90EE90")
+	###
 
 SlideFloors -->
-	case split.index < 0:
+case split.index < 1:
 		DoNothing. #at first floor
-
 	else:
-		case split.index +1 == split.total:
-			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
-			Floors
-			comp(f){object.top: PlantsSeedsOnRoof}
-			keep.
-			
-		else:
-			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
-			Floors
-			keep.
+		translate(rel, object, rand(8),0,rand(8) )
+		#split (y){1:Balcony | 1: Balcony | 1:Balcony}*
+		Floors
+		keep.
+		#Lot
 	
 #Reports 	
 Lot -->
@@ -219,5 +166,6 @@ Lot -->
 SelectTopSurfaces -->
 	ecology.SelectTopSurfaces
 
-
+ReportTopSurfaces -->
+	ecology.ReportTopSurfaces
 
