@@ -4,10 +4,11 @@
  * Author:  Nathan Laveu
  */
 
-version "2021.1"
+version "2021.0"
 
 import plants: "plants.cga"
-
+import meterConverter: "MeterToFeet.cga"
+import vegetation: "vegetationCatalog.cga"
 
 ####### CONSTANTS ########
 
@@ -17,12 +18,12 @@ import plants: "plants.cga"
 #Rainfall Intensity to be 3 scenarios (0.025m,0.050m, 0.075m)
 
 ####### ATTRIBUTES #######
-@Enum(0.025, 0.05, 0.07) 
+@Enum(0.083, 0.16, 0.25) 
 #use enum to capture the three options
-attr rainfallIntensity = 0.025
+attr rainfallIntensity = meterConverter.feet (0.083)
 
 @Hidden
-attr runoffSavings = 0
+attr runoffSavings = meterConverter.feet (0)
 
 @Hidden 
 attr roofArea = 0
@@ -74,39 +75,53 @@ CourtyardBuilding -->
 
 @StartRule
 Lot -->
-	extrude(rand(10, 80))
+	#extrude(rand(10, 80))
 	report("height", geometry.height())
 	report("volume", geometry.volume)
-	SelectVerticalSurfaces
+	#SelectVerticalSurfaces
 	SelectTopSurfaces
+	SelectBalconies
 	PlantOnFacades
 	
-SelectVerticalSurfaces-->
-comp(f){side: ReportVericalSurfaces}
+#SelectVerticalSurfaces-->
+	#comp(f){side: ReportVericalSurfaces}
 
-PlantOnFacades -->
-	plants.scatterSeeds(50,"#116530")
+#PlantOnFacades -->
+#	plants.ScatterFacadeVeg(50,"#116530")
 
 @StartRule#Roofs
 SelectTopSurfaces -->
 	comp(f){top: ReportTopSurfaces}
 	
 	
-ReportTopSurfaces -->
-	set(roofArea, geometry.area()) #lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
-	report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
-	report("Soil Grade", soilGrade)
+ReportTopSurfaces(surfaceType) -->
+	case surfaceType == "Balcony":
+		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
+		report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
+		report("Soil Grade", soilGrade)
+		
+		set(rainfallIntensity, meterConverter.feet(geometry.height()))
+		#report runoff saving will go here:
+		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
+		report("Runoff Savings", runoffSavings)
+		PlantSeedsOnBalcony
+		
+	else:
+		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
+		report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
+		report("Soil Grade", soilGrade)
+		
+		set(rainfallIntensity, meterConverter.feet(geometry.height()))
+		#report runoff saving will go here:
+		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
+		report("Runoff Savings", runoffSavings)
+		PlantSeedsOnRoof
+
+PlantSeedsOnBalcony -->
+	vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
 	
-	#report runoff saving will go here:
-	set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
-	report("Runoff Savings", runoffSavings)
-	PlantSeedsOnRoof
 PlantSeedsOnRoof -->
-	plants.scatterSeeds(50, "#EB5279")
-	plants.scatterSeeds(50, "#EBA052")
-	plants.scatterSeeds(50, "#00D100")
-	keep.
-	
+	vegetation.balconyPlantMachineRoof(vegetation.VegetationList)
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =
@@ -121,9 +136,6 @@ SoilGradeCoefficient(gradeType) =
 ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade) = rainfallIntensity * roofArea - (soilGrade * rainfallIntensity * roofArea)
 	
 	
-#Courtyard
-#Horizontal plants
-#Vertical Plants
-#Split roof surfaces
+
 
 	

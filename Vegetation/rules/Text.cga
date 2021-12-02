@@ -1,0 +1,156 @@
+/**
+ * File:    	Text.cga
+ * Created: 	4 Jul 2013 20:12:42 GMT
+ * Author:  	Pascal
+ * Modified:	Esri Redlands, Jan 2014 
+ */
+
+version "2013.1"
+
+# Use for testing all letters in alphabet: 
+# the quick brown fox jumps over the lazy dog
+# THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG
+
+
+attr Text = "Hello CityEngine"
+
+attr Size = 6
+
+const tex = "Text/alphabet90.png"
+const nLetters = 90
+
+Letters -->
+	# Currently, this statement makes text align 
+	# as if viewing a map with north up: 
+	alignScopeToAxes()
+	# If you would like to use it in other configurations,
+	# See the CGA help file for information about 
+	# the alignScopeToGeometry operation. Tinker with it some!
+	Letters(Text, Size)
+
+Letters(myString, mySize) -->
+	set(Size, mySize)
+	s(Size, 1, Size * 2) 
+	t(0, -1, 0) 
+	i("builtin:cube") 
+	comp(f){ top: 
+		texture(tex) 
+		setupProjection(0,scope.xy, scope.sx * nLetters, scope.sy)
+		projectUV(0)
+		PrintLetters(myString, len(myString)) 
+	}
+	
+PrintLetters(myString, n) -->
+	case n > 0:
+		Letter(substring(myString, 0, 1))
+		t(Size, 0, 0) 
+		PrintLetters(substring(myString, 1, 100), n - 1)
+	else:
+		NIL
+	
+Letter(myLetter) -->
+	case getNbr(myLetter) >= 0:
+		translateUV(0, getNbr(myLetter) / nLetters, 0)
+	else:
+		NIL
+
+getNbr(letter) = 
+	case letter == "a" : 0 
+	case letter == "b" : 1
+	case letter == "c" : 2 
+	case letter == "d" : 3 
+	case letter == "e" : 4 
+	case letter == "f" : 5 
+	case letter == "g" : 6 
+	case letter == "h" : 7 
+	case letter == "i" : 8 
+	case letter == "j" : 9 
+	case letter == "k" : 10 
+	case letter == "l" : 11
+	case letter == "m" : 12
+	case letter == "n" : 13
+	case letter == "o" : 14 
+	case letter == "p" : 15 
+	case letter == "q" : 16 
+	case letter == "r" : 17 
+	case letter == "s" : 18 
+	case letter == "t" : 19 
+	case letter == "u" : 20 
+	case letter == "v" : 21 
+	case letter == "w" : 22 
+	case letter == "x" : 23 
+	case letter == "y" : 24 
+	case letter == "z" : 25 
+	case letter == "0" : 26 
+	case letter == "1" : 27 
+	case letter == "2" : 28 
+	case letter == "3" : 29 
+	case letter == "4" : 30 
+	case letter == "5" : 31 
+	case letter == "6" : 32 
+	case letter == "7" : 33 
+	case letter == "8" : 34 
+	case letter == "9" : 35 
+	case letter == "," : 36 
+	case letter == "." : 37 
+	case letter == "<" : 38 
+	case letter == ">" : 39 
+	case letter == ";" : 40 
+	case letter == "'" : 41 
+	case letter == ":" : 42 
+	case letter == "^" : 43 
+	case letter == "[" : 44 
+	case letter == "]" : 45 
+	case letter == "{" : 46
+	case letter == "}" : 47 
+	case letter == "~" : 48
+	case letter == "!" : 49
+	case letter == "@" : 50 
+	case letter == "#" : 51 
+	case letter == "$" : 52 
+	case letter == "%" : 53 
+	case letter == "&" : 54 
+	case letter == "*" : 55 
+	case letter == "(" : 56 
+	case letter == ")" : 57 
+	case letter == "-" : 58 
+	case letter == "+" : 59 
+	case letter == "=" : 60 
+	case letter == "|" : 61 
+	case letter == "?" : 62 
+	case letter == "/" : 63 
+	case letter == "A" : 0 + 64 
+	case letter == "B" : 1 + 64
+	case letter == "C" : 2 + 64 
+	case letter == "D" : 3 + 64 
+	case letter == "E" : 4 + 64 
+	case letter == "F" : 5 + 64 
+	case letter == "G" : 6 + 64 
+	case letter == "H" : 7 + 64 
+	case letter == "I" : 8 + 64 
+	case letter == "J" : 9 + 64 
+	case letter == "K" : 10 + 64 
+	case letter == "L" : 11 + 64
+	case letter == "M" : 12 + 64
+	case letter == "N" : 13 + 64
+	case letter == "O" : 14 + 64 
+	case letter == "P" : 15 + 64 
+	case letter == "Q" : 16 + 64 
+	case letter == "R" : 17 + 64 
+	case letter == "S" : 18 + 64 
+	case letter == "T" : 19 + 64 
+	case letter == "U" : 20 + 64 
+	case letter == "V" : 21 + 64 
+	case letter == "W" : 22 + 64 
+	case letter == "X" : 23 + 64 
+	case letter == "Y" : 24 + 64 
+	case letter == "Z" : 25 + 64 
+	else: -1
+	
+	
+########################################
+# DEV NOTES
+#
+# The apostrophe doesn't work right. Character 41 in above case structure. Fix Later.
+
+	
