@@ -1,29 +1,100 @@
 /**
  * File:    telecomTower.cga
  * Created: 11 Nov 2021 19:52:25 GMT
- * Author:  User
+ * Author:  Xiaoneng Tang
  */
 
 version "2021.1"
 
+attr schoolcolor = "#A8EA9C"
+attr energycolor = "#F9EB00"
+attr datacentercolor = "#EEAAF8"
+attr Wifcomponentcolor = "#1742F7"
+
+@Enum("MainTower", "Structure", "Elevator", "WifiComponet", "DatacenterIn")
+attr TowerType = "MainTower"
+
+grabTower(input) = 
+	case input == "Structure" : "assets/telecom/Structures.dae"
+	case input == "DatacenterIn" : "assets/telecom/DatacenterIn.dae"
+	case input == "DatacenterOut" : "assets/telecom/DatacenterOut.dae"
+	case input == "Elevator" : "assets/telecom/Elevator.dae"
+	case input == "EnergyIn" : "assets/telecom/EnergyIn.dae"
+	case input == "EnergyOut" : "assets/telecom/EnergyOut.dae"
+	case input == "SchoolIn" : "assets/telecom/SchoolIn.dae"
+	case input == "SchoolOut" : "assets/telecom/SchoolOut.dae"
+	case input == "TrasparencyOut" : "assets/telecom/TrasparencyOut.dae"
+	case input == "WifiComponet" : "assets/telecom/WifiComponet.dae"
+	else: "assets/telecom/MainTower.dae"
+
 @StartRule
 TowerLot -->
-	i("assets/telecom/TelecomTowerShell.dae", yUp, keepSizeAlignPosition)
-	comp(f){object.side: SolarPanels}
+	case TowerType == "MainTower": 
+		TowerStructure
+		TowerElevator
+		SchoolOut
+		Schoolin
+		EnergyOut
+		EnergyIn
+		DatacenterOut
+		DatacenterIn
+		WifComponent
+		
+	else: 
+		TowerMain
+	#i(grabTower(TowerType), yUp, keepSizeAlignPosition)
+	#TowerElevator
 	
-@StartRule 
-HabitableTower -->
-	i("assets/telecom/TelecomTower_inside.dae", yUp, keepSizeAlignPosition)
-	Floors 
-	#NIL
+TowerMain -->
+	i("telecom/MainTower.dae", yUp, keepSizeAlignPosition)
 	
 @StartRule
-SmallTower -->
-	i("assets/telecom/TelecomTowerShell.dae", yUp, alignSizeAndPosition)
+TowerStructure -->
+	i("telecom/Structures.dae", yUp, keepSizeAlignPosition)
 	
 	
-SolarPanels --> 
-	color(rand(1),rand(1), rand(1))
-
-Floors -->
-	split(y){3: SolarPanels}*
+TowerElevator -->
+	i("assets/telecom/Elevator.dae", yUp, keepSizeAlignPosition)
+	
+SchoolOut -->
+	i("assets/telecom/SchoolOut.dae", yUp, keepSizeAlignPosition)
+	t(0,3.048,0)
+	set(material.opacity, 0.5)
+	color(schoolcolor)
+	
+Schoolin -->
+	i("assets/telecom/SchoolIn.dae", yUp, keepSizeAlignPosition)
+	t(0,3.048,0)
+	set(material.opacity, 0.85)
+	color(schoolcolor)
+	
+EnergyOut -->
+	i("assets/telecom/EnergyOut.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	set(material.opacity, 0.5)
+	color(energycolor)
+	
+EnergyIn -->
+	i("assets/telecom/EnergyIn.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	set(material.opacity, 0.85)
+	color(energycolor)
+	
+DatacenterOut -->
+	i("assets/telecom/DatacenterOut.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	set(material.opacity, 0.5)
+	color(datacentercolor)
+	
+DatacenterIn -->
+	i("assets/telecom/DatacenterIn.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	set(material.opacity, 0.85)
+	color(datacentercolor)
+	
+WifComponent -->
+	i("assets/telecom/WifiComponet.dae", yUp, keepSizeAlignPosition)
+	t(0,36.576,0)
+	color(Wifcomponentcolor)
+	
+	
