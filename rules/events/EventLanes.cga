@@ -127,8 +127,8 @@ Rack-->
  	
 Benches-->
 	primitiveQuad(rand(5, 7), rand (5,7))
-	LittleBench
-	BigBench
+	#LittleBench
+	#BigBench
 
 LittleBench-->
 	rotate(rel, object, 0, rand(360),0)

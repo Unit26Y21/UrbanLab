@@ -1,4 +1,3 @@
-
 data/TheSite.gdb/_gdb.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/a00000001.freelist
 data/TheSite.gdb/a00000001.gdbindexes
@@ -125,7 +124,6 @@ data/TheSite.gdb/SiteOutline.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/StreetCenterline_TheSite.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/timestamps
 *.jpg
-*.dae
 <<<<<<< Updated upstream
 *.png
 =======
