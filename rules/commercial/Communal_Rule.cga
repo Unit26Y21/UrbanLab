@@ -50,6 +50,9 @@ const ResidentalTypes = ["Apartment", "Condominium"]
 
 const commercialFloors = 3
 const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
 #### Commerical and Residental Types ####
 	
 
