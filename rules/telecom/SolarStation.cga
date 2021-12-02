@@ -22,7 +22,7 @@ grabStation(input) =
 	else: "assets/telecom/MainSolarStation.dae"
 
 @StartRule
-TowerLot -->
+SolarStation -->
 	case StationType == "MainSolarStation": 
 	     SolarStationStructure
 		 SolarStationPanel
