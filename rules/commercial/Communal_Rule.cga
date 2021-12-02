@@ -11,7 +11,28 @@ import meterConverter: "meterToFeet.cga"
 import functions: "commercial/commercialFunctions.cga"
 
 #################### ATTRIBUTES#############################
-@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
+@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
+
+
+
+####### Store List #######
+Small size Vendor
+Corner store / Bodegas / Deli 7  per 1.5k
+Food Truck
+Food stores and stands
+Medium Size Vendor
+Restaurant / Bar
+Food bank
+Office spaces
+Light Manufacturing
+Hotel
+Outdoor Market
+Green Market
+Supermarkets 3 per 5k
+Pop up stores
+Small Businesses 
+###################
+
 attr Commercial = 
 	20%: CommercialTypes[0]
 	20%:CommercialTypes[1]
@@ -44,12 +65,15 @@ attr Residental =
 	
 	
 #################### CONSTANTS #############################
-const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "Rec Center", "Bar"]
+const CommercialTypes = ["Supermarket", "Mini Mart" "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
 const ResidentalTypes = ["Apartment", "Condominium"]	
 
 
 const commercialFloors = 3
 const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
 #### Commerical and Residental Types ####
 	
 

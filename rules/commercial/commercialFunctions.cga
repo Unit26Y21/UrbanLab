@@ -8,16 +8,51 @@ version "2021.1"
 
 import meterConverter: "meterToFeet.cga"
 
-# to assign color per commercial use
-assignBldgColor(input) = 
-	case input == "Supermarket": "#A447FE"
-	case input == "Clothing Outlet": "#C140E6"
-	case input == "Restaurant": "#FE8C47"
-	case input == "School": "#FC53EC"
-	case input == "Small Business": "#E64082"
-	case input == "Office": "#FE4C47"
-	case input == "Bar": "#5E74FF"
-	else: "000000"	
+
+
+
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Mini Mart" "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
+
+
+const commercialFloors = 3
+const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
+###################################################
+	
+
+
+
+
+
+####### Store List #######
+
+Small size Vendor
+
+Food Truck
+Food stores and stands
+Medium Size Vendor
+Restaurant / Bar
+Outdoor Market
+Green Market
+
+Department
+MiniMart
+Bodega
+Food bank
+Office spaces
+Light Manufacturing
+Hotel
+Supermarkets 
+Pop up stores
+Small Businesses 
+###################
+
+# to assign color per commercial use/ how can we color code on first 3 floors? ###
+
 	
 # to report sqft of use
 reportSQFT(i, list) -->
@@ -34,8 +69,7 @@ reportSQFT(i, list) -->
 categorizeProgamSizePerUse(input) =
 	case count("Supermarket", input) >=1: "M"
 	case count("Bodega; Minimarket", input) >=1: "L"
-	else:
-		"S"
+	else: "S"
 		
 		
 # input: population | output: unique unit of use
@@ -61,31 +95,52 @@ programSizeDemand(input, population) -->
 ### These are per unit ###
 # in other words i need  3supermarkets
 # this is the same for minimum and maximum
-# if you do not need the minimum or the maxmimum, you can delete it or comment it out
 minProgramSize(input, population) = 
-	case input == "DayCare": 6/population * 1500
-	case input == "Small Business": 30/population * 1000
-	case input == "Bodega": 8/population * 1500
-	case input == "MiniMart": 6/population * 1500
-	case input == "Supermarket": 1/population * 5000
-	else:
-		3/population * 5000 #Flexible
+    case input == "DayCare": 5/500 * household
+	case input == "Small Business": 25/200 * household
+	case input == "Bodega": 8/500 * household
+	case input == "MiniMart": 6/500 * household
+	case input == "Supermarket": 3/1500 *household
+	case input == "LightManufacturing": 8/200 * household
+	case input == "Hotel": 2/200 * household
+	case input == "Department": 8/500 * household
+	case input == "Office": 10/500 * household
+	case input == "FoodBank": 2/1500 *household
+	case input == "Restaurant": 18/200 * household
+	case input == "PopupStore": 3/500 * household
+	else:1
+
+	
 		
-maxProgramSize(input, population) = 
-	case input == "DayCare": 7/population * 1500 
-	case input == "Small Business": 30/population * 1000
-	case input == "Bodega": 10/population * 1500
-	case input == "MiniMart": 7/population * 1500
-	case input == "Supermarket": 3/population * 5000
-	else:
-		3/population * 5000 #Flexible
+maxProgramSize(input, household) = 
+	case input == "DayCare": 7/500 * household
+	case input == "Small Business": 30/200 * household
+	case input == "Bodega": 10/500 * household
+	case input == "MiniMart": 7/500 * household
+	case input == "Supermarket": 5/1500 *household
+	case input == "LightManufacturing": 10/200 * household
+	case input == "Hotel": 3/200 * household
+	case input == "Department": 10/500 * household
+	case input == "Office": 12/500 * household
+	case input == "FoodBank": 3/1500 *household
+	case input == "Restaurant": 20/200 * household
+	case input == "PopupStore": 5/500 * household
+	else:1
+
 
 ### This is avg sqft of unit ###
 # in other words 1 supermarket is, on average, 300,000 sqft.
 programSizeSqFt(input) = 
-	case input == "DayCare": 1000
-	case input == "Small Business": 2000
+	case input == "DayCare": 1500
+	case input == "SmallBusiness": 2000
 	case input == "Bodega": 800
 	case input == "MiniMart": 10000
 	case input == "Supermarket": 300000
+	case input == "LightManufacturing": 10000
+	case input == "Department": 30000
+	case input == "Hotel": 20000
+	case input == "Office": 5000
+	case input == "FoodBank": 300000
+	case input == "Resaturant": 10000
+	case input == "Popupstore": 2000
 	else: 1
