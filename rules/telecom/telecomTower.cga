@@ -6,6 +6,11 @@
 
 version "2021.1"
 
+attr schoolcolor = "#A8EA9C"
+attr energycolor = "#F9EB00"
+attr datacentercolor = "#EEAAF8"
+attr Wifcomponentcolor = "#1742F7"
+
 @Enum("MainTower", "Structure", "Elevator", "WifiComponet", "DatacenterIn")
 attr TowerType = "MainTower"
 
@@ -28,9 +33,15 @@ TowerLot -->
 		TowerStructure
 		TowerElevator
 		SchoolOut
+		Schoolin
+		EnergyOut
+		EnergyIn
+		DatacenterOut
+		DatacenterIn
+		WifComponent
 		
 	else: 
-		TowerStructure
+		TowerMain
 	#i(grabTower(TowerType), yUp, keepSizeAlignPosition)
 	#TowerElevator
 	
@@ -48,36 +59,42 @@ TowerElevator -->
 SchoolOut -->
 	i("assets/telecom/SchoolOut.dae", yUp, keepSizeAlignPosition)
 	t(0,3.048,0)
-	color(1,0,0)
+	set(material.opacity, 0.5)
+	color(schoolcolor)
 	
 Schoolin -->
 	i("assets/telecom/SchoolIn.dae", yUp, keepSizeAlignPosition)
 	t(0,3.048,0)
-	color(1,0,0)
+	set(material.opacity, 0.85)
+	color(schoolcolor)
 	
 EnergyOut -->
 	i("assets/telecom/EnergyOut.dae", yUp, keepSizeAlignPosition)
 	t(0,18.288,0)
-	color(1,0,0)
+	set(material.opacity, 0.5)
+	color(energycolor)
 	
 EnergyIn -->
 	i("assets/telecom/EnergyIn.dae", yUp, keepSizeAlignPosition)
 	t(0,18.288,0)
-	color(1,0,0)
+	set(material.opacity, 0.85)
+	color(energycolor)
 	
 DatacenterOut -->
 	i("assets/telecom/DatacenterOut.dae", yUp, keepSizeAlignPosition)
 	t(0,30.48,0)
-	color(1,0,0)
+	set(material.opacity, 0.5)
+	color(datacentercolor)
 	
 DatacenterIn -->
 	i("assets/telecom/DatacenterIn.dae", yUp, keepSizeAlignPosition)
 	t(0,30.48,0)
-	color(1,0,0)
+	set(material.opacity, 0.85)
+	color(datacentercolor)
 	
 WifComponent -->
 	i("assets/telecom/WifiComponet.dae", yUp, keepSizeAlignPosition)
 	t(0,36.576,0)
-	color(1,0,0)
+	color(Wifcomponentcolor)
 	
 	
