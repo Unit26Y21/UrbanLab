@@ -12,7 +12,7 @@ import meterConverter: "meterToFeet.cga"
 
 
 #################### CONSTANTS #############################
-const CommercialTypes = ["Supermarket", "Mini Mart" "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const CommercialTypes = ["Supermarket", "Mini Mart", "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
 const ResidentalTypes = ["Apartment", "Condominium"]	
 
 
@@ -29,7 +29,7 @@ const thirdfloor_height = 12
 
 
 ####### Store List #######
-
+/*
 Small size Vendor
 
 Food Truck
@@ -49,10 +49,19 @@ Hotel
 Supermarkets 
 Pop up stores
 Small Businesses 
+*/
 ###################
 
 # to assign color per commercial use/ how can we color code on first 3 floors? ###
-
+assignBldgColor(input) = 
+	case input == "Supermarket": "#A447FE"
+	case input == "Clothing Outlet": "#C140E6"
+	case input == "Restaurant": "#FE8C47"
+	case input == "School": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
+	else: "000000"	
 	
 # to report sqft of use
 reportSQFT(i, list) -->
@@ -80,11 +89,12 @@ categorizeProgamSizePerUse(input) =
 programSizeReport(input, population) -->
 	programSizeSupply(input, population)
 	programSizeDemand(input, population)
+	#color(assignBldgColor(input))
 
 # you report the ACTUAL supply in sqft per sqft per floor to get supply.
 programSizeSupply(input, population) -->
 	report(input + "_" + "supply", meterConverter.sqmeterTosqft(geometry.area())) #reports size: S,M,L
-
+	
 # when you multiply unit need * avg size = total demand
 # you report this in sqft.
 programSizeDemand(input, population) -->
@@ -95,7 +105,7 @@ programSizeDemand(input, population) -->
 ### These are per unit ###
 # in other words i need  3supermarkets
 # this is the same for minimum and maximum
-minProgramSize(input, population) = 
+minProgramSize(input, household) = 
     case input == "DayCare": 5/500 * household
 	case input == "Small Business": 25/200 * household
 	case input == "Bodega": 8/500 * household

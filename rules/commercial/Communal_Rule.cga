@@ -10,12 +10,9 @@ import commercial: "commercial/myfirstrule.cga"
 import meterConverter: "meterToFeet.cga"
 import functions: "commercial/commercialFunctions.cga"
 
-#################### ATTRIBUTES#############################
-@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
-
-
 
 ####### Store List #######
+/*
 Small size Vendor
 Corner store / Bodegas / Deli 7  per 1.5k
 Food Truck
@@ -31,8 +28,10 @@ Green Market
 Supermarkets 3 per 5k
 Pop up stores
 Small Businesses 
+*/
 ###################
-
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
 attr Commercial = 
 	20%: CommercialTypes[0]
 	20%:CommercialTypes[1]
@@ -43,14 +42,18 @@ attr Commercial =
 	else: CommercialTypes[6]
 	
 
-@Color
 attr BldgColor = functions.assignBldgColor(Commercial)
 	
 @Range(min= 300, max= 1000)
 attr idealLotSize = 700
 
+
+attr totalHousehold = 1
+
+attr avgHouseholdSize = 3
+
 @Range(min= 10000, max= 30000)
-attr totalPopulation = 700
+attr totalPopulation = totalHousehold * avgHouseholdSize
 
 @Enum("S","M","L")
 attr commercialSize =
@@ -65,7 +68,7 @@ attr Residental =
 	
 	
 #################### CONSTANTS #############################
-const CommercialTypes = ["Supermarket", "Mini Mart" "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const CommercialTypes = ["Supermarket", "Mini Mart", "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
 const ResidentalTypes = ["Apartment", "Condominium"]	
 
 
@@ -91,22 +94,11 @@ Parcel -->
 
 @StartRule
 CommercialSizeRule -->
+	extrude(rand(20,30))
+	color(BldgColor)
 	functions.programSizeReport(Commercial, totalPopulation) 
 	
 	
-#### Trying to Split Floors #####
-A --> 	split(y){3 : B}*
 
-B -->	case (split.index == 0) : 
-     		color("#ff0000") x
-     		
-     	case (split.index == 1) : 
-     		color("#ff0000") X
-   
-     	case (split.index == split.total-1) :
-     		color("#0000ff") X
-   
-     	else:
-     		X
 
 	
