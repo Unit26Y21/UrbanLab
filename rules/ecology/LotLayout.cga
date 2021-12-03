@@ -7,17 +7,22 @@
 version "2021.0"
 
 import ecology: "ecology.cga"
-import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
+import waste: "waste/Waste_DensitybyBldClass.cga"
+import meterConverter: "meterToFeet.cga" 
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 50)
-attr blockRearYard = 20 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+attr RearYard = 20 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
-@Range(min = 3, max = 10)
-	attr arcadeDepth = meterConverter.feet(9)
+@Range(min = 0, max = 50)
+attr SideYard = 0 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
-	attr columnMatrix = [3,4]
+@Range(min = 0, max = 50)
+attr FrontYard = 0 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+
+
+attr columnMatrix = [3,4]
 	
 @Range(min=0, max=1)
 attr colorValue = 1	
@@ -47,11 +52,23 @@ LowDensityBuilding -->
 #Scenario 2: Setbacks behind for internal couryard
 @StartRule
 HighDensityLot --> 
-	setback(meterConverter.feet(blockRearYard)) { 	street.back = Garden | 
-													remainder: HighDensityBuilding }
+	FrontYardGarden
+	
+FrontYardGarden --> 
+	setback(meterConverter.feet(FrontYard)){ street.front: Garden  
+												| remainder: RearYardGarden}
+													
+
+RearYardGarden -->
+	setback(meterConverter.feet(RearYard)){ street.back: Garden  
+												| remainder: SideYardGarden}
+												
+SideYardGarden -->
+	setback(meterConverter.feet(SideYard)){ street.side: Garden
+										  | remainder: HighDensityBuilding}
 
 HighDensityBuilding --> 
-	extrude(world.up, meterConverter.feet(rand(200)))
+	extrude(world.up, meterConverter.feet(waste.Height))
 	SplitBuilding
 	
 Garden --> 
@@ -63,7 +80,7 @@ Garden -->
 
 SplitBuilding -->
 	label("building")
-	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor 
+	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor. 
 											 |street.back: NIL	 
 											 |street.right: NIL
 											 |street.left: NIL
@@ -87,7 +104,7 @@ DrawColumn -->
 	extrude(6)
 				
 FirstFloor --> 	
-	extrude(arcadeDepth)
+	#extrude(arcadeDepth)
 	alignScopeToAxes(y)
 	comp(f){0: Columnade
 			| 1: Columnade

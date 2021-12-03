@@ -6,8 +6,6 @@
 
 version "2021.0"
 
-
-import ecologyLotLayout: "ecology/LotLayout.cga"
 import telecom: "telecom/telecomTower.cga"
 import events: "events/BalanceSpacesBldg.cga"
 
@@ -144,7 +142,7 @@ Roof -->
 		center(xyz)
 		primitiveQuad(2, 2)
 		extrude(10)
-		telecom.SmallTower
+		#telecom.SmallTower
 		
 	else:
 		NIL
