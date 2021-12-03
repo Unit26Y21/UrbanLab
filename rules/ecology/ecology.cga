@@ -95,7 +95,7 @@ SelectTopSurfaces -->
 	
 	
 ReportTopSurfaces(surfaceType) -->
-	case surfaceType == "Gspace":
+	case surfaceType == "Balcony":
 		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
 		report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 		report("Soil Grade", soilGrade)
@@ -104,7 +104,8 @@ ReportTopSurfaces(surfaceType) -->
 		#report runoff saving will go here:
 		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 		report("Runoff Savings", runoffSavings)
-		PlantSeedsOnBalcony
+		vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
+	
 		
 	else:
 		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
@@ -115,13 +116,9 @@ ReportTopSurfaces(surfaceType) -->
 		#report runoff saving will go here:
 		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 		report("Runoff Savings", runoffSavings)
-		PlantSeedsOnRoof
-
-PlantSeedsOnGspace -->
-	vegetation.GspacePlantMachine(vegetation.VegetationGroup1)
-	
-PlantSeedsOnRoof -->
-	vegetation.balconyPlantMachineRoof(vegetation.VegetationList)
+		vegetation.roofPlantMachine(vegetation.VegetationList)
+		NIL
+		
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =
