@@ -14,10 +14,15 @@ import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name o
 @Range(min = 0, max = 50)
 attr blockRearYard = 20 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
-@Range(min = 3, max = 10)
-	attr arcadeDepth = meterConverter.feet(9)
+@Enum(true,false)
+attr applyArcade = false
 
-	attr columnMatrix = [3,4]
+@Range(min = 0, max = 10)
+attr arcadeDepth = 
+	case applyArcade: meterConverter.feet(9)
+	else: 0
+	
+attr columnMatrix = [3,4]
 	
 @Range(min=0, max=1)
 attr colorValue = 1	
@@ -53,7 +58,6 @@ HighDensityLot -->
 HighDensityBuilding --> 
 	extrude(world.up, meterConverter.feet(rand(200)))
 	SplitBuilding
-	#PlantsSeedsOnRoof
 	
 Garden --> 
 	color("#567d46")
@@ -64,12 +68,13 @@ Garden -->
 
 SplitBuilding -->
 	label("building")
-	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor 
+	split(y){meterConverter.feet(15): 	comp(f){street.front: FirstFloor 
 											 |street.back: NIL	 
 											 |street.right: NIL
 											 |street.left: NIL
-											 |object.bottom: FirstFloorColumns}  
-			| ~1: 	 OtherFloors
+											 | object.bottom: FirstFloorColumns
+											 }  
+			| '1: 	 OtherFloors
 			} 
 	
 			
@@ -77,7 +82,7 @@ SplitBuilding -->
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
 			split(y){columnMatrix[1]:
-				PlaceColumn}}
+				PlaceColumn}*}*
 				
 PlaceColumn -->
 	comp(v){all: DrawColumn}
@@ -85,14 +90,19 @@ PlaceColumn -->
 DrawColumn -->
 	rotateScope(270,0,0)
 	primitiveQuad(0.5,0.5)
-	extrude(6)
+	extrude(meterConverter.feet(15))
+	label("column")
+	RemoveTouchingColumns 
 				
-FirstFloor --> 	
-	extrude(arcadeDepth)
-	alignScopeToAxes(y)
-	comp(f){0: Columnade
-			| 1: Columnade
-			| 4: TopColumade}
+FirstFloor --> 
+	case applyArcade:	
+		extrude(arcadeDepth)
+		alignScopeToAxes(y)
+		comp(f){0: Columnade
+				| 1: Columnade
+				| 4: TopColumade}
+	else: 
+		NIL
 
 Columnade -->
 	split(x){ 0.5: DrawColumnHorizontally
@@ -107,6 +117,9 @@ TopColumade -->
 	offset(-1, all)
 	extrude(1)
 
+RemoveTouchingColumns -->
+	case overlaps(intra, "column"): keep.
+	else: NIL
 
 OtherFloors --> 
 	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors  keep.}*
@@ -198,7 +211,8 @@ BalconyArea-->
 
 SlideFloors -->
 	case split.index < 0:
-		DoNothing. #at first floor
+		extrude(-1)
+		#DoNothing. #at first floor
 
 	else:
 		case split.index +1 == split.total:
