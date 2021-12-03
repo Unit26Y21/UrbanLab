@@ -77,7 +77,7 @@ SplitBuilding -->
 			| '1: 	 OtherFloors
 			} 
 	
-			
+/*			
 ####COLUMNS###
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
@@ -117,9 +117,14 @@ TopColumade -->
 	offset(-1, all)
 	extrude(1)
 
+<<<<<<< HEAD
 RemoveTouchingColumns -->
 	case overlaps(intra, "column"): keep.
 	else: NIL
+
+=======
+*/
+
 
 OtherFloors --> 
 	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors  keep.}*
@@ -128,14 +133,31 @@ OtherFloors -->
 ###Balcony Tiles
 
 Floors -->
-	comp(f){ object.top: FloorTop 
+	comp(f){ object.top: Gspace 
 			   | street.front: Tile 
 			   | street.back:Tile 
 			   | street.right: Tile 
 			   | street.left: Tile}
 
-FloorTop -->
+Gspace -->
 	color(1,1,1,0.5)
+	splitGspace
+	
+splitGspace -->
+	# the finer the grane the smaller the split for the top of the balcony
+	split(y){meterConverter.feet(0.5): removeCoveredGspace}*
+		
+
+removeCoveredGspace -->
+	# make sure you use touches instead of overlaps for occlusion
+	# queries between 3D and 2D shapes
+	case touches(intra, "Gspace"): keep.
+	else: 
+		ecology.ReportTopSurfaces("Gspace")
+		
+GspaceArea -->
+	color("#800080")
+
 		
 
 PlantsSeedsOnRoof-->
@@ -160,23 +182,24 @@ Tile -->
 	# you need to split this on x only
 	# keep in mind that if you do a split on y it might render the balcony uninhabitable. just saying
 	# you do not need to repeat 9 feet 4 times unless you plan on having different dimensions
-	split(x){ meterConverter.feet(9): Balcony }*
+	split(x){ meterConverter.feet(9): Facade }*
     
 	
-Balcony --> 
+Facade --> 
 	extrude(meterConverter.feet(rand(2,6 )))
-	label("balcony")
+	label("Facade")
 	CheckClashOtherBuildings
+	#It looks like the area being selected for calculation is incorrect
 	
 #Checking for balconies when the sideyard is 0 feet
 CheckClashOtherBuildings -->
 	case overlaps(inter, "building"): NIL
 	else:
-		comp(f){ object.top: BalconyTop 
-		   	   | street.front: Facade
+		comp(f){ #object.top: FacadeTop 
+		   	    street.front: FacadeFront
 		   	   | all: keep.}
 
-Facade -->
+FacadeFront -->
 	setupProjection(0, scope.xy, 5, 5)
 	texture(FacadeTexture)
 	projectUV(0)
@@ -187,26 +210,26 @@ colorTiles -->
 	#color ( colorRamp("spectrum",colorValue))
 	#color(rand(1), rand(1), rand(1))#texture(FacadeTexture)
 
-	
-BalconyTop -->
-	splitBalcony
+	/*
+FacadeTop -->
+	splitFacade
 	
 ########This was done for the "balcony" which is now not the area that is regarded as the horizontal space. 	
 # we moved this to here...
-splitBalcony -->
+splitFacade -->
 	# the finer the grane the smaller the split for the top of the balcony
-	split(y){meterConverter.feet(0.5): removeCoveredBalcony}*
+	split(y){meterConverter.feet(0.5): removeCoveredFacade}*
 		
 
-removeCoveredBalcony -->
+removeCoveredFacade -->
 	# make sure you use touches instead of overlaps for occlusion
 	# queries between 3D and 2D shapes
-	case touches(intra, "balcony"): keep.
+	case touches(intra, "Facade"): keep.
 	else: 
-		ecology.ReportTopSurfaces("Balcony")
+		ecology.ReportTopSurfaces("Facade")
 		
-BalconyArea-->
-	color("#800080")
+FacadeArea-->
+	color("#800080")*/
 
 
 SlideFloors -->

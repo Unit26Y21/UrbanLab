@@ -6,7 +6,7 @@
  
 version "2021.0"
 
-import meterConverter: "meterToFeet.cga" #this needs to match exactly the name of the file
+import meterConverter: "MeterToFeet.cga" #this needs to match exactly the name of the file
 
 
 const VegetationList= ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl"]
@@ -31,7 +31,7 @@ scatterGroupPlants(i, list) -->
 		stop.
 		NIL
 		
-balconyPlantMachine(list) -->
+GspacePlantMachine(list) -->
 		vegetationVisualization(list[rint(rand(0,size(list)))])
 
 balconyPlantMachineRoof(list) -->
