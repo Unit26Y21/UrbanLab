@@ -95,7 +95,7 @@ SelectTopSurfaces -->
 	
 	
 ReportTopSurfaces(surfaceType) -->
-	case surfaceType == "Balcony":
+	case surfaceType == "Gspace":
 		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
 		report("Roofarea", roofArea) #use the attribute instead of calculating on the fly so you reduce bug finding.
 		report("Soil Grade", soilGrade)
@@ -117,8 +117,8 @@ ReportTopSurfaces(surfaceType) -->
 		report("Runoff Savings", runoffSavings)
 		PlantSeedsOnRoof
 
-PlantSeedsOnBalcony -->
-	vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
+PlantSeedsOnGspace -->
+	vegetation.GspacePlantMachine(vegetation.VegetationGroup1)
 	
 PlantSeedsOnRoof -->
 	vegetation.balconyPlantMachineRoof(vegetation.VegetationList)
