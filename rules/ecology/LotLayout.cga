@@ -53,7 +53,6 @@ HighDensityLot -->
 HighDensityBuilding --> 
 	extrude(world.up, meterConverter.feet(rand(200)))
 	SplitBuilding
-	#PlantsSeedsOnRoof
 	
 Garden --> 
 	color("#567d46")
@@ -109,7 +108,7 @@ TopColumade -->
 
 
 OtherFloors --> 
-	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): Floors  keep.}*
+	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): DontSlideFloors  keep.}*
 
 
 ###Balcony Tiles
@@ -123,10 +122,7 @@ Floors -->
 
 FloorTop -->
 	color(1,1,1,0.5)
-		
-
-PlantsSeedsOnRoof-->
-	 ecology.ReportTopSurfaces("Roofs")
+		 
 	
 ###Attempting to select Horizontal space as a result of sliding
 ###and calculate the area for run off savings
@@ -195,7 +191,19 @@ removeCoveredBalcony -->
 BalconyArea-->
 	color("#800080")
 
+DontSlideFloors -->
+	case split.index < 0:
+		DoNothing. #at first floor
 
+	else:
+		case split.index +1 == split.total:
+			Floors
+			ecology.ReportTopSurfaces("Roofs")
+	
+			
+		else:
+			Floors
+			
 SlideFloors -->
 	case split.index < 0:
 		DoNothing. #at first floor
@@ -204,13 +212,13 @@ SlideFloors -->
 		case split.index +1 == split.total:
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 			Floors
-			comp(f){object.top: PlantsSeedsOnRoof}
-			keep.
+			ecology.ReportTopSurfaces("Roofs")
+	
 			
 		else:
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 			Floors
-			keep.
+			
 	
 #Reports 	
 Lot -->
