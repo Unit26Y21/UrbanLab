@@ -195,7 +195,9 @@ BalconyTop -->
 # we moved this to here...
 splitBalcony -->
 	# the finer the grane the smaller the split for the top of the balcony
-	split(y){meterConverter.feet(0.5): removeCoveredBalcony}*
+	split(y){'0.25: 
+			split(x){'0.25: 
+				removeCoveredBalcony}*}*
 		
 
 removeCoveredBalcony -->
