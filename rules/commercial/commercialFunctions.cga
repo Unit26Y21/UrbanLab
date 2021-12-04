@@ -99,8 +99,8 @@ programSizeSupply(input, population) -->
 # you report this in sqft.
 programSizeDemand(input, population) -->
 	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
-	report(input + "_" + "minDemand" , minProgramSize(input, population) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
-	report(input + "_" + "maxDemand" , maxProgramSize(input, population) *  programSizeSqFt(input)) #reports size: 7 Daycares	
+	report(input + "_" + "minDemand" , minProgramSize(input, household) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
+	report(input + "_" + "maxDemand" , maxProgramSize(input, household) *  programSizeSqFt(input)) #reports size: 7 Daycares	
 	
 ### These are per unit ###
 # in other words i need  3supermarkets
