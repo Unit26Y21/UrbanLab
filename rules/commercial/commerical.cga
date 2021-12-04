@@ -57,4 +57,3 @@ Normal -->
 RandomColor -->
 	color(rand(1), rand(1), rand(1)) #typo missing parenthesis
 	
-	

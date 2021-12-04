@@ -9,6 +9,7 @@ version "2021.0"
 import ecology: "ecology.cga"
 import waste: "waste/Waste_DensitybyBldClass.cga"
 import meterConverter: "meterToFeet.cga" 
+import comercial: "commercial/Ecology and Commercial.cga"
 
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
@@ -29,7 +30,7 @@ attr colorValue = 1
 	
 ### TEXTURES ###
 
-const FacadeTexture = "facades/textures/" + "Wintercreeper.jpg"	
+const FacadeTexture = "facades/textures/" + "Hatch 3.jpg"	
 
 #### RULES ####
 
@@ -88,7 +89,7 @@ SplitBuilding -->
 			| ~1: 	 OtherFloors
 			} 
 	
-			
+/*			
 ####COLUMNS###
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
@@ -122,7 +123,7 @@ DrawColumnHorizontally -->
 TopColumade -->
 	offset(-1, all)
 	extrude(1)
-
+*/
 
 OtherFloors --> 
 	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): DontSlideFloors  keep.}*
@@ -211,9 +212,9 @@ BalconyArea-->
 	color("#800080")
 
 DontSlideFloors -->
-	case split.index < 0:
-		DoNothing. #at first floor
-
+	case split.index < 1:
+		#DoNothing. #at first floor
+		Retailsize  
 	else:
 		case split.index +1 == split.total:
 			Floors
@@ -222,10 +223,12 @@ DontSlideFloors -->
 			
 		else:
 			Floors
+	
+
 			
 SlideFloors -->
-	case split.index < 0:
-		DoNothing. #at first floor
+	case split.index < 3:
+		DoNothing.#at first floor
 
 	else:
 		case split.index +1 == split.total:
@@ -237,7 +240,9 @@ SlideFloors -->
 		else:
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 			Floors
-			
+
+Retailsize -->
+	comercial.Retailsize
 	
 #Reports 	
 Lot -->
