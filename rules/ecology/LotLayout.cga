@@ -220,7 +220,6 @@ DontSlideFloors -->
 			Floors
 			ecology.ReportTopSurfaces("Roofs")
 	
-			
 		else:
 			Floors
 	
