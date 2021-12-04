@@ -1,0 +1,18 @@
+newmtl AnalyticalTrunk
+    Kd 0.454902 0.396078 0.360784
+    Ka 0 0 0
+     d 1
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 3
+    Ks 0 0 0
+    Ns 0
+newmtl AnalyticalCrown
+    Kd 0.227451 0.337255 0.117647
+    Ka 0 0 0
+     d 1
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 3
+    Ks 0 0 0
+    Ns 0
