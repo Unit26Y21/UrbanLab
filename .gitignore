@@ -123,9 +123,4 @@ data/TheSite.gdb/gdb
 data/TheSite.gdb/SiteOutline.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/StreetCenterline_TheSite.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/timestamps
-*.jpg
-<<<<<<< Updated upstream
-*.png
-=======
-.pydevproject
->>>>>>> Stashed changes
+

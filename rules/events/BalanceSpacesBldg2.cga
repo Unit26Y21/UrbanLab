@@ -127,5 +127,4 @@ SplitArea2FloorBldg-->
 	case BldgSize == "Walkup" : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
 	case BldgSize == "High Rise" : splitArea(x) { 'rand(0.5, 0.8) : RestFloor | 'rand(0.2, 0.5) : BalanceSpaceColor }
 	else: NIL
-
  

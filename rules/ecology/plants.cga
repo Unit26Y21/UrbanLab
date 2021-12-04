@@ -1,0 +1,24 @@
+/**
+ * File:    plants.cga
+ * Created: 8 Nov 2021 22:13:15 GMT
+ * Author:  User
+ */
+
+version "2021.0"
+
+scatterSeeds(amount, seedColor) -->
+	scatter(surface,amount, uniform){plant2D(seedColor)}
+	
+plant2D(seedColor)-->
+	primitiveDisk(20, 0.7)
+	extrude(.3)
+	color(seedColor)
+
+@StartRule	
+ScatterFacadeVeg(amount, vegColor) -->
+	scatter(surface,100, uniform){apply2D(vegColor)}
+	
+apply2D(vegColor) -->
+	primitiveCube(0.6, 0.6,0.6)
+	#extrude(.1)
+	color(vegColor)

@@ -4,12 +4,12 @@
  * Author:  htarrido
  */
 
-version "2020.1"
+version "2021.0"
 
 ###################################################
 ## Attributes
 ###################################################
-@Range("feet", "meter")
+@Enum("feet", "meter")
 @Order(0)
 attr MeasureSystem = "feet"
 
@@ -33,4 +33,3 @@ sqmeterTosqft(unit) =
 #cubicMeterTocubicFoot = 
 #	case MeasureSystem == "feet": unit * 0.283168
 #	else: unit
-

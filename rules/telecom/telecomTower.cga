@@ -1,0 +1,63 @@
+/**
+ * File:    telecomTower.cga
+ * Created: 11 Nov 2021 19:52:25 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+@StartRule
+TowerLot -->
+	i("assets/telecom/TelecomTowerShell.dae", yUp, keepSizeAlignPosition)
+	comp(f){object.side: SolarPanels}
+	
+@StartRule 
+HabitableTower -->
+	i("assets/telecom/TelecomTower_inside.dae", yUp, keepSizeAlignPosition)
+	Floors 
+	#NIL
+	
+@StartRule
+SmallTower -->
+	i("assets/telecom/TelecomTowerShell.dae", yUp, alignSizeAndPosition)
+	
+	
+<<<<<<< Updated upstream
+SolarPanels --> 
+	color(rand(1),rand(1), rand(1))
+
+Floors -->
+	split(y){3: SolarPanels}*
+=======
+EnergyOut -->
+	i("assets/telecom/EnergyOut.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	set(material.opacity, 0.5)
+	color(energycolor)
+	
+EnergyIn -->
+	i("assets/telecom/EnergyIn.dae", yUp, keepSizeAlignPosition)
+	t(0,18.288,0)
+	set(material.opacity, 0.85)
+	color(energycolor)
+	
+DatacenterOut -->
+	i("assets/telecom/DatacenterOut.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	set(material.opacity, 0.5)
+	color(datacentercolor)
+	
+DatacenterIn -->
+	i("assets/telecom/DatacenterIn.dae", yUp, keepSizeAlignPosition)
+	t(0,30.48,0)
+	set(material.opacity, 0.85)
+	color(datacentercolor)
+	
+WifComponent -->
+	i("assets/telecom/WifiComponet.dae", yUp, keepSizeAlignPosition)
+	t(0,36.576,0)
+	color(Wifcomponentcolor)
+	
+	
+	
+>>>>>>> Stashed changes
