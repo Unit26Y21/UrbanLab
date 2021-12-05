@@ -45,6 +45,7 @@ Separator-->
 	color ("#cfcfcf")
 
 NarrowLanes-->
+	scatter(surface, 2, uniform){ BenchTableGarden }
 	color ("#b3b3b3")
 	
 WideLanes -->
@@ -52,7 +53,6 @@ WideLanes -->
 		split(z){rand(meterConverter.feet(10), meterConverter.feet(20)): selectOddLanes }* 
 	else: 
 		Second
-		
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // TILES IN WIDE LANES /////////////////////////////////////////////////////////////////
@@ -91,13 +91,13 @@ selectOddLanes -->
 	
 	//One//////////////////////////////////////		
 	else:
+		TableChair
 		One
 
 
 ////////////////////////////////////////////////////////////////////////////
 //KIOSKS///////////////////////////////////////////////////////////////////
 	
-
 	
 Kiosks-->
 	case LOD == 2 :
@@ -121,13 +121,40 @@ Rack-->
  	i("LOD2/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
  	
  	else :
- 		#rotate(rel, object, 0, rand(360),0)
-		#primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
-		#extrude(meterConverter.feet(10))
+ 		rotate(rel, object, 0, rand(360),0)
+		primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
+		extrude(meterConverter.feet(10))
 		#color ("#3cbdcf")
-		i("LOD1/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+		#i("LOD1/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+		#reduceGeometry(0.5)
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//TABLE CHAIR///////////////////////////////////////////////////////////////////
+
+TableChair-->
+	case LOD == 2 :
+ 		i("LOD2/TableChairGarden.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		i("LOD1/TableChairGarden.dae", yUp, keepSizeAlignPosition)
 		reduceGeometry(0.5)
 
+
+///////////////////////////////////////////////////////////////////////////////
+//HL BENCHES///////////////////////////////////////////////////////////////////
+
+BenchTableGarden-->
+	case LOD == 2 :
+ 	i("LOD2/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
+ 	rotate(rel, object, 0,90,0)
+ 	
+ 	else :
+ 		i("LOD1/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
+		rotate(rel, object, 0,90,0)
+		reduceGeometry(0.5)
+		
 
 ///////////////////////////////////////////////////////////////////////////////
 //BENCHES//////////////////////////////////////////////////////////////////////
@@ -160,7 +187,6 @@ Trees-->
 		s(4, 7, 4)
 	
 	else: 
-		rotate(rel, object, 0, rand(360),0)
 		primitiveDisk(16, .5)
 		extrude(4)
 		reduceGeometry(0.5)
@@ -192,12 +218,11 @@ Two-->
 	else : color("#82a671")
 	
 One-->
-	#color ("#cfcfcf")
-	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Separator | ~7 : Two } 
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Separator | ~meterConverter.feet(7) : Two } 
 			| 0.5 : Separator }*
 	
 Seven-->
-	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Two | ~7 : Separator } 
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Two | ~meterConverter.feet(7) : Separator } 
 			| 0.5 : Separator }*
 	
 
