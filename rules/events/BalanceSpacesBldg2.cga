@@ -33,12 +33,11 @@ Height =
 
 
 ########################################################################################
-###################################### RULES ###########################################
+###################################### RULES ###########################################	
 
+###KATIE ADDED:
 @StartRule
-ResidentialBdlgExtrusion-->
-#Setting BalanceSpaces according to BldgSize
-	case BldgSize == "Walkup" :	
+WalkUpBdlgExtrusion-->
 		split(y){ groundfloor_height : GroundFloorSelector | 
 				{ floor_height : RestFloorSelector |
 				floor_height : RestFloorSelector |
@@ -46,8 +45,8 @@ ResidentialBdlgExtrusion-->
 				floor_height : RestFloorSelector |
 				floor_height : RestFloorSelector |
 				groundfloor_height : GroundFloorSelector}* }
-		
-	case BldgSize == "High Rise" :	
+
+HighRiseBdlgExtrusion-->
 		split(y){ groundfloor_height : GroundFloorSelector | secondfloor_height : SecondFloorSelector |
 				{ floor_height : RestFloorSelector |
 				floor_height : RestFloorSelector |
@@ -55,8 +54,6 @@ ResidentialBdlgExtrusion-->
 				floor_height : RestFloorSelector |
 				floor_height : RestFloorSelector |
 				groundfloor_height : GroundFloorSelector}* }
-	  	
-	  	else : NIL				
 
 Floors-->
 #Defining Floors according to the split index. 

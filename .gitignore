@@ -124,3 +124,5 @@ data/TheSite.gdb/SiteOutline.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/StreetCenterline_TheSite.USER-PC.17248.7336.sr.lock
 data/TheSite.gdb/timestamps
 
+*.cgb
+*.cgb
