@@ -33,13 +33,20 @@ Small Businesses
 #################### ATTRIBUTES#############################
 @Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
 attr Commercial = 
-	20%: CommercialTypes[0]
-	20%:CommercialTypes[1]
-	10%:CommercialTypes[3]
-	15%:CommercialTypes[2]
-	15%: CommercialTypes[4]
-	10%: CommercialTypes[5]
-	else: CommercialTypes[6]
+	6%: CommercialTypes[0]
+	10%:CommercialTypes[1]
+	7%:CommercialTypes[3]
+	5%:CommercialTypes[2]
+	5%: CommercialTypes[4]
+	8%: CommercialTypes[5]
+	5%: CommercialTypes[6]
+	5%: CommercialTypes[7]
+	6%: CommercialTypes[8]
+	4%: CommercialTypes[9]
+	2%: CommercialTypes[10]
+	10%: CommercialTypes[11]
+	else: CommercialTypes[12]
+
 	
 
 attr BldgColor = functions.assignBldgColor(Commercial)
@@ -96,7 +103,7 @@ Parcel -->
 CommercialSizeRule -->
 	extrude(rand(20,30))
 	color(BldgColor)
-	functions.programSizeReport(Commercial, totalPopulation) 
+	functions.programSizeReport(Commercial, totalHousehold) 
 	
 	
 

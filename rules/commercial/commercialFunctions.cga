@@ -55,12 +55,17 @@ Small Businesses
 # to assign color per commercial use/ how can we color code on first 3 floors? ###
 assignBldgColor(input) = 
 	case input == "Supermarket": "#A447FE"
-	case input == "Clothing Outlet": "#C140E6"
-	case input == "Restaurant": "#FE8C47"
-	case input == "School": "#FC53EC"
+	case input == "Mini Mart": "#C140E6"
+	case input == "Department": "#FE8C47"
+	case input == "Restaurant": "#FC53EC"
 	case input == "Small Business": "#E64082"
 	case input == "Office": "#FE4C47"
 	case input == "Bar": "#5E74FF"
+	case input == "Food Bank": "#DB7093"
+	case input == "Hotel": "#FFA07A"
+	case input == "Bodega": "#FFD700"
+	case input == "Light Manufactoring": "#66CDAA"
+	case input == "Pop up Store": "#FF00FF"
 	else: "000000"	
 	
 # to report sqft of use
