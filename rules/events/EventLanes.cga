@@ -4,7 +4,7 @@
  * Author:  mozar
  */
 
-version "2019.0"
+version "2021.0"
 
 import meterConverter: "meterToFeet.cga"
 
@@ -17,7 +17,7 @@ const textureFolder =  "assets/textures/"
 @StartRule
 # you can use offset OR you can use the setback funcion:
 BlockDivision-->
-	setback(3){ all: ExternalRing | remainder: AreaDivider }
+	setback(meterConverter.feet(3)){ all: ExternalRing | remainder: AreaDivider }
 	report ( "BalanceSpaceArea", geometry.area() )
 	report ( "PeoplePerEvent", geometry.area()/EventDensity )
  
@@ -34,12 +34,12 @@ ExternalRing-->
 // X AXIS LANE DIVIDER /////////////////////////////////////////////////////////////////
 
 AreaDivider -->
-	split(x){ rand(meterConverter.feet(15), meterConverter.feet(30)): WideLanes 
-			| rand(meterConverter.feet(3), meterConverter.feet(6)) : Separator 
-			| rand(meterConverter.feet(12), meterConverter.feet(15)) : NarrowLanes 
-			| rand(meterConverter.feet(3), meterConverter.feet(6)) : Separator 
-			| rand(meterConverter.feet(15), meterConverter.feet(30)): WideLanes 
-			| rand(meterConverter.feet(3), meterConverter.feet(6)) : Separator }*
+	split(x){ rand(meterConverter.feet(10), meterConverter.feet(22)): WideLanes 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
+			| rand(meterConverter.feet(7), meterConverter.feet(12)) : NarrowLanes 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
+			| rand(meterConverter.feet(10), meterConverter.feet(22)): WideLanes 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator }*
 
 Separator-->
 	color ("#cfcfcf")
@@ -74,7 +74,7 @@ selectOddLanes -->
 	//KIOSKS////////////////////////////////////
 	//Three/////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 3 == 0:
-		scatter(surface, 3, uniform){ #primitiveQuad(2,3)
+		scatter(surface, 3, gaussian){ #primitiveQuad(2,3)
 										label("kiosk")
 										/*CheckOverlap*/ }		
 		Three
@@ -86,7 +86,7 @@ selectOddLanes -->
 		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
 		#scatter(surface, 1, uniform){ BigBench }
 		BigBench
-		scatter(surface, 2, uniform){ Trees }
+		scatter(surface, 2, gaussian){ Trees }
 		Two
 	
 	//One//////////////////////////////////////		
@@ -102,14 +102,14 @@ selectOddLanes -->
 Kiosks-->
 	case LOD == 2 :
  	rotate(rel, object, 0, rand(360),0)
- 	i("StreetVendor.dae", yUp, keepSizeAlignPosition)
+ 	i("LOD2/Street Vendor.dae", yUp, keepSizeAlignPosition)
  	
  	else :
- 	#	rotate(rel, object, 0, rand(360),0)
+ 		rotate(rel, object, 0, rand(360),0)
 		primitiveQuad(meterConverter.feet(6), meterConverter.feet(9))
 		extrude(meterConverter.feet(6))
 		color ("#eb4034")
-	#	reduceGeometry(0.5) This makes half of the box. Commenting it.
+		#reduceGeometry(0.5) //This makes half of the box. Commenting it.
  	
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -118,14 +118,15 @@ Kiosks-->
 Rack-->
 	case LOD == 2 :
  	#rotate(rel, object, 0, rand(360),0)
- 	i("RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+ 	i("LOD2/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
  	
  	else :
  		#rotate(rel, object, 0, rand(360),0)
-		primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
-		extrude(meterConverter.feet(10))
-		color ("#3cbdcf")
-		#reduceGeometry(0.5)
+		#primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
+		#extrude(meterConverter.feet(10))
+		#color ("#3cbdcf")
+		i("LOD1/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,12 +140,12 @@ Benches-->
 
 LittleBench-->
 	rotate(rel, object, 0, rand(360),0)
-	i("Garden+Bench.dae", yUp, keepSizeAlignPosition)
+	i("LOD1/Garden+Bench.dae", yUp, keepSizeAlignPosition)
 	reduceGeometry(0.5)
 
 BigBench-->
 	rotate(rel, object, 0, rand(360),0)
-	i("Garden+Bench3.dae", yUp, keepSizeAlignPosition)
+	i("LOD2/Garden+Bench3.dae", yUp, keepSizeAlignPosition)
 	reduceGeometry(0.5)
 
 
@@ -154,14 +155,16 @@ BigBench-->
 Trees-->
 	case LOD == 2 :
 		rotate(rel, object, 0, rand(360),0)
-		i("Tree.dae", yUp, keepSizeAlignPosition)
+		i("ecology/River Birch.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
+		s(4, 7, 4)
 	
 	else: 
 		rotate(rel, object, 0, rand(360),0)
 		primitiveDisk(16, .5)
 		extrude(4)
 		reduceGeometry(0.5)
-
+		
 
 ///////////////////////////////////////////////////////////////////////////////
 //TEXTURES/////////////////////////////////////////////////////////////////////
