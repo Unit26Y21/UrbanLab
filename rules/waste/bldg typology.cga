@@ -8,6 +8,7 @@ version "2021.0"
 
 MEDIUM_WVS_OBJECT -->
 	i("WVS/MEDIUM.obj", yUp, keepSizeAlignPosition)
+
 	
 LARGE_WVS_OBJECT -->
 	i("WVS/LARGE.obj", yUp, keepSizeAlignPosition)

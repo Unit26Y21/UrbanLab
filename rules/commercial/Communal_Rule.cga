@@ -1,0 +1,104 @@
+/**
+ * File:    Communial_Rule.cga
+ * Created: 10 Nov 2021 16:01:59 GMT
+ * Author:  sancion000
+ */
+
+version "2021.0"
+
+import commercial: "commercial/myfirstrule.cga"
+import meterConverter: "meterToFeet.cga"
+import functions: "commercial/commercialFunctions.cga"
+
+
+####### Store List #######
+/*
+Small size Vendor
+Corner store / Bodegas / Deli 7  per 1.5k
+Food Truck
+Food stores and stands
+Medium Size Vendor
+Restaurant / Bar
+Food bank
+Office spaces
+Light Manufacturing
+Hotel
+Outdoor Market
+Green Market
+Supermarkets 3 per 5k
+Pop up stores
+Small Businesses 
+*/
+###################
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
+attr Commercial = 
+	20%: CommercialTypes[0]
+	20%:CommercialTypes[1]
+	10%:CommercialTypes[3]
+	15%:CommercialTypes[2]
+	15%: CommercialTypes[4]
+	10%: CommercialTypes[5]
+	else: CommercialTypes[6]
+	
+
+attr BldgColor = functions.assignBldgColor(Commercial)
+	
+@Range(min= 300, max= 1000)
+attr idealLotSize = 700
+
+
+attr totalHousehold = 1
+
+attr avgHouseholdSize = 3
+
+@Range(min= 10000, max= 30000)
+attr totalPopulation = totalHousehold * avgHouseholdSize
+
+@Enum("S","M","L")
+attr commercialSize =
+	10%: "L"
+	30%: "M"
+	else: "S"
+
+@Enum ("Apartment", "Condominium")
+attr Residental = 
+	50%: ResidentalTypes [0]
+	else: ResidentalTypes [1]
+	
+	
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Mini Mart", "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
+
+
+const commercialFloors = 3
+const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
+#### Commerical and Residental Types ####
+	
+
+
+
+
+
+
+#################### RULES #############################
+@StartRule
+Parcel -->
+	extrude(rand(20,30))
+	color(BldgColor)
+	report("Area"+"."+Commercial, geometry.area(bottom))
+
+@StartRule
+CommercialSizeRule -->
+	extrude(rand(20,30))
+	color(BldgColor)
+	functions.programSizeReport(Commercial, totalPopulation) 
+	
+	
+
+##
+	
