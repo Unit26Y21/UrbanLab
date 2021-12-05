@@ -1,0 +1,15 @@
+/**
+ * File:    bldg typology.cga
+ * Created: 5 Dec 2021 16:43:21 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+MEDIUM_WVS_OBJECT -->
+	i("WVS/MEDIUM.obj", yUp, keepSizeAlignPosition)
+	
+LARGE_WVS_OBJECT -->
+	i("WVS/LARGE.obj", yUp, keepSizeAlignPosition)
+
+	
