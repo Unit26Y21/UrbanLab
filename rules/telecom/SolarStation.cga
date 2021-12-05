@@ -35,24 +35,23 @@ SolarStation -->
 	
 MainSolarStation -->
 	i("telecom/MainTower.dae", yUp, keepSizeAlignPosition)
-	t(0,-9.144,0)
+	t(0,0,0)
 	
 @StartRule
 SolarStationStructure -->
 	i("telecom/SolarStationStructure.dae", yUp, keepSizeAlignPosition)
-    t(0,6.096,0)
+    t(0,0,0)
 	set(material.opacity, 0.9)
 	color(SolarStationStructureColor )	
 	
 SolarStationPanel -->
 	i("assets/telecom/SolarStationPanel.dae", yUp, keepSizeAlignPosition)
-	t(0,-9.144,0)
+	t(0,7.62,0)
 	set(material.opacity, 0.9)
 	color(SolarStationPanelColor)
 	
 SolarStationBank -->
 	i("assets/telecom/SolarStationBank.dae", yUp, keepSizeAlignPosition)
-	t(0,6.096,0)
+	t(0,7.62,0)
 	set(material.opacity, 0.9)
 	color(SolarStationBankColor)
-	
