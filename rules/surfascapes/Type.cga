@@ -99,15 +99,15 @@ Types-->
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
 		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor
-			| .1 : pedestrianColor scatterLightpost} 	 	// pedestrian way
+			| .5 : pedestrianColor scatterLightpost} 	 	// pedestrian way
 
 	case type == "E1": # E1 includes miniATMs and interstitial tables
 		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor 
-		| .1 : pedestrianColor pedestrianColor scatterATM scatterTable scatterLightpost
+		| .5 : pedestrianColor pedestrianColor scatterATM scatterTable scatterLightpost
 		| pedestrian_width: pedestrianColor } 	 	// pedestrian way
 
 	case type == "F":
-		floraHydroColor scatterTree2
+		floraHydroColor scatterTree2 scatterTree1
 
 	else:
 		NIL
@@ -132,14 +132,14 @@ serviceColor-->
  	extrude (meterConverter.feet(.3))
  
  #######TREES#########
-#scatterTree1-->
- 	#scatter (surface, 4, uniform){treeObject1}
+scatterTree1-->
+ 	scatter (surface, 1, uniform){treeObject1}
 
 scatterTree2-->
  	scatter (surface, 1, uniform){treeObject2}	
  	
- #treeObject1-->
- 	#i(textureFolder + "ecology/Black Alder Tree.dae")
+ treeObject1-->
+ 	i(textureFolder + "ecology/Black Alder Tree.dae")
  	
  treeObject2-->
  	s(0,8,0)
