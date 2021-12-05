@@ -58,16 +58,16 @@ attr NumberofHouseholds =
 
 
 attr Height =
-	case BldgClass == "Low Walkup" && NumberofHouseholds >=6: 9
-	case BldgClass == "Low Walkup" && NumberofHouseholds <10: 10
-	case BldgClass == "High Walkup"&& NumberofHouseholds >=14: 17
-	case BldgClass == "High Walkup" && NumberofHouseholds <18: 22
-	case BldgClass == "Low High Rise" && NumberofHouseholds >=30: 20
-	case BldgClass == "Low High Rise" && NumberofHouseholds <50: 25
-	case BldgClass == "Medium High Rise" && NumberofHouseholds >=50: 30
-	case BldgClass == "Medium High Rise" && NumberofHouseholds >=60: 35
-	case BldgClass == "Dense High Rise" && NumberofHouseholds >60: 40
-	case BldgClass == "Dense High Rise" && NumberofHouseholds <=80: 50
+	case BldgClass == "Low Walkup" && NumberofHouseholds >=6: 20
+	case BldgClass == "Low Walkup" && NumberofHouseholds <10: 33
+	case BldgClass == "High Walkup"&& NumberofHouseholds >=14: 56
+	case BldgClass == "High Walkup" && NumberofHouseholds <18: 72
+	case BldgClass == "Low High Rise" && NumberofHouseholds >=30: 66
+	case BldgClass == "Low High Rise" && NumberofHouseholds <50: 82
+	case BldgClass == "Medium High Rise" && NumberofHouseholds >=50: 82
+	case BldgClass == "Medium High Rise" && NumberofHouseholds >=60: 114
+	case BldgClass == "Dense High Rise" && NumberofHouseholds >60: 131
+	case BldgClass == "Dense High Rise" && NumberofHouseholds <=80: 164
 	else: 10
 
 # @Katie should this not be a functio???
