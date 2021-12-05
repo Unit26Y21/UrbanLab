@@ -1,0 +1,123 @@
+/**
+ * File:    Density BldgClass_Waste_111621.cga
+ * Created: 17 Nov 2021 04:21:56 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+import ecology: "ecology/LotLayout.cga"
+import meterConverter: "meterToFeet.cga"
+import balancedSpaces: "events/BalanceSpacesBldg2.cga"  
+
+################################## CONSTANTS #########################################
+
+const AvgHouseholdSize = 3
+
+const InhabitantsPerBld = AvgHouseholdSize * NumberofHouseholds 
+
+const WasteType = ["Refuse", "Organics", "Paper", "Metal", "Plastic", "Glass", "Textiles", "Other"] 
+
+#lbs of waste per HH by waste type 
+wastePerHH(WasteType) = 
+	case WasteType == "Refuse": 7.09
+	case WasteType == "Organics": 7.93
+	case WasteType == "Paper": 9.64
+	case WasteType == "Metal": 1.18
+	case WasteType == "Plastic": 1.47
+	case WasteType == "Glass": 4.41
+	case WasteType == "Textiles": 2.41
+	case WasteType == "Other": 4.11
+	else: 1
+
+const BldgClassType = ["Residential", "Commercial"]
+
+const BldgSizeType = ["Walkup", "High Rise"]
+
+const NumberofHouseholds =
+	case BldgSize == "Walkup" && Height <=40: rand(10,18)
+	case BldgSize == "Walkup" && Height >40: rand(16, 30)
+	case BldgSize == "High Rise" && Height <=70: rand(60, 120)
+	case BldgSize == "High Rise" && Height >70 && Height <=80: rand(70, 140)
+	case BldgSize == "High Rise" && Height >80 && Height <=90: rand(80, 160)
+	case BldgSize == "High Rise" && Height >90 && Height <=100: rand(90, 180)
+	case BldgSize == "High Rise" && Height >100 && Height <=110: rand(100, 200)
+	case BldgSize == "High Rise" && Height >110 && Height <=120: rand(110, 220)
+	case BldgSize == "High Rise" && Height >120 && Height <=130: rand(120, 240)
+	case BldgSize == "High Rise" && Height >130 && Height <=140: rand(130, 260)
+	case BldgSize == "High Rise" && Height >140 && Height <=150: rand(140, 300)
+	else: 10
+
+
+######################################### ATTRIBUTES #########################################
+
+
+##distribute this mix within every 0.5 mile radius (inspo from 15 min city) >> what rule can we use? 
+@Enum("Residential", "Commercial") 
+attr BldgClass = 
+	40%: BldgClassType[0]
+	60%:BldgClassType[1]
+	else: BldgClassType[2]
+
+# two error that I can see. 
+# The enum dataType needs to match the result from the case
+# in this case the enum is a string and the output is an integer.
+@Enum("Walkup", "High Rise")
+attr BldgSize =
+	65%: "Walkup"
+	else: "High Rise" 
+	
+@Color
+BldgColor = assignBldgColor(BldgClass, BldgSize)
+	
+Height = 
+	case BldgSize == "Walkup": meterConverter.feet (rand (30,50))
+	else: meterConverter.feet (rand (60,150))
+	
+######################################### FUNCTIONS #########################################
+
+assignBldgColor(BldgClass, BldgSize) = 
+	case BldgClass == BldgClassType[0] && BldgSize == BldgSizeType[0]: "#FF0000"
+	case BldgClass == BldgClassType[1] && BldgSize ==  BldgSizeType[0]: "#800000"
+	case BldgClass == BldgClassType[0] && BldgSize ==  BldgSizeType[1]: "#00FF00"
+	case BldgClass == BldgClassType[1] && BldgSize ==  BldgSizeType[1]: "#FFA500"
+	else: "000000"	
+
+#function that gives you total waste per houseHold lbs
+averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * NumberofHouseholds
+
+
+######################################### RULES #########################################
+
+@StartRule
+
+BldgClassParcel -->
+	extrude(Height)
+	color(BldgColor)
+	assignFacade(BldgClass) 
+	assignBalancedSpace(BldgSize)
+	report("Building Class", BldgClass)
+	report("People per Bld", InhabitantsPerBld) 
+	report("Households per Bld", NumberofHouseholds)
+	report("Building Height", BldgSize)
+	reportWaste(0, WasteType)
+
+
+assignFacade(BldgClass) --> 
+	case BldgClass == BldgClassType[0]: ecology.LowDensityLot
+	case BldgClass == BldgClassType[1]: ecology.HighDensityLot
+	else: NIL
+
+assignBalancedSpace(BldgSize) --> 
+	case BldgSize == BldgSizeType[0]: balancedSpaces.WalkUpBdlgExtrusion 
+	case BldgSize == BldgSizeType[1]: balancedSpaces.HighRiseBdlgExtrusion 
+	else: NIL
+
+reportWaste(i, list) -->
+	case i < size(list):
+		report(list[i], i)
+		reportWaste(i + 1, list)
+	else:
+		stop.
+		NIL
+

@@ -1,0 +1,117 @@
+/**
+ * File:    ATMparameters.cga
+ * Created: 4 Nov 2021 13:15:51 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+#import meterConverter: "meterToFeet.cga"
+#@StartRule 
+#Lot --> 
+	#extrude(meterCoverter.meterTofeet(100))
+	
+	
+	
+/* Attributes *************************************/
+
+attr groundfloor_height = 12
+attr floor_height = 10
+attr tile_width = 10
+attr height = 50 
+
+@Color
+attr wallColor = "#D3D3D3"
+
+
+/* Assets *************************************/
+
+// geometries
+#window_asset = "facades/window.obj"
+attr garage = "garage.dae" 
+attr window = "window.dae"
+#attr entrance = xxx 
+
+##what else might I want to bring in? trees? Garage entrance? 
+
+
+/* Initial Shape starting rule *************/
+
+# scale the lit to leave a small border and extrude the lot to building height
+Lot --> 
+	extrude(height) Building
+
+# inner lots are dropped
+LotInner --> NIL
+
+# split the building geometry into its facade components
+Building -->
+	comp(f) { front : Frontfacade | side : Sidefacade | top: Roof}
+
+#### look up how to change the definitions of what orientation the front facade is
+#### look up how to do a set back 
+
+
+#split(axis) { size1 : operations1 | size2 : operations2 | ... | sizen-1 : operationsn-1 }
+Frontfacade --> 
+	split(y){ groundfloor_height : Groundfloor | { ~floor_height: Floor }* }
+###different rules for the front facade than side facades
+	
+SideFacade -->     
+    split(y){ groundfloor_height: Floor | { ~floor_height: Floor }* }
+
+
+
+# similarily, the front groundfloor is horizontally split into 
+# two narrow corner areas on each side of the floor, 
+# a special entrance tile on the right 
+# and into a set of window tiles in between
+Groundfloor -->
+	split(x){ 5 			: Wall 
+			| { ~tile_width : Tile }* 
+			| ~tile_width 	: EntranceTile 
+			| 5 			: Wall }
+
+
+# each floor is horizontally split into two narrow corner areas on 
+# each side of the floor, and into a set of window tiles in between
+Floor -->
+	split(x){ 1 : Wall 
+			| { ~tile_width : Tile }* 
+			| 1 : Wall }
+
+
+# a tile consists of a centered window element and 
+# wall elements above, below, left and right		
+Tile -->
+	split(x){ ~1 : Wall 
+			|  2 : split(y){ ~1: Wall | 1.5: Window | ~1: Wall }
+			| ~1 : Wall }		 
+	
+	
+# similarily, the EntranceTile contains a centered Door element,
+# but with no wall on spacing below
+EntranceTile -->
+	split(x){ ~1 : SolidWall 
+			| 2  : split(y){ 2.5: Door | ~2: SolidWall } 
+			| ~1 : SolidWall }
+	
+	
+# firstly, the depth and the depth position of the future window is set
+# secondly, one of nine window textures is randomly selected	  
+# finally, the window geometry asset is inserted
+Window -->
+	s('1,'1,.4)
+	t(0,0,-0.25)
+	i(window)  
+	
+
+# same for the door asset. Scaling, positioning, texture selection
+# and geometry insert
+# TODO: fix door uv bug (problem with uv handling on split?)
+Door -->
+	s('1,'1,0.1)
+	t(0,0,-.5)
+	primitiveCube()	
+
+
