@@ -51,7 +51,7 @@ Types-->
 
 	case type == "A1":
 		split(v, unitSpace, 0){ ~pedestrian_width : pedestrianColor  // first sidewalk
-							|floraHydro_width : floraHydroColor scatterLightpost scatterTree1  // first greenway
+							|floraHydro_width : floraHydroColor scatterLightpostTall scatterTree1  // first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
 							| shoulder_width : shoulderColor scatterTable 	// first shoulder
