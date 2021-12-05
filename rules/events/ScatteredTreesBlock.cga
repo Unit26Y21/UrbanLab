@@ -8,10 +8,10 @@ version "2021.0"
 
 Surface-->
 	ScatterTrees
-	ColorSurface
+#	ColorSurface
 
 ScatterTrees-->
- 	scatter(surface, 10, gaussian){ Trees }
+ 	scatter(surface, 20, gaussian){ Trees }
  	rotate(rel, object, 0, rand(360),0)
  	
 Trees-->
@@ -29,5 +29,5 @@ BlackAlder-->
  	i("ecology/Black Alder tree.dae", yUp, keepSizeAlignPosition)
  	s(rand (4, 7), rand (7, 10), rand (4, 7))
  	
- ColorSurface-->
-	color ("#aecca7")
+# ColorSurface-->
+#	color ("#aecca7")
