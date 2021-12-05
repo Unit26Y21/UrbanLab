@@ -98,33 +98,33 @@ Types-->
 			 	| ~pedestrian_width : pedestrianColor scatterATM scatterTable scatterLightpost} 	 	// pedestrian way
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
-		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor scatterLightpost} 	 	// pedestrian way
+		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor
+			| .1 : pedestrianColor scatterLightpost} 	 	// pedestrian way
 
 	case type == "E1": # E1 includes miniATMs and interstitial tables
-		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor scatterATM scatterTable scatterLightpost
-		| pedestrian_width : pedestrianColor
+		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor 
+		| .1 : pedestrianColor pedestrianColor scatterATM scatterTable scatterLightpost
 		| pedestrian_width: pedestrianColor } 	 	// pedestrian way
 
 	case type == "F":
-		split(v, unitSpace, 0){floraHydro_width : floraHydroColor scatterTree1 scatterTree2 scatterLightpost} // greenway
-	
+		floraHydroColor scatterTree2
 
 	else:
 		NIL
 
 floraHydroColor-->
-	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver with Sod Infill.png")
+	tileUV(0,2,0) texture(textureFolder + "surfacescapes/Matrix Paver with Sod Infill.png")
 
 bikeColor-->
 	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Pedestrian Paver Dot Pattern.png")
 	extrude (meterConverter.feet(.3))
 
 shoulderColor-->
-	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver with Sod Infill.png")
+	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver Black with Gravel Infill.png")
  	extrude (meterConverter.feet(.3))
 
 pedestrianColor-->
- 	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Pedestrian Paver with Permeable Grout.png")
+ 	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver Black with Gravel Infill.png")
  	extrude (meterConverter.feet(.5))
  	
 serviceColor-->
@@ -136,12 +136,13 @@ serviceColor-->
  	#scatter (surface, 4, uniform){treeObject1}
 
 scatterTree2-->
- 	scatter (surface, 2, uniform){treeObject2}	
+ 	scatter (surface, 1, uniform){treeObject2}	
  	
  #treeObject1-->
  	#i(textureFolder + "ecology/Black Alder Tree.dae")
  	
  treeObject2-->
+ 	s(0,8,0)
  	i(textureFolder + "ecology/River Birch.dae")
  
  #######ATM#########
@@ -160,19 +161,13 @@ tableObject-->
  	s(2,1,1)
  	i(textureFolder + "interstitialTable.obj")
 
-################Lightpost##############
- scatterLightpost-->
- 	scatter (surface, 5, uniform){lightpostObject}
- 	
-lightpostObject-->
+################LIGHTPOST##############
+scatterLightpost-->
+ 	scatter (surface, 1, gaussian, center, '.16){lightpostObject}
+
+ lightpostObject-->
  	i(textureFolder + "surfacescapes/LightPole_Tall.dae")
 
-###### Roundabout function isn't working########
-#Roundabout--> 
- #split(v, unitSpace, 0)
- #{ 3: TestShape | 3: TestShape }
+##########REPORT##################
+
  
-#TestShape -->
- #setupProjection(0,scope.xz, scope.sx, scope.sy) 
-   #projectUV(0) 
- #tileUV(0, 1, 1) pedestrianColor
