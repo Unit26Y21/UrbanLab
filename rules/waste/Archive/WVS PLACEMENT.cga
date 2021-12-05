@@ -1,0 +1,126 @@
+/**
+ * File:    WVS PLACEMENT.cga
+ * Created: 11 Nov 2021 13:52:15 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+
+#########CONSTANT###############
+
+#WVSTypes
+@Enum("miniWVS", "medWVS", "largeWVS")
+const WVSTypes = ""
+	
+###the amount of waste that can be handled at each miniATM
+
+#MAX lbs of waste that can be held in miniATM by waste type 
+miniWVSCapacity(WasteType) = 
+	case WasteType == "Refuse": 177
+	case WasteType == "Organics": 198
+	case WasteType == "Paper": 241
+	case WasteType == "Metal": 29
+	case WasteType == "Plastic": 37
+	case WasteType == "Glass": 110
+	case WasteType == "Textiles": 60
+	case WasteType == "Other": 103
+	else: 0
+ 
+medWVSCapacity(WasteType) = 
+	case WasteType == "Refuse": 50000
+	case WasteType == "Organics": 50000
+	case WasteType == "Paper": 50000
+	case WasteType == "Metal": 50000
+	case WasteType == "Plastic": 50000
+	case WasteType == "Glass": 50000
+	case WasteType == "Textiles": 50000
+	case WasteType == "Other": 50000
+	else: 0
+
+#daily capacity//confirm numbers
+largeWVSCapacity(WasteType) = 
+	case WasteType == "Refuse": 400000
+	case WasteType == "Organics": 400000
+	else: 0
+
+
+#Randomly assign MINI WVS on "xx surface street type" blocks; 
+#place miniWVS on "xx type of street" for xx lbs of waste generated -- have the waste capacity above = the quantity of waste generated 
+##randomly scatter 
+### INSERT INTO SURFACE SCAPE TEAM ###
+#NEED TO INSERT DATA FROM REPORT TO INFORM THIS 
+
+#QUANTITY
+
+@StartRule
+
+#scatter(surface, 100, uniform) { xxxx }
+#location: [surface street team decide]
+#quantity: if sum of HH waste = miniWVSCapacity, then insert miniWVSFile
+#placement: scatter randomly
+
+numberofMINIWVS -->
+	case miniWVSCapacity
+
+ScatterminiWVS -->
+	scatter(surface, [quantity, insert function], uniform){miniWVSObject}
+miniWVSObject -->
+	i(miniWVSFile)
+
+
+
+#@Range(min = 75, max = 175)
+#attr miniWVSamount = 125
+
+#Can we use minimum distance function and scatter function 
+### INSERT INTO BALANCED SPACE TEAM ###
+#@Range(min = 1, max = 3)
+#attr medWVSamount = 2
+@StartRule
+
+ScattermedWVS -->
+	scatter(surface, medWVSamount, gaussian, left, '0.1){medWVSObject}
+medWVSObject -->
+	i(medWVSFile)
+
+#Place 2 of the LARGE WVS on outskirts -- incinerator, digester egg
+#attr largeWVSamount = 2
+
+#attr NumberofWVS =
+	#case WVSTypes == "miniWVS": miniWVSamount
+	#case WVSTypes == "medWVS": medWVSamount
+	#case WVSTypes == "largeWVS": largeWVSamount
+	#else: 0
+
+#import objects
+attr miniWVSFile = "MINI_WVS.dae"
+attr medWVSFile = "MED_WVS.dae"
+attr largeWVSFile = "LARGE_WVS.dae"
+
+
+#scatter the placement of MiniATMs near buildings; Med ATMs in central area of site; large AMT on outskirts
+
+
+@StartRule
+
+#scatter(surface, 100, uniform) { xxxx }
+#Randomly assign MINI WVS on blocks 
+ScatterminiWVS -->
+	scatter(surface, miniWVSamount, uniform){miniWVSObject}
+miniWVSObject -->
+	i(miniWVSFile)
+	
+#scatter(surface, 100, gaussian, left, '0.1) { xxxx }
+#Randomly assign 1-3 MED WVS in central areas
+
+	
+#scatter(surface, 100, gaussian, left, '0.1) { xxxx }
+#Place 2 of the LARGE WVS on outskirts -- incinerator, digester egg
+ScatterlargeWVS -->
+	scatter(surface, largeWVSamount, gaussian, left, '0.1){largeWVSObject}
+largeWVSObject -->
+	i(largeWVSFile)
+	
+	
+	

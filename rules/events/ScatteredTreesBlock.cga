@@ -1,0 +1,33 @@
+/**
+ * File:    ScatteredTreesBlock.cga
+ * Created: 5 Dec 2021 17:04:11 GMT
+ * Author:  aaceved006
+ */
+
+version "2021.0"
+
+Surface-->
+	ScatterTrees
+#	ColorSurface
+
+ScatterTrees-->
+ 	scatter(surface, 20, gaussian){ Trees }
+ 	rotate(rel, object, 0, rand(360),0)
+ 	
+Trees-->
+	primitiveQuad(rand(10, 15), rand (10,15))
+	RiverBirch
+	BlackAlder
+
+RiverBirch-->
+	rotate(rel, object, 0, rand(360),0)
+ 	i("ecology/River Birch.dae", yUp, keepSizeAlignPosition)
+ 	s(rand (4, 7), rand (7, 10), rand (4, 7))
+ 	
+BlackAlder-->
+	rotate(rel, object, 0, rand(360),0)
+ 	i("ecology/Black Alder tree.dae", yUp, keepSizeAlignPosition)
+ 	s(rand (4, 7), rand (7, 10), rand (4, 7))
+ 	
+# ColorSurface-->
+#	color ("#aecca7")
