@@ -1,0 +1,12 @@
+/**
+ * File:    typology.cga
+ * Created: 5 Dec 2021 16:33:48 GMT
+ * Author:  kkenny000
+ */
+
+version "2021.0"
+
+MEDIUM_WVS -->
+	i(MEDIUMWVSFile)
+
+attr MEDIUMWVSFile = "MEDIUM.obj"
