@@ -92,7 +92,9 @@ averageBuildingWaste(WasteType, NumberofHouseholds) = wastePerHH(WasteType) * Nu
 @StartRule
 
 BldgClassParcel -->
-	extrude(Height)
+	#extrude(Height)
+	alignScopeToAxes(world.z)
+		extrude(world.up.flatTop,Height)
 	color(BldgColor)
 	assignFacade(BldgClass) 
 	assignBalancedSpace(BldgSize)
@@ -101,7 +103,6 @@ BldgClassParcel -->
 	report("Households per Bld", NumberofHouseholds)
 	report("Building Height", BldgSize)
 	reportWaste(0, WasteType)
-
 
 assignFacade(BldgClass) --> 
 	case BldgClass == BldgClassType[0]: ecology.LowDensityLot
