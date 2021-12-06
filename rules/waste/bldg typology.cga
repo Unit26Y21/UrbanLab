@@ -6,11 +6,23 @@
 
 version "2021.0"
 
-MEDIUM_WVS_OBJECT -->
+MEDIUM_WVS_1_OBJECT -->
 	i("WVS/MEDIUM.obj", yUp, keepSizeAlignPosition)
+	s(0,8,0)
+	rotate(abs, object, 45, 0, 0)
 
+MEDIUM_WVS_2_OBJECT -->
+	i("WVS/MEDIUM.obj", yUp, keepSizeAlignPosition)
+	s(0,8,0)
+	rotate(abs, object, 45, 0, 0)
+	
+MEDIUM_WVS_3_OBJECT -->
+	i("WVS/MEDIUM.obj", yUp, keepSizeAlignPosition)
+	s(0,8,0)
+	rotate(abs, object, 45, 0, 0)
 	
 LARGE_WVS_OBJECT -->
 	i("WVS/LARGE.obj", yUp, keepSizeAlignPosition)
-
+	s(0,8,0) 
+	rotate(abs, object, 45, 0, 0)
 	
