@@ -1,0 +1,24 @@
+/**
+ * File:    WeatherRule.cga
+ * Created: 1 Nov 2021 14:33:28 GMT
+ * Author:  aaceved006
+ */
+
+version "2019.0"
+
+import EventClassRule: "EventClass.cga"
+
+#EventWeather Field
+#true and false needs to be lower case
+EventWeather(eventName) = 
+    case eventName == "HealthFair" : false
+    case eventName == "CleanUps" : false
+    case eventName == "BlockParty" : false
+    case eventName == "SingleBlockFestival" : false
+    case eventName == "StreetFestival" : false
+    case eventName == "Rally" : false
+    else: true
+
+# example of calling function
+# EventWeather(inputNameName(inputName))
+   

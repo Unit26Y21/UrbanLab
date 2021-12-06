@@ -1,0 +1,68 @@
+/**
+ * File:    PermittedStreetRule.cga
+ * Created: 1 Nov 2021 13:58:55 GMT
+ * Author:  aaceved006
+ */
+
+version "2021.0"
+
+
+import eventClosure: "eventClosure.cga"
+import EventClassRule: "EventClass.cga"
+
+@Enum ("Games", "Sports", "Performance")
+attr SchoolPlayStreetActivities =
+    50% : "Sports"
+    30% : "Games"
+    10% : "Performance"
+    else: "Free"
+
+attr TRAFDIR = ""
+
+#This is reading from the street attribute
+attr TrafficCategory =
+    # if TRAFDIR is something, return  a new name
+    case TRAFDIR == "TW": "Two-Way"
+    case TRAFDIR == "FT": "With"
+    case TRAFDIR  == "TF": "Against"
+    case TRAFDIR  == "NV": "Non-Vehicular"
+    else: "Other Street"
+
+#[attr TrafficCategory = PermittedStreet(Code)]
+
+PermittedStreet(inputCode)=
+    case inputCode == "SPS": ["FT","TF","NV"]
+    case inputCode == "SUPS" : ["FT","TF","NV"]
+    case inputCode == "PE/PPE" : [""]
+    case inputCode == "FM" : [""]
+    case inputCode == "R" : [""]
+    else :  ["FT","TF","NV", "TW"]
+
+
+
+###################################################################
+###################################################################
+###################################################################
+
+@StartRule
+SchoolPlayStreet-->
+    #if traffic ISNOT  two way then apply PaintActivity
+    case TrafficCategory != "Two-Way":
+    	PaintActivity
+    	report("EventClosure", listFromArray(eventClosure.roadTypeClosure(EventClass)))
+    else:
+    	NIL #Delete Model
+        #DoNothing. #nothing, the dot is needed to do nothing.
+
+PaintActivity -->
+    case SchoolPlayStreetActivities == "Sports": color(1,0,0)
+    case SchoolPlayStreetActivities == "Games": color (0,1,0)
+    case SchoolPlayStreetActivities == "Performance":color ("CDCDCD")
+    else : color ("#D4D4D4")
+
+
+
+
+
+
+

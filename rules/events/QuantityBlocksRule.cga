@@ -1,0 +1,27 @@
+/**
+ * File:    QuantityBlocksRule.cga
+ * Created: 1 Nov 2021 14:31:47 GMT
+ * Author:  aaceved006
+ */
+
+version "2019.0"
+
+import EventClassRule: "EventClass.cga"
+	
+#QuantityBlocks Field
+QuantityBlocks(Code) =
+	case Code == "HF" : 1
+	case Code == "CU" : 1
+	case Code == "BP" : 1
+	case Code == "SPS" : 4
+	case Code == "FM" : [1,10]
+	case Code == "SS" : [1,10]
+	case Code == "SF" : [1,10]
+	case Code == "SUPS" : 4
+	case Code == "SBF": 1
+	case Code == "ODP": 1
+	case Code == "WW": [2,10]
+	case Code == "COART": 1
+	case Code == "SUMS": 70
+	case Code == "CF": 30
+	else : NIL

@@ -1,0 +1,34 @@
+/**
+ * File:    EventClass.cga
+ * Created: 15 Nov 2021 02:47:20 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+#### Constant ###
+#this was a constant, it should be an attribute you can pick
+# constants cannot use ENUMs...
+
+
+#### Function ####
+#name you function something you can remember and recognize
+eventCode(inputName) =
+	case inputName == "HealthFair": "HF"
+	case inputName == "CleanUps": "CU"
+    case inputName == "BlockParty": "BP" 
+    case inputName == "SchoolPlayStreet": "SPS" 
+    case inputName == "SummerPlayStreet": "SUPS"
+    case inputName == "PlazaEvent/PlazaPartnetEvent": "PE/PPE"
+    case inputName == "FarmersMarket": "FM"
+    case inputName == "SingleBlockFestival": "SBF" 
+    case inputName == "StreetFestival": "SF" 
+    case inputName == "Rally": "R" 
+    case inputName == "SeasonalStreets": "SS" 
+    case inputName == "OneDayPlaza": "ODP" 
+    case inputName == "WeekendWalks": "WW" 
+    case inputName == "CommunityArt": "COART" 
+    case inputName == "SummerStreets": "SUMS" 
+    case inputName == "CarFreeDay": "CF" 
+	else : "No Event"
+		

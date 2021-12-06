@@ -1,0 +1,19 @@
+/**
+ * File:    arcadeFacade.cga
+ * Created: 14 Nov 2021 19:13:00 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+@StartRule
+textExtrude -->
+	extrude(rand(10,20))
+	selectStreetFacade
+
+selectStreetFacade -->
+	comp(f){street.front: createArcade}
+	keep.
+
+createArcade -->
+	extrude(5)

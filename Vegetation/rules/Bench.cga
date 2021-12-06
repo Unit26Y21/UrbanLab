@@ -1,0 +1,35 @@
+/**
+ * File:    Bench.cga
+ * Created: 10 Jan 2014 18:15:39 GMT
+ * Author:  Esri Redlands
+ */
+
+version "2013.1"
+
+# This is a very simple bench rule...
+# Feel free to expand on it.
+
+@Order(1)
+attr Thickness = 0.06
+
+@Order(2)
+@Color
+attr Bench_Color = "#999999"
+
+
+@StartRule
+Bench -->
+	color(Bench_Color)
+	innerRect
+	extrude(0.3)
+	split(y) { ~1: BenchLegs |
+		Thickness: X. }
+	
+BenchLegs -->
+	split(x) {Thickness: X.
+		| ~1: NIL
+		| Thickness: X.
+	}
+
+	
+	

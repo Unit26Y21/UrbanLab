@@ -1,0 +1,324 @@
+/**
+ * File:    Test.cga
+ * Created: 13 Nov 2021 03:51:47 GMT
+ * Author:  nlaveau000
+ */
+
+version "2021.0"
+	import meterConverter: "MeterToFeet.cga"
+########################################################################################
+###################################### ATTRIBUTES ######################################
+
+#added this to give you more variation on that interior ecology
+@Range(min = 0, max = 50)
+	attr blockRearYard = meterConverter.feet(16) #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+
+@Range(min = 3, max = 10)
+	attr arcadeDepth = meterConverter.feet(9)
+
+	attr columnMatrix = [3,4]
+	
+@Enum("Low Walkup", "High Walkup", "Low High Rise", "Medium High Rise", "Dense High Rise") 
+attr BldgClass = 
+	40%: "Low Walkup"
+	30%: "High Walkup"
+	20%: "Low High Rise"
+	9%: "Medium High Rise"
+	else: "Dense High Rise" 
+
+########################################################################################
+###################################### FUNCTION ########################################
+
+BdlgHeight(BldgClass)= 
+#defining BldgHeight according to BldgClass
+	case BldgClass == "Low Walkup" : rand(meterConverter.feet(12),meterConverter.feet(39))
+	case BldgClass == "High Walkup" : rand(meterConverter.feet(39),meterConverter.feet(63))
+	case BldgClass == "Low High Rise" : rand(meterConverter.feet(63), meterConverter.feet(111))
+	case BldgClass == "Medium High Rise" : rand(meterConverter.feet(111),meterConverter.feet(243))
+	case BldgClass == "Dense High Rise" : rand(meterConverter.feet(243),meterConverter.feet(363))
+	else : 0
+	
+	
+########################################################################################
+###################################### CONSTANTS #######################################
+
+#Is better to calculate BalanceSpaces by floorArea percentages
+#const BalanceSpaceBuilding = 0.35
+
+#Building Contants
+const groundfloor_height = meterConverter.feet(15)
+const secondfloor_height = meterConverter.feet(12)
+const floor_height = meterConverter.feet(12)
+
+# How Call attr Height of Waste_DensitybyBldClass???
+#If not, below I am trying to define
+	
+### TEXTURES ###
+
+#FacadeTexture = (textures + "Wintercreeper.jpg")	
+
+########################################################################################
+###################################### RULES ###########################################
+
+@StartRule
+BdlgExtrusion-->
+#Extruding the BldgFootprint depending on BldgClass
+	extrude(BdlgHeight(BldgClass))
+	split(y){ groundfloor_height : GroundFloorSelector | secondfloor_height : SecondFloorSelector |
+				{ floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				floor_height : RestFloorSelector |
+				groundfloor_height : GroundFloorSelector}*}
+				
+Floors-->
+#Defining Floors according to the split index. 
+	case (split.index == 0) : GroundFloorSelector
+	else : RestFloorSelector
+
+BalanceSpaceColor-->
+	color("#dbf5a6")
+	  		
+#############################
+######GroundFloorRules####### 
+
+GroundFloorSelector-->
+#Coloring the GroundFloor and selecting its bottom face
+	color("#FAD97D")
+	comp(f){ bottom : GFFloorArea }
+		
+GFFloorArea -->
+#Applying SplittingGroundFloorRule to the GroundFloor bottom face 
+   #print("total area = " + meterConverter.sqmeterTosqft(geometry.area))
+   SplitAreaGroundFloorBldg
+   
+GroundFloor-->
+	extrude (-(groundfloor_height))
+	
+SplitAreaGroundFloorBldg-->
+#Splitting GroundFloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.3 : GroundFloor | '0.7 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.3 : GroundFloor | '0.7 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.4 : GroundFloor | '0.6 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.5 : GroundFloor | '0.5 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.5 : GroundFloor | '0.5 : BalanceSpaceColor }
+	else: NIL
+
+  
+###########################	
+######RestFloorRules#######
+
+RestFloorSelector-->
+	color("#A3CCD1")
+	comp(f){ bottom : RFFloorArea }
+	
+RFFloorArea -->
+	SplitAreaRestFloorBldg
+	
+RestFloor-->
+	extrude (-(floor_height))
+	SlideFloors
+
+#selectFloor -->
+#	comp (f){object.top: FloorTop | street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile
+#	|SlideFloors | meterConverter.feet(3):Floors keep.}*	 }
+	 
+	
+
+SlideFloors -->
+	case split.index < 1:
+		DoNothing. #at first floor
+	else:
+		translate(rel, object, meterConverter.feet (rand(25)),0,meterConverter.feet(rand(25)) )
+		Floors
+		keep.	
+		
+SplitAreaRestFloorBldg-->
+#Splitting RestFloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.9 : RestFloor | '0.1 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.9 : RestFloor | '0.1 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.8 : RestFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.75 : RestFloor | '0.25 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.75 : RestFloor | '0.25 : BalanceSpaceColor }
+	else: NIL
+
+/*#Scenario 1: Setbacks on all Sides
+# use StartRule to manage your different scenarios. You can use the same rule but different starting points
+@StartRule
+LowDensityLot -->	setback(meterConverter.meterTofeet(16)){	  street.front = Garden
+					| street.back = Garden 
+					| street.left = Garden 
+					| street.right = Garden 
+					| remainder: LowDensityBuilding }
+    	
+Garden --> 
+	color("#567d46")
+
+LowDensityBuilding --> 
+	extrude(world.up, meterConverter.feet(rand(16, 50)))*/
+	keep.
+
+/*#Scenario 2: Setbacks behind for internal couryard
+@StartRule
+HighDensityLot --> 
+	setback(rand(meterConverter.feet(16), blockRearYard)) { street.back = Garden| street.right = Garden | street.left = Garden|street.front = Garden 
+        					   | remainder: HighDensityBuilding }
+
+HighDensityBuilding --> 
+	extrude(world.up, meterConverter.feet(rand(200)))
+	SplitBuilding
+
+
+#Going up from ground floor
+#Split building sides into floors
+# the problem here is that you need to deploy split() inside a RULE
+
+SplitBuilding -->
+	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor |street.back:FirstFloor	 | street.right:FirstFloor |street.left:FirstFloor
+						|object.bottom: FirstFloorColumns}  
+			| ~1: OtherFloors
+			}*/
+			
+####COLUMNS###
+/*FirstFloorColumns -->
+	split(x){columnMatrix[0]: 
+			split(y){columnMatrix[1]:
+				PlaceColumn}}
+				
+PlaceColumn -->
+	comp(v){all: DrawColumn}
+
+DrawColumn -->
+	rotateScope(270,0,0)
+	primitiveQuad(0.5,0.5)
+	extrude(6)
+				
+FirstFloor --> 	
+	extrude(arcadeDepth)
+	alignScopeToAxes(y)
+	comp(f){0: Columnade
+			| 1: Columnade
+			| 4: TopColumade}
+
+Columnade -->
+	split(x){ 0.5: keep.
+			| 3: NIL
+			| 0.5: keep.
+			| 4: NIL
+			}*
+
+TopColumade -->
+	offset(-1, all)
+	extrude(1)*/
+###
+
+#OtherFloors --> 
+#	split(y){meterConverter.feet(12):SlideFloors |meterConverter.feet(3):Floors keep.}*
+
+
+###Balcony Tiles
+
+#Floors -->
+#	comp(f){object.top: FloorTop | street.front: Tile | street.back:Tile | street.right: Tile | street.left: Tile}
+
+FloorTop -->
+	color ("#800080")
+	SelectBalcony
+	
+SelectBalcony -->
+	case overlaps: NIL
+	else: comp(f) {top : FloorArea}keep.
+		report("FloorArea", geometry.area())
+		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+		
+	#subtract balcony area from floors 
+Tile --> 
+	split(x){ meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony | meterConverter.feet(9): Balcony }*
+	#split (y){meterConverter.feet(5):Balcony | meterConverter.feet(3): Balcony | meterConverter.feet(3):Balcony}*
+
+
+	
+Balcony --> 
+	extrude (meterConverter.feet(rand(2,6 )))	
+	comp(f){object.top: BalconyTop | side:Facade | all:keep.}
+	#texture(FacadeTexture)
+
+Facade -->	
+#	setupProjection(0, scope.xy, 5, 5)
+#	texture(FacadeTexture)
+#	projectUV(0)*/
+	i ("Wintercreeper.jpg")
+	
+BalconyTop -->
+	splitBalcony
+	
+
+splitBalcony -->
+	split(y){meterConverter.feet(3): removeCoveredBalcony}*
+		
+removeCoveredBalcony -->
+	case overlaps: NIL
+	else: 
+		#color
+		comp(f) {top : BalconyArea}keep.
+		report("Balcony Area", geometry.area())
+		splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+		
+#BalconyArea-->
+#	color("#800080")
+#	splitArea(x) { '0.6 : EnvironmentalSpace | '0.4 : BalanceSpace }
+
+EnvironmentalSpace -->
+	color("#567d46")
+
+BalanceSpace -->
+	color("#800080")
+	
+#color -->
+#	color("#90EE90")
+	###
+
+
+		
+		
+		
+
+#import Ecology: "LotLayout.cga"
+#import Waste_DensitybyBldClass:"rules/waste/Waste_DensitybyBldClass.cga"
+
+		
+#############################	
+######SecondFloorRules####### 
+
+SecondFloorSelector-->
+	color("#ff9c6b")
+	comp(f){ bottom : SecondFloorArea }
+	
+SecondFloorArea -->
+      SplitArea2FloorBldg
+	
+SecondFloor-->
+	extrude (-(secondfloor_height))
+
+SplitArea2FloorBldg-->
+#Splitting 2FloorArea depending on the building type
+	case BldgClass == "Low Walkup" : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "High Walkup"  : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Low High Rise"  : splitArea(x) { '0.8 : SecondFloor | '0.2 : BalanceSpaceColor }
+	case BldgClass == "Medium High Rise"  : splitArea(x) { '0.75 : SecondFloor | '0.25 : BalanceSpaceColor }
+	case BldgClass == "Dense High Rise"  : splitArea(x) { '0.75 : SecondFloor | '0.25 : BalanceSpaceColor }
+	else: NIL
+	#SplitBuilding
+	SlideFloors
+	
+#SlideFloors-->
+#	Ecology.SlideFloors
+
+	
+#SplitBuilding -->
+#	Ecology.SplitBuilding
+#OtherFloors
+#Floors
+#FloorTop
+#SelectBalcony

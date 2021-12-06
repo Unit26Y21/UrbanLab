@@ -1,0 +1,254 @@
+/**
+ * File:    vegetationCatalog.cga
+ * Created: 11 Nov 2021 21:33:19 GMT
+ * Author:  Rebbeca
+ */
+ 
+version "2021.0"
+
+import meterConverter: "meterToFeet.cga" #this needs to match exactly the name of the file
+
+
+const VegetationList= ["SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl"]
+
+@Angle
+@Range(min=0, max=360)
+attr rotationRoofGarden = 0
+
+@Enum("SeFe","HaFe","FiHo","ScRu","SiMo","SiBr","PuMo","StSu","SmSu","MoHo","BuBu","EuSp","FaInBu","JaBa","AuOl","JaYe","BlAl","RiBi","GrBi","NoCa","CoCa","Ha","HoLo","BlLo","PiOa","JaHo","OrBi","Wi","WiCa","BoBe","MoGl")
+attr Vegetation = ""
+
+
+attr VegetationGroup1 = ["WaMi","SoRu","WaLi","Cab","Ho"]
+
+
+
+scatterGroupPlants(i, list) -->
+	case i < size(list):
+		scatter(surface, 100/size(list), uniform) { vegetationVisualization(list[i])}
+		#split()
+	else:
+		stop.
+		NIL
+		
+balconyPlantMachine(list) -->
+		vegetationVisualization(list[rint(rand(0,size(list)))])
+
+balconyPlantMachineRoof(list) -->
+	splitArea(x){geometry.area()/rand(10):
+					splitArea(y){geometry.area()/rand(10): 
+						oudolfLayout(list)
+					}*}*
+
+oudolfLayout(list) -->
+	offset(-meterConverter.feet(2), inside)
+	oudolfCircle(list)
+	
+oudolfCircle(list) -->
+		center(xy)
+		primitiveDisk()
+		extrude(0.5)
+		r(scopeCenter, 0,0,rotationRoofGarden)
+		vegetationVisualization(list[rint(rand(0,size(list)))])
+					 
+# scatterForLoop(0,VegetationGroup1)
+# return:
+	# scatter(surface, 20, uniform) { vegetationVisualization("WaMi")}
+	# scatter(surface, 20, uniform) { vegetationVisualization("SoRu")}
+	# scatter(surface, 20, uniform) { vegetationVisualization("Wali")}
+	# scatter(surface, 20, uniform) { vegetationVisualization("WaMi")}
+	# scatter(surface, 20, uniform) { vegetationVisualization("WaMi")}
+	
+#example use:
+vegetationVisualization(vegetationInput) -->
+	#primitiveDisk
+	color(plantColor(vegetationInput))
+	VegetationReport(vegetationInput)
+
+plantColor(input) =
+    case input == "GrBi" : "#9ea78f"       #tree-green1
+    case input == "BlAl" : "#199f6b"       #tree-green2
+    case input == "RiBi" : "#84b55f"       #tree-green3
+    case input == "Ha" : "#2f5c50"         #tree-green4
+    case input == "BlLo" : "#25ba0e"       #tree-green5
+    case input == "HoLo" : "#5d8254"       #tree-green6
+    case input == "NoCa" : "#02b95c"       #tree-green7
+    case input == "JaYe" : "#68e17f"       #tree-green8
+    case input == "CoCa" : "#0e7d70"       #tree-green9
+    case input == "PiOa" : "#3da41f"       #tree-green10
+    case input == "JaHo" : "#cc6e2e"       #vine-orange1
+    case input == "OrBi" : "#cd9420"       #vine-orange2
+    case input == "MoGl" : "#eb8344"       #vine-orange3
+    case input == "Wi" : "#c75430"         #vine-orange4
+    case input == "MoHo" : "#9f3bal"       #shrub-purple1
+    case input == "EuSp" : "#b247d6"       #shrub-purple2
+    case input == "WiCa" : "#9d08df"       #shrub-purple3
+    case input == "AuOl" : "#b80db1"       #shrub-purple4
+    case input == "BoBe" : "#a64297"       #shrub-purple5
+    case input == "SmSu" : "#6c2293"       #shrub-purple6
+    case input == "FaInBu" : "#d0a1da"     #shrub-purple7
+    case input == "StSu" : "#f211fd"       #shrub-purple8
+    case input == "BuBu" : "#bb64e2"       #shrub-purple9
+    case input == "JaBa" : "#645174"       #shrub-purple1
+    case input == "SiBr" : "#21a5c5"       #moss-blue1
+    case input == "PuMo" : "#551ec1"       #moss-blue2
+    case input == "SiMo" : "#7997f2"       #moss-blue3
+    case input == "HaFe" : "#131c25"       #fern-grey1
+    case input == "SeFe" : "#d0d6dd"       #fern-grey2
+    case input == "Cat" : "#ff84a6"        #filter-pink1
+    case input == "WaMo" : "#ed9zbf"       #filter-pink2
+    case input == "Cab" : "#f78ac0"        #filter-pink3
+    case input == "Ho" : "#e4b2b0"         #filter-pink4
+    case input == "SoRu" : "#792b40"       #filter-pink5
+    case input == "Ir" : "#e10c70"         #filter-pink6
+    case input == "WaMi" : "#b0050a"       #filter-pink7
+    case input == "WaLi" : "#81172d"       #filter-pink8
+    else: "ffffff"
+    
+###### Functions ###########
+# vegetation rule: only call once when placing ONE plant #
+# this will report on the plant that is placed and will as feedback to the ecologist or landscape architect #
+VegetationReport(input) -->
+    report("VegetationType", VegetationType(input))
+    report("VegetationAesthetic", VegetationAesthetics(input))
+    report( "SoilMoisture", SoilMoisture(input))
+    report("SeasonDuration", SeasonDuration(input))
+    report("GreenSeasons", GreenSeasons(input))
+    report("SunCondition",SunConditions(input))
+    report("ShadeConditions", ShadeConditions(input))
+    report("NearBodyOfWater", NearBodyOfWater(input))
+    report("WaterDrainage", WaterDrainage(input))
+    report("AdaptableEnvironment", AdaptableEnvironment(input))
+    report("DeerResistant", DeerResistant(input))
+    report("RoadSaltTolerant", RoadSaltTolerant(input))
+    report("PesticideResistant", PesticideResistant(input))
+    report("PoorSoilTolerant", PoorSoilTolerant(input))
+    report("ImproveSoil", ImproveSoil(input))
+    report("DroughtResistant", DroughtResistant(input))
+    FilterVegetationReport(input)
+    
+    
+    
+    
+    
+    
+####### These are the sub functions that make up the planting machine #######
+VegetationType(input) = 
+    case count("AuOl;BoBe;BuBu;EuSp;FaInBu;JaBa;MoHo;SmSu;StSu;WiCa",input)>=1:"Shrub"
+    case count("BlAl;BlLo;CoCa;GrBi;Ha;HoLo;JaYe;NoCa;PiOa;RiBi",input)>=1:"Tree"
+    case count("HaFe;SeFe",input)>=1:"Fern"
+    case count("SiBr;SiMo;PuMo",input)>=1:"Moss"
+    case count("FiHo;ScRu",input)>=1:"Stems"
+    case count("JaHo;MoGl;OrBi;Wi",input)>=1:"Vine"
+    else:""
+VegetationAesthetics(input) =
+    case count("BoBe;MoGl;WiCa",input)>=1:"Flower"
+    case count("AuOl;JaBa",input)>=1:"Fruit"
+    else:""
+SoilMoisture(input) =
+    case count("HaFe;FiHo;ScRu;StSu;MoHo;BuBu;FaInBu;BlAl;RiBi;NoCa;PiOa;MoGl",input)>=1:"Wet"
+    case count("SiBr;SmSu;GrBi;Wi;WiCa;BoBe",input)>=1:"Dry"
+    case count("EuSp;JaBa;AuOl;JaYe;CoCa",input)>=1:"Normal"
+    case count("SeFe;SiMo;PuMo;Ha;HoLo;BlLo;JaHo;OrBi",input)>=1:"Either"
+    else:""
+SeasonDuration(input)=
+    #all vegetation in current catalog are perenials
+    case count("",input)>=1:"Perenial"
+    case count("",input)>=1:"Annual"
+    else:""
+GreenSeasons(input) =
+    case count("SeFe;HaFe;StSu;SmSu;MoHo;BuBu;EuSp;FaInBu;JaBa;AuOl;BlAl;RiBi;GrBi;NoCa;CoCa;Ha;HoLo;BlLo;PiOa;OrBi",input)>=1:"Deciduous"
+    case count("FiHo;ScRu;SiMo;SiBr;PuMo;JaYe;JaHo;Wi;WiCa;BoBe;MoGl",input)>=1:"Evergreen"
+    else:""
+SunConditions(input) = 
+    case count("MoGl;WiCa;AuOl;JaBa;BlAl;BlLo;BuBu;CoCa;EuSp;FaInBu;FiHo;GrBi;HoLo;JaYe;NoCa;PiOa;RiBi;ScRu;SmSu;StSu;Wi",input)>=1:"Full"
+    case count("HaFe;PuMo;SiMo;BoBe",input)>=1:"Part"
+    case count("Ha;JaHo;MoHo;OrBi;SeFe;SiBr",input)>=1:"Either"
+    else:""
+ShadeConditions(input) =
+    case count("PuMo;RiBi;SiMo;HaFe",input)>=1:"Full"
+    case count("BoBe;MoGl;AuOl;JaBa;BlAl;BlLo;CoCa;EuSp;FaInBu;FiHo;GrBi;HoLo;NoCa;ScRu;SmSu;StSu;Wi",input)>=1:"Part"
+    case count("Ha;JaHo;MoHo;OrBi;SeFe;SiBr;WiCa;BuBu;JaYe;PiOa",input)>=1:"Either"
+    else:""
+NearBodyOfWater(input) =
+        #only know about ones that need proximity to body of water
+    case count("SeFe;RiBi;BlAl;FaInBu",input)>=1:true
+    case count("",input)>=1:false
+    else: false
+WaterDrainage(input) =
+    case count("BlAl;FaInBu;Ha;JaHo;MoHo;WiCa;BuBu;JaYe;HaFe;MoGl;AuOl;BlLo;EuSp;FiHo;GrBi;NoCa;ScRu;SmSu;StSu;Wi",input)>=1:"Well"
+    case count("RiBi;SiBr;PiOa;PuMo;SiMo;HoLo",input)>=1:"Poor"
+    case count("SeFe;OrBi;BoBe;JaBa;CoCa",input)>=1:"Normal"
+    else: ""
+AdaptableEnvironment(input) =
+        #only know about ones that are adaptable to any environment
+    case count("OrBi;BuBu;JaYe;GrBi;NoCa",input)>=1:true
+    case count("",input)>=1:false
+    else: false
+DeerResistant(input) =
+    case count("AuOl;HaFe;BoBe;HoLo;SmSu;FaInBu;FiHo;NoCa;StSu;ScRu;BuBu;JaYe;SeFe;JaBa;CoCa;SiBr;PiOa;PuMo;SiMo;MoGl;Wi",input)>=1:true
+    case count("GrBi;MoHo;BlAl;RiBi;Ha;BlLo;JaHo;EuSp;OrBi;WiCa",input)>=1:false
+    else: false
+RoadSaltTolerant(input) =
+        #only know about ones that are road salt tolerant
+    case count("NoCa;RiBi;BlAl;Ha;JaHo;MoHo;EuSp;StSu",input)>=1: true
+    case count("",input)>=1:false
+    else: false
+PesticideResistant(input) =
+        #only know about ones that are pecticide resistant
+    case count("FiHo;ScRu",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+PoorSoilTolerant(input) =
+        #only know about ones that are poor soil tolerant
+    case count("NoCa;RiBi;Ha;StSu;AuOl;GrBi;FaInBu;BlLo",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+ImproveSoil(input) =
+        #only know about ones that improve soil
+    case count("AuOl;FaInBu;FiHo;BlAl",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+DroughtResistant(input) =
+        #only know about ones that are drought resistant
+    case count("AuOl;GrBi;MoHo;HaFe;BoBe;HoLo;SmSu",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+    
+####Scattering Density numbers per 15 square feet
+VegetationDensity(input) =
+    case input == "GrBi;BlAl;RiBi;Ha;BlLo;HoLo;NoCa;JaYe;CoCa;PiOa": 1    #tree-on the ground
+    case input == "JaHo;OrBi;MoGl;Wi": 2                  #vine-on vertical gardens
+    case input == "MoHo;EuSp;WiCa;AuOl;BoBe;SmSu;FaInBu;StSu;BuBu;JaBa": 6    #shrub-ground,green roof,balcony
+    case input == "SiBr;PuMo;SiMo": 18                    #moss-ground,vertical garden,green roof
+    case input == "HaFe;SeFe": 13                     #ferns-ground,vertical garden,grenn roof,balcony
+	else: 0
+	
+####These are the vegetation used to filter water for non-potable use
+const Filters = ["Cat","WaMi","SoRu","WaLi","Ir","WaMo","Cab","Ho"]
+
+FilterVegetationReport(input) -->
+    report("MetalFilter", MetalFilter(input))
+    report("BacteriaFilter", BacteriaFilter(input))
+    report("OilFilter", OilFilter(input))
+    report("FlowerFilter", FlowerFilter(input))
+    
+MetalFilter(input) =
+    case count("Cat;SoRu;WaLi;Ir;WaMo;Cab;Ho",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+    
+BacteriaFilter(input) =
+    case count("WaMi;SoRu;WaLi;Cab;Ho",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+    
+OilFilter(input) =
+    case count("SoRu",input)>=1: true
+    case count("",input)>=1: false
+    else: false
+    
+FlowerFilter(input) =
+    case count("Ir;WaMi;WaLi",input)>=1: true
+    case count("",input)>=1: false
+    else: false

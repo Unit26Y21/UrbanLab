@@ -1,0 +1,32 @@
+/**
+ * File:    inputRule.cga
+ * Created: 1 Nov 2021 13:49:33 GMT
+ * Author:  aaceved006
+ */
+
+version "2019.0"
+
+
+#Converting inputNumber into the name of the adjacent facility
+
+AdjacencyBldgUse(input) =
+	case  input == "HF": ["Nonprofit"]
+	case  input == "CU": ["Nonprofit"]
+	case  input == "SPS": ["Hospital", "Park"]
+	case  input == "SUPS": ["Hospital","Park"]
+	case  input == "PE/PPE": ["Plaza"]
+	case  input == "FM": ["Park","Parking"]
+	case  input == "SBF": ["Nonprofit"]
+	case  input == "SF": ["Nonprofit"]
+	case  input == "SS": ["Commerce"]
+	case  input == "R": ["Plaza"]
+	case  input == "ODP": ["Plaza"]
+	case  input == "WW": ["Commerce"]
+	case  input == "COART": ["Commerce","OwnedByDOT"]
+	else : ["Other"]
+	
+#example of function use
+
+@StartRule
+test -->
+	print(AdjacencyBldgUse("HF"))

@@ -1,0 +1,58 @@
+/**
+ * File:    DensityEventRule.cga
+ * Created: 11 Nov 2021 00:52:27 GMT
+ * Author:  mozar
+ */
+
+version "2019.0"
+
+import meterConverter: "meterToFeet2019.cga"
+
+#####Attributes#####
+attr ST_WIDTH = 0 #Remember this needs to be an integer or float
+
+@Range(min=1, max=1000)
+attr scatterPeople = densityCalculator("LongBlock", "Standing") #30
+
+@Enum ("SuperNarrow", "Narrow", "Wide")
+attr StreetType =
+    # if ST_Width is something, return  a new name
+    case ST_WIDTH <= 30 : "SuperNarrow" #comparisons should be less than or equal <=. If your write equal lessthan it wont work =<
+    case ST_WIDTH >= 60: "Wide"
+    else : "Narrow"
+
+attr EventSizeStreet =
+	case StreetType == "SuperNarrow" : "Small"
+	case StreetType == "Narrow" : "Medium"
+	case StreetType == "Wide" : "Big"
+	else : "Massive"
+	
+	
+###### function #########
+densityCalculator(input1, input2) = 
+	case input1 == "LongBlock" && input2 == "Standing": 34000
+	else: 0
+
+
+#####Rules#####
+@StartRule
+Street -->
+#How to scatter people and avoid overlapping of primitiveQuad?
+	scatter(surface, scatterPeople, uniform) { DensityStanding }
+
+DensityStanding-->
+#For People Stading, the density in an event is 6 sqft/person
+	primitiveQuad(meterConverter.feet(6),meterConverter.feet(6))
+	StandingPeople
+	
+StandingPeople-->
+#Defining the standing people placeholder with a primitiveCube
+	primitiveCube(meterConverter.feet(2), meterConverter.feet(6), meterConverter.feet(2))
+	label("person")
+	RemoveClashingPeople
+	
+RemoveClashingPeople -->
+	case overlaps(intra, "person"): NIL
+	else:
+		report("Total persons", 1)
+	

@@ -1,0 +1,51 @@
+/**
+ * File:    splitBuilding.cga
+ * Created: 7 Nov 2021 22:16:08 GMT
+ * Author:  User
+ */
+
+version "2021.1"
+
+#####Attributes#####
+#Building Attributes
+attr groundfloor_height = 5
+attr floor_height = 4.5
+#attr tile_width = 3
+
+
+/*/ geometries
+	window_asset = "facades/window.obj"*/
+	
+	######Rules######
+Lot-->	
+	extrude (rand(10,50))
+Building -->
+	comp (f) {front: FrontFacade | side: SideFacade }
+
+FrontFacade -->
+	split (y){groundfloor_height: NIL |
+	{~floor_height:  NIL}*}
+	
+SideFacade -->
+	split (y) {groundfloor_height: NIL |
+	{~floor_height: NIL}*}
+	
+/*Floor -->
+	split (x){ 1: Wall | 
+	{~tile_width: Tile} #you are missin a curly bracket here
+	| 1: Wall}
+	
+Groundfloor -->
+	split (x){1: Wall | {~tile_width: Tile}*
+	| ~tile_width: EntranceTile #this has a typo, it needs to be tile_width
+	| 1:Wall}
+	
+Tile -->
+	split (x){~1:Wall | 2: split (y){~1: Wall | 1.5: Window | ~1: Wall }
+	|~1: Wall}
+	
+EntranceTile -->
+    split(x){ ~1 : SolidWall
+            |  2 : split(y){ 2.5: Door | ~2: SolidWall }
+            | ~1 : SolidWall }*/
+            

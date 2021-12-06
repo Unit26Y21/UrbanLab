@@ -1,0 +1,21 @@
+newmtl Foliage__leafcard
+    Kd 1 1 1
+    Ka 0 0 0
+     d 1
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 4
+    Ks 0.1 0.1 0.1
+    Ns 0
+ map_Kd PineAustralian_Foliage_Diffuse.png
+ map_d PineAustralian_Foliage_Diffuse.png
+newmtl Bark
+    Kd 1 1 1
+    Ka 0 0 0
+     d 1
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 3
+    Ks 0 0 0
+    Ns 0
+ map_Kd PineAustralian_Bark_Diffuse.jpg
