@@ -38,7 +38,7 @@ AreaDivider -->
 			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
 			| rand(meterConverter.feet(7), meterConverter.feet(12)) : NarrowLanes 
 			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
-			| rand(meterConverter.feet(10), meterConverter.feet(22)): WideLanes 
+			| rand(meterConverter.feet(15), meterConverter.feet(30)): WideLanes2 
 			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator }*
 
 Separator-->
@@ -51,6 +51,12 @@ NarrowLanes-->
 WideLanes -->
 	case float(listLast(getTreeKey())) % 2 == 0:
 		split(z){rand(meterConverter.feet(10), meterConverter.feet(20)): selectOddLanes }* 
+	else: 
+		Second
+		
+WideLanes2 -->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		split(z){rand(meterConverter.feet(20), meterConverter.feet(40)): selectOddLanes2 }* 
 	else: 
 		Second
 
@@ -68,17 +74,17 @@ selectOddLanes -->
 	//Five//////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 5 == 0:
 		Five
-		Rack
+		
 		rotate(rel, object, 0, rand(360), 0)
 	
 	//KIOSKS////////////////////////////////////
 	//Three/////////////////////////////////////	
 	case float(listLast(getTreeKey())) % 3 == 0:
-		scatter(surface, 3, gaussian){ #primitiveQuad(2,3)
-										label("kiosk")
-										/*CheckOverlap*/ }		
+		#scatter(surface, 3, gaussian){ primitiveQuad(2,3)
+										#label("kiosk")
+										#CheckOverlap }		
 		Three
-		#Kiosks	
+		Kiosks	
 	
 	//FURNITURE&TREES/////////////////////////////////
 	//Two////////////////////////////////////////////			
@@ -95,6 +101,26 @@ selectOddLanes -->
 		One
 
 
+////////////////////////////////////////////////////////////////////////////////////////
+// TILES IN WIDE LANES 2 ///////////////////////////////////////////////////////////////
+
+selectOddLanes2-->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		Eight
+
+	case float(listLast(getTreeKey())) % 3 == 0:
+		Five
+		Rack
+		
+	case float(listLast(getTreeKey())) % 5 == 0:
+		scatter(surface, 2, uniform){ Umbrella }
+		Five
+
+	else:
+		Umbrella 
+		Three
+
+
 ////////////////////////////////////////////////////////////////////////////
 //KIOSKS///////////////////////////////////////////////////////////////////
 	
@@ -105,12 +131,26 @@ Kiosks-->
  	i("LOD2/Street Vendor.dae", yUp, keepSizeAlignPosition)
  	
  	else :
- 		rotate(rel, object, 0, rand(360),0)
+ 		#rotate(rel, object, 0, rand(360),0)
 		primitiveQuad(meterConverter.feet(6), meterConverter.feet(9))
 		extrude(meterConverter.feet(6))
 		color ("#eb4034")
 		#reduceGeometry(0.5) //This makes half of the box. Commenting it.
  	
+ 	
+ ///////////////////////////////////////////////////////////////////////////////
+//UMBRELLA/////////////////////////////////////////////////////////////////////////
+
+Umbrella-->
+	case LOD == 2 :
+ 	#rotate(rel, object, 0, rand(360),0)
+ 	i("LOD1/UmbrellaTends.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		rotate(rel, object, 0, rand(360),0)
+		i("LOD1/UmbrellaTends.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
+ 
 
 ///////////////////////////////////////////////////////////////////////////////
 //RACK/////////////////////////////////////////////////////////////////////////
@@ -151,7 +191,7 @@ BenchTableGarden-->
  	rotate(rel, object, 0,90,0)
  	
  	else :
- 		i("LOD1/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
+ 		i("assets/LOD1/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
 		rotate(rel, object, 0,90,0)
 		reduceGeometry(0.5)
 		
@@ -224,7 +264,10 @@ One-->
 Seven-->
 	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Two | ~meterConverter.feet(7) : Separator } 
 			| 0.5 : Separator }*
-	
+
+Eight-->
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Three | ~meterConverter.feet(7) : Separator } 
+			| 0.5 : Three }*	
 
 	
 
