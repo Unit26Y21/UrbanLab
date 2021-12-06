@@ -18,8 +18,8 @@ const textureFolder =  "assets/textures/"
 # you can use offset OR you can use the setback funcion:
 BlockDivision-->
 	setback(meterConverter.feet(3)){ all: ExternalRing | remainder: AreaDivider }
-	report ( "BalanceSpaceArea", geometry.area() )
-	report ( "PeoplePerEvent", geometry.area()/EventDensity )
+	report ( "BalanceSpaceArea",  meterConverter.sqmeterTosqft(geometry.area()) )
+	report ( "PeoplePerEvent",  meterConverter.sqmeterTosqft(geometry.area())/EventDensity )
  
 ExternalRing-->
 	setback(3){ all: ExternalRing | remainder: AreaDivider }
