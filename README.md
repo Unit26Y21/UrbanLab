@@ -48,7 +48,7 @@ Here you can find a high level description of the systems that make up the Urban
 
 ### Telecommunications
 
-![telecom_example](examples/telecom.png)
+![telecom_example](examples/telecoms.png)
 
 ![A fully decentralized Internet Service Provider for the community.](rules/telecom)
 
