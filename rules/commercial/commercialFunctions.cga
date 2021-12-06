@@ -52,21 +52,6 @@ Small Businesses
 */
 ###################
 
-# to assign color per commercial use/ how can we color code on first 3 floors? ###
-assignBldgColor(input) = 
-	case input == "Supermarket": "#A447FE"
-	case input == "Mini Mart": "#C140E6"
-	case input == "Department": "#FE8C47"
-	case input == "Restaurant": "#FC53EC"
-	case input == "Small Business": "#E64082"
-	case input == "Office": "#FE4C47"
-	case input == "Bar": "#5E74FF"
-	case input == "Food Bank": "#DB7093"
-	case input == "Hotel": "#FFA07A"
-	case input == "Bodega": "#FFD700"
-	case input == "Light Manufactoring": "#66CDAA"
-	case input == "Pop up Store": "#FF00FF"
-	else: "000000"	
 	
 # to report sqft of use
 reportSQFT(i, list) -->
@@ -91,9 +76,9 @@ categorizeProgamSizePerUse(input) =
 # it should be used for reporting
 	
 #instead of having to call 3 rules, you group them into one to get supply and demand
-programSizeReport(input, population) -->
-	programSizeSupply(input, population)
-	programSizeDemand(input, population)
+programSizeReport(input, household) -->
+	programSizeSupply(input, household)
+	programSizeDemand(input, household)
 	#color(assignBldgColor(input))
 
 # you report the ACTUAL supply in sqft per sqft per floor to get supply.
@@ -104,8 +89,9 @@ programSizeSupply(input, population) -->
 # you report this in sqft.
 programSizeDemand(input, population) -->
 	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
-	report(input + "_" + "minDemand" , minProgramSize(input, household) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
-	report(input + "_" + "maxDemand" , maxProgramSize(input, household) *  programSizeSqFt(input)) #reports size: 7 Daycares	
+	
+	report(input + "_" + "maxDemand" , maxProgramSize(input, household) *  programSizeSqFt(input)) #reports size: 7 Daycares
+	report(input + "_" + "minDemand" , minProgramSize(input, household) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares	
 	
 ### These are per unit ###
 # in other words i need  3supermarkets
@@ -159,3 +145,42 @@ programSizeSqFt(input) =
 	case input == "Resaturant": 10000
 	case input == "Popupstore": 2000
 	else: 1
+	
+	
+	
+	#Replace from Communial_Rule -
+
+
+attr Commercial = 
+	6%: CommercialTypes[0]
+	10%:CommercialTypes[1]
+	7%:CommercialTypes[3]
+	5%:CommercialTypes[2]
+	5%: CommercialTypes[4]
+	8%: CommercialTypes[5]
+	5%: CommercialTypes[6]
+	5%: CommercialTypes[7]
+	6%: CommercialTypes[8]
+	4%: CommercialTypes[9]
+	2%: CommercialTypes[10]
+	10%: CommercialTypes[11]
+	else: CommercialTypes[12]
+
+
+
+
+
+assignBldgColor(input) = 
+	case input == "Supermarket": "#A447FE"
+	case input == "Mini Mart": "#C140E6"
+	case input == "Department": "#FE8C47"
+	case input == "Restaurant": "#FC53EC"
+	case input == "Small Business": "#E64082"
+	case input == "Office": "#FE4C47"
+	case input == "Bar": "#5E74FF"
+	case input == "Food Bank": "#DB7093"
+	case input == "Hotel": "#FFA07A"
+	case input == "Bodega": "#FFD700"
+	case input == "Light Manufactoring": "#66CDAA"
+	case input == "Pop up Store": "#FF00FF"
+	else: "000000"
