@@ -136,7 +136,8 @@ scatterTree2-->
  	scatter (surface, 1, uniform){treeObject2}	
  	
  treeObject1-->
- 	i(textureFolder + "ecology/Black Alder tree.dae")
+ 	s(0,4,0)
+ 	i(textureFolder + "ecology/River Birch.dae")
  	
  treeObject2-->
  	s(0,8,0)
@@ -151,14 +152,14 @@ scatterTree2-->
 	#rotate(rel,object,0,90,0)
 	
 #########INTERSTITIAL TABLE##############
- scatterTable-->
- 	scatter (surface, 1, gaussian, left, '.1){tableObject}
+ #scatterTable-->
+ 	#scatter (surface, 1, gaussian, left, '.1){tableObject}
  	
  	
-tableObject-->
- 	s(2,1,1)
- 	i(textureFolder + "interstitialTable.obj")
-	alignScopeToGeometry(yUp, any, longest)
+#tableObject-->
+ 	#s(2,1,1)
+ 	#i(textureFolder + "interstitialTable.obj")
+	#alignScopeToGeometry(yUp, any, longest)
 
 ################LIGHTPOSTS##############
 #scatterLightpostTall-->
