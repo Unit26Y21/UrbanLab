@@ -10,7 +10,8 @@ import ecology: "ecology.cga"
 import waste: "waste/Archive/Waste_DensitybyBldClass2.cga"
 import meterConverter: "meterToFeet.cga" 
 import comercial: "commercial/Ecology and Commercial.cga"
-import communal: "commercial/Communial_Rule.cga"
+import communial: "commercial/Communial_Rule.cga"
+
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 50)
@@ -81,15 +82,13 @@ Garden -->
 
 SplitBuilding -->
 	label("building")
-	split(y){meterConverter.feet(15): comp(f){street.front: FirstFloor. 
-											 |street.back: NIL	 
-											 |street.right: NIL
-											 |street.left: NIL
-											 |object.bottom: FirstFloorColumns}  
+	split(y){meterConverter.feet(15): 	
+									comp(f){object.bottom: comercial.Retailsize(1)}
+										 
 			| ~1: 	 OtherFloors
 			} 
 	
-/*			
+		
 ####COLUMNS###
 FirstFloorColumns -->
 	split(x){columnMatrix[0]: 
@@ -123,11 +122,11 @@ DrawColumnHorizontally -->
 TopColumade -->
 	offset(-1, all)
 	extrude(1)
-*/
+
 
 OtherFloors --> 
 	split(y){meterConverter.feet(12): SlideFloors | meterConverter.feet(12): DontSlideFloors  keep.}*
-	set(floorNo, split.index + 1)
+	
 
 ###Balcony Tiles
 
@@ -213,8 +212,8 @@ BalconyArea-->
 
 DontSlideFloors -->
 	case split.index < 2:
-		DoNothing. #at first floor
-		  
+		set(floorNo, split.index + 1)
+		Commercial
 	else:
 		case split.index +1 == split.total:
 			Floors
@@ -227,8 +226,9 @@ DontSlideFloors -->
 			
 SlideFloors -->
 	case split.index < 2:
-		#DoNothing.#at first floor
+		set(floorNo, split.index + 1)
 		Commercial
+		
 	else:
 		case split.index +1 == split.total:
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
@@ -240,15 +240,14 @@ SlideFloors -->
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
 			Floors
 
-Commercial -->
-	case floorNo <= 2:  Retailsize 
-	else: HighDensityLot
+Commercial --> 
+	#Retailsize
+	#color(1,0,0, 0.25) 
+	Retailsize 
+	
 
 Retailsize -->
-	comercial.Retailsize
-	comercial.SmallRetailDepth
-	communal.Parcel
-	communal.CommercialSizeRule
+		split(x){'rand(1): communial.CommercialSizeRule }*
 #Reports 	
 Lot -->
 	ecology.Lot

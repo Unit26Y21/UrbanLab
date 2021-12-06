@@ -7,6 +7,10 @@
 
 version "2021.0"
 
+import communal: "commercial/Communial_Rule.cga"
+import functions: "commercial/commercialFunctions.cga"
+import meterConverter: "meterToFeet.cga"
+
 @Range(min = 3, max = 10)
 attr arcadeDepth = 3
 
@@ -24,9 +28,9 @@ const superMarketArea = 2000
 attr idealRetailGroundFloorsize = 185
 
 attr idealFacadeWidth = 4
-attr retailDepth = 5
+attr retailDepth = 2
 
-attr entranceWidth = 6
+attr entranceWidth = 4
 
 attr categorizeRetail = ""
 
@@ -63,20 +67,28 @@ TopColumade -->
 	extrude(1)
 	
 	
-Retailsize --> 
+Retailsize(floorNo) --> 
 # if retailsize is bigger than 185 square meter ,
 # keep ground floor 185 and make leftover size as second floor
-	case geometry.area() > superMarketArea:
+	case floorNo ==1 && geometry.area() > superMarketArea:
 		set(categorizeRetail, "SuperMarket")
 		report("reatilType", categorizeRetail)
 		SmallRetailDepth
 		
 	else:
-		set(categorizeRetail, "SmallRetail")
+		selectBottomArea
 		
-		report("reatilType", categorizeRetail)
-		
+selectBottomArea -->
+	comp(f){object.bottom:
+			SplitAreaCommercial}
+			
+SplitAreaCommercial -->
 	
+	splitArea(x){100:#functions.programSizeSqFt(communal.Commercial):
+						ApplyProgram}*
+
+ApplyProgram -->
+	functions.programSizeReport(communal.Commercial, communal.totalPopulation)
 
 SmallRetailDepth -->
 	#if retailsizefrontfacade > 12 meter 
@@ -86,7 +98,7 @@ SmallRetailDepth -->
 facadeRetail -->
 	split(x){ 	idealFacadeWidth: smallRetailStore |
 			 	idealFacadeWidth: smallRetailStore |
-			 	entranceWidth: entrance
+			 	entranceWidth: entrance. NIL
 			}*
 
 smallRetailStore --> color(1,1,0)
