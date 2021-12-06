@@ -10,7 +10,7 @@ import ecology: "ecology.cga"
 import waste: "waste/Waste_DensitybyBldClass.cga"
 import meterConverter: "meterToFeet.cga" 
 import comercial: "commercial/Ecology and Commercial.cga"
-
+import communal: "commercial/Communal_Rule.cga"
 #### ATTRIBUTES ####
 #added this to give you more variation on that interior ecology
 @Range(min = 0, max = 50)
@@ -20,7 +20,7 @@ attr RearYard = 20 #this needs to be .feet. When in doubt, open the file you are
 attr SideYard = 0 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 @Range(min = 0, max = 50)
-attr FrontYard = 0 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
+attr FrontYard = 10 #this needs to be .feet. When in doubt, open the file you are importing to revise what are the available functions or rules
 
 attr floorNo = 0
 attr columnMatrix = [3,4]
@@ -30,7 +30,7 @@ attr colorValue = 1
 	
 ### TEXTURES ###
 
-const FacadeTexture = "facades/textures/" + "Hatch 3.jpg"	
+const FacadeTexture = "facades/textures/" + "Hatch 7.jpg"	
 
 #### RULES ####
 
@@ -212,9 +212,9 @@ BalconyArea-->
 	color("#800080")
 
 DontSlideFloors -->
-	case split.index < 1:
-		#DoNothing. #at first floor
-		Retailsize  
+	case split.index < 2:
+		DoNothing. #at first floor
+		  
 	else:
 		case split.index +1 == split.total:
 			Floors
@@ -226,9 +226,9 @@ DontSlideFloors -->
 
 			
 SlideFloors -->
-	case split.index < 3:
-		DoNothing.#at first floor
-
+	case split.index < 2:
+		#DoNothing.#at first floor
+		Commercial
 	else:
 		case split.index +1 == split.total:
 			translate(rel, object, meterConverter.feet (rand(20)),0,meterConverter.feet(rand(20)) )
@@ -241,12 +241,14 @@ SlideFloors -->
 			Floors
 
 Commercial -->
-	case floorNo <= 3:  Retailsize 
+	case floorNo <= 2:  Retailsize 
 	else: HighDensityLot
 
 Retailsize -->
 	comercial.Retailsize
-	
+	comercial.SmallRetailDepth
+	communal.Parcel
+	communal.CommercialSizeRule
 #Reports 	
 Lot -->
 	ecology.Lot

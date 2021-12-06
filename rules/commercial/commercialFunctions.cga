@@ -4,19 +4,68 @@
  * Author:  User
  */
 
-version "2021.1"
+version "2021.0"
 
 import meterConverter: "meterToFeet.cga"
+
+
+
+
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Mini Mart", "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
+
+
+const commercialFloors = 3
+const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
+###################################################
+	
+
+###
+
+
+
+####### Store List #######
+/*
+Small size Vendor
+
+Food Truck
+Food stores and stands
+Medium Size Vendor
+Restaurant / Bar
+Outdoor Market
+Green Market
+
+Department
+MiniMart
+Bodega
+Food bank
+Office spaces
+Light Manufacturing
+Hotel
+Supermarkets 
+Pop up stores
+Small Businesses 
+*/
+###################
 
 # to assign color per commercial use/ how can we color code on first 3 floors? ###
 assignBldgColor(input) = 
 	case input == "Supermarket": "#A447FE"
-	case input == "Clothing Outlet": "#C140E6"
-	case input == "Restaurant": "#FE8C47"
-	case input == "School": "#FC53EC"
+	case input == "Mini Mart": "#C140E6"
+	case input == "Department": "#FE8C47"
+	case input == "Restaurant": "#FC53EC"
 	case input == "Small Business": "#E64082"
 	case input == "Office": "#FE4C47"
 	case input == "Bar": "#5E74FF"
+	case input == "Food Bank": "#DB7093"
+	case input == "Hotel": "#FFA07A"
+	case input == "Bodega": "#FFD700"
+	case input == "Light Manufactoring": "#66CDAA"
+	case input == "Pop up Store": "#FF00FF"
 	else: "000000"	
 	
 # to report sqft of use
@@ -34,8 +83,7 @@ reportSQFT(i, list) -->
 categorizeProgamSizePerUse(input) =
 	case count("Supermarket", input) >=1: "M"
 	case count("Bodega; Minimarket", input) >=1: "L"
-	else:
-		"S"
+	else: "S"
 		
 		
 # input: population | output: unique unit of use
@@ -46,42 +94,55 @@ categorizeProgamSizePerUse(input) =
 programSizeReport(input, population) -->
 	programSizeSupply(input, population)
 	programSizeDemand(input, population)
+	#color(assignBldgColor(input))
 
 # you report the ACTUAL supply in sqft per sqft per floor to get supply.
 programSizeSupply(input, population) -->
 	report(input + "_" + "supply", meterConverter.sqmeterTosqft(geometry.area())) #reports size: S,M,L
-
+	
 # when you multiply unit need * avg size = total demand
 # you report this in sqft.
 programSizeDemand(input, population) -->
-	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
-	report(input + "_" + "minDemand" , minProgramSize(input, population) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
-	report(input + "_" + "maxDemand" , maxProgramSize(input, population) *  programSizeSqFt(input)) #reports size: 7 Daycares	
+report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
+#	report(input + "_" + "minDemand" , minProgramSize(input, household) * programSizeSqFt(input)) #reports minimumNeeded: 6 Daycares
+#	report(input + "_" + "maxDemand" , maxProgramSize(input, household) *  programSizeSqFt(input)) #reports size: 7 Daycares	
 	
 ### These are per unit ###
 # in other words i need  3supermarkets
 # this is the same for minimum and maximum
-# if you do not need the minimum or the maxmimum, you can delete it or comment it out
-minProgramSize(input, population) = 
-	case input == "DayCare": 6/population * 1500
-	case input == "Small Business": 30/population * 1000
-	case input == "Bodega": 8/population * 1500
-	case input == "MiniMart": 6/population * 1500
-	case input == "Supermarket": 1/population * 5000
-	else:
-		3/population * 5000 #Flexible
+minProgramSize(input, household) = 
+    case input == "DayCare": 5/500 * household
+	case input == "Small Business": 25/200 * household
+	case input == "Bodega": 8/500 * household
+	case input == "MiniMart": 6/500 * household
+	case input == "Supermarket": 3/1500 *household
+	case input == "LightManufacturing": 8/200 * household
+	case input == "Hotel": 2/200 * household
+	case input == "Department": 8/500 * household
+	case input == "Office": 10/500 * household
+	case input == "FoodBank": 2/1500 *household
+	case input == "Restaurant": 18/200 * household
+	case input == "PopupStore": 3/500 * household
+	else:1
+
+	
 		
-maxProgramSize(input, population) = 
-	case input == "DayCare": 7/population * 1500 
-	case input == "Small Business": 30/population * 1000
-	case input == "Bodega": 10/population * 1500
-	case input == "MiniMart": 7/population * 1500
-	case input == "Supermarket": 3/population * 5000
-	else:
-		3/population * 5000 #Flexible
+maxProgramSize(input, household) = 
+	case input == "DayCare": 7/500 * household
+	case input == "Small Business": 30/200 * household
+	case input == "Bodega": 10/500 * household
+	case input == "MiniMart": 7/500 * household
+	case input == "Supermarket": 5/1500 *household
+	case input == "LightManufacturing": 10/200 * household
+	case input == "Hotel": 3/200 * household
+	case input == "Department": 10/500 * household
+	case input == "Office": 12/500 * household
+	case input == "FoodBank": 3/1500 *household
+	case input == "Restaurant": 20/200 * household
+	case input == "PopupStore": 5/500 * household
+	else:1
 
 
- @Enum ("Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "DayCare")
 ### This is avg sqft of unit ###
 # in other words 1 supermarket is, on average, 300,000 sqft.
 programSizeSqFt(input) = 

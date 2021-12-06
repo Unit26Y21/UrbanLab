@@ -10,13 +10,10 @@ import commercial: "commercial/myfirstrule.cga"
 import meterConverter: "meterToFeet.cga"
 import functions: "commercial/commercialFunctions.cga"
 
-#################### ATTRIBUTES#############################
-@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
-
-
 
 ####### Store List #######
-/*Small size Vendor
+/*
+Small size Vendor
 Corner store / Bodegas / Deli 7  per 1.5k
 Food Truck
 Food stores and stands
@@ -30,27 +27,40 @@ Outdoor Market
 Green Market
 Supermarkets 3 per 5k
 Pop up stores
-Small Businesses */
+Small Businesses 
+*/
 ###################
-
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
 attr Commercial = 
-	20%: CommercialTypes[0]
-	20%:CommercialTypes[1]
-	10%:CommercialTypes[3]
-	15%:CommercialTypes[2]
-	15%: CommercialTypes[4]
-	10%: CommercialTypes[5]
-	else: CommercialTypes[6]
+	6%: CommercialTypes[0]
+	10%:CommercialTypes[1]
+	7%:CommercialTypes[3]
+	5%:CommercialTypes[2]
+	5%: CommercialTypes[4]
+	8%: CommercialTypes[5]
+	5%: CommercialTypes[6]
+	5%: CommercialTypes[7]
+	6%: CommercialTypes[8]
+	4%: CommercialTypes[9]
+	2%: CommercialTypes[10]
+	10%: CommercialTypes[11]
+	else: CommercialTypes[12]
+
 	
 
-#@Color
-#attr BldgColor = functions.assignBldgColor
+attr BldgColor = functions.assignBldgColor(Commercial)
 	
 @Range(min= 300, max= 1000)
 attr idealLotSize = 700
 
+
+attr totalHousehold = 1
+
+attr avgHouseholdSize = 3
+
 @Range(min= 10000, max= 30000)
-attr totalPopulation = 700
+attr totalPopulation = totalHousehold * avgHouseholdSize
 
 @Enum("S","M","L")
 attr commercialSize =
@@ -85,26 +95,16 @@ const thirdfloor_height = 12
 #################### RULES #############################
 @StartRule
 Parcel -->
-	extrude(rand(20,30))
-	color BldgColor
+	#extrude(rand(20,30))
+	color(BldgColor)
 	report("Area"+"."+Commercial, geometry.area(bottom))
 
 @StartRule
 CommercialSizeRule -->
-	functions.programSizeReport(Commercial, totalPopulation) 
+	#extrude(rand(20,30))
+	color(BldgColor)
+	functions.programSizeReport(Commercial, totalHousehold) 
 	
 	
-#### Trying to Split Floors #####
-A --> 	split(y){3 : B}*
 
-B -->	case (split.index == 0) : 
-     		color("#ff0000") x
-     		
-     	case (split.index == 1) : 
-     		color("#ff0000") X
-   
-     	case (split.index == split.total-1) :
-     		color("#0000ff") X
-   
-     	else:
-     		X
+##
