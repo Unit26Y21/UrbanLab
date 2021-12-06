@@ -6,99 +6,105 @@
 
 version "2021.0"
 
-#attr Name - "String", Int, Float, Boolean
-attr maxHeight = 100
+import commercial: "commercial/myfirstrule.cga"
+import meterConverter: "meterToFeet.cga"
+import functions: "commercial/commercialFunctions.cga"
 
-@Range(min= 0,max= 10)
-attr Front_Depth = 1
 
-@Range(min= 0, max= 10)
-attr Rear_Depth = 1
+####### Store List #######
+/*
+Small size Vendor
+Corner store / Bodegas / Deli 7  per 1.5k
+Food Truck
+Food stores and stands
+Medium Size Vendor
+Restaurant / Bar
+Food bank
+Office spaces
+Light Manufacturing
+Hotel
+Outdoor Market
+Green Market
+Supermarkets 3 per 5k
+Pop up stores
+Small Businesses 
+*/
+###################
+#################### ATTRIBUTES#############################
+@Enum ("Supermarket", "Mini Mart" , "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" ,"Pop up Store" , "Day Care")
+attr Commercial = 
+	6%: CommercialTypes[0]
+	10%:CommercialTypes[1]
+	7%:CommercialTypes[3]
+	5%:CommercialTypes[2]
+	5%: CommercialTypes[4]
+	8%: CommercialTypes[5]
+	5%: CommercialTypes[6]
+	5%: CommercialTypes[7]
+	6%: CommercialTypes[8]
+	4%: CommercialTypes[9]
+	2%: CommercialTypes[10]
+	10%: CommercialTypes[11]
+	else: CommercialTypes[12]
 
-@Range(min= 0, max= 10)
-attr Side_Depth = 1
+	
 
+attr BldgColor = functions.assignBldgColor(Commercial)
+	
 @Range(min= 300, max= 1000)
 attr idealLotSize = 700
 
 
-@StartRule
-Lot -->
-	case (geometry.area()>1000):
-		#if the lot is too big, make more lots.
-		splitArea(x){idealLotSize: DoSetbacks}*
-		
-	case (geometry.area()<300):
-		#if the lot is to small, reduce setbacks.
-		DoSetbacks
-		
-	else:
+attr totalHousehold = 1
+
+attr avgHouseholdSize = 3
+
+@Range(min= 10000, max= 30000)
+attr totalPopulation = totalHousehold * avgHouseholdSize
+
+@Enum("S","M","L")
+attr commercialSize =
+	10%: "L"
+	30%: "M"
+	else: "S"
+
+@Enum ("Apartment", "Condominium")
+attr Residental = 
+	50%: ResidentalTypes [0]
+	else: ResidentalTypes [1]
 	
-		#make a building using usual setbacks.
-		DoSetbacks
-		#split(z){~Lot_Width : DoSetbacks(1)| ~Distance_Seperation: NIL}*
-		
+	
+#################### CONSTANTS #############################
+const CommercialTypes = ["Supermarket", "Mini Mart", "Department", "Restaurant", "Office", "Small Business", "Bar" , "Food Bank" , "Hotel" , "Bodega" , "Light Manufacturing" , "Pop up Store" , "Day Care"]
+const ResidentalTypes = ["Apartment", "Condominium"]	
 
 
-DoSetbacks -->
- 	setback(Front_Depth){ street.front: RandomColor | remainder: RearSpace}
- 	
-RearSpace -->
- 	setback(Rear_Depth){ street.back: RandomColor | remainder : SideSpace}
- 	
- 
-SideSpace -->
- 	setback(Side_Depth){ street.side: RandomColor | remainder: Normal}
- 	
-Normal -->
-	extrude (10)
+const commercialFloors = 3
+const floorHeight = 2
+const groundfloor_height = 15
+const secondfloor_height = 12
+const thirdfloor_height = 12
+#### Commerical and Residental Types ####
 	
-RandomColor -->
-	color(rand(1), rand(1), rand(1))
-	
-	
-	
-const CommercialTypes = ["Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar"]
-	
-@Enum ("Supermarket", "Clothing Outlet", "Restaurant", "Office", "Small Business", "School", "Bar")
-attr Commercial = 
-	20%: CommercialTypes[0]
-	20%:CommercialTypes[1]
-	10%:CommercialTypes[3]
-	15%:CommercialTypes[2]
-	15%: CommercialTypes[4]
-	10%: CommercialTypes[5]
-	else: CommercialTypes[6]
-	
-@Color
-attr BldgColor = assignBldgColor(Commercial)
-	
-#changing colors to not have the same as the waste team
-assignBldgColor(input) = 
-	case input == "Supermarket": "#A447FE"
-	case input == "Clothing Outlet": "#C140E6"
-	case input == "Restaurant": "#FE8C47"
-	case input == "School": "#FC53EC"
-	case input == "Small Business": "#E64082"
-	case input == "Office": "#FE4C47"
-	case input == "Bar": "#5E74FF"
-	else: "000000"	
-	
-reportSQFT(i, list) -->
-	case i < size(list):
-		report(list[i], i)
-		reportSQFT(i + 1, list)
-	else:
-		stop.
-		NIL
 
+
+
+
+
+
+#################### RULES #############################
 @StartRule
 Parcel -->
-	extrude(maxHeight)
+	#extrude(rand(20,30))
 	color(BldgColor)
 	report("Area"+"."+Commercial, geometry.area(bottom))
+
+@StartRule
+CommercialSizeRule -->
+	#extrude(rand(20,30))
+	color(BldgColor)
+	functions.programSizeReport(Commercial, totalHousehold) 
+	
 	
 
-
-
-	
+##

@@ -104,7 +104,8 @@ ReportTopSurfaces(surfaceType) -->
 		#report runoff saving will go here:
 		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 		report("Runoff Savings", runoffSavings)
-		PlantSeedsOnBalcony
+		vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
+	
 		
 	else:
 		set(roofArea, meterConverter.sqmeterTosqft(geometry.area()))#lets report the roof area here, in case you do some offsets, setbacks or other geomtric manipulations
@@ -115,13 +116,9 @@ ReportTopSurfaces(surfaceType) -->
 		#report runoff saving will go here:
 		set(runoffSavings, ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade)) # you set the attribute to a new number using your function from below
 		report("Runoff Savings", runoffSavings)
-		PlantSeedsOnRoof
-
-PlantSeedsOnBalcony -->
-	vegetation.balconyPlantMachine(vegetation.VegetationGroup1)
-	
-PlantSeedsOnRoof -->
-	vegetation.balconyPlantMachineRoof(vegetation.VegetationList)
+		vegetation.roofPlantMachine(vegetation.VegetationList)
+		NIL
+		
 ####### FUNCTIONS #######
 # AssignSoilGradeCoefficient Function
 SoilGradeCoefficient(gradeType) =
@@ -134,8 +131,3 @@ SoilGradeCoefficient(gradeType) =
 #Savings should be a function not a rule
 #careful where you put the parenthesis and the multiplications, you might get different results...
 ReportRunoffSavings(rainfallIntensity, roofArea, soilGrade) = rainfallIntensity * roofArea - (soilGrade * rainfallIntensity * roofArea)
-	
-	
-
-
-	
