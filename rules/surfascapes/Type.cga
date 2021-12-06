@@ -51,14 +51,14 @@ Types-->
 
 	case type == "A1":
 		split(v, unitSpace, 0){ ~pedestrian_width : pedestrianColor  // first sidewalk
-							|floraHydro_width : floraHydroColor scatterLightpostTall scatterTree1  scatterTree2// first greenway
+							|floraHydro_width : floraHydroColor  scatterTree1  scatterTree2// first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
 							| shoulder_width : shoulderColor scatterTable 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 	// second service road
 							| shoulder_width : shoulderColor scatterTable		 	// second shoulder
-							| floraHydro_width  : floraHydroColor scatterLightpostTall scatterTree1 scatterTree2 // second greenway
+							| floraHydro_width  : floraHydroColor  scatterTree1 scatterTree2 // second greenway
 							| ~pedestrian_width : pedestrianColor } 	// second sidewalk
 		
 	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
@@ -66,7 +66,7 @@ Types-->
 		split(v, unitSpace, 0){ shoulder_width : shoulderColor 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 		// second service road
-							| shoulder_width : shoulderColor scatterLightpostTall	 	// second shoulder
+							| shoulder_width : shoulderColor  	// second shoulder
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor} 		// second bike path
 
@@ -76,7 +76,7 @@ Types-->
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
-							| pedestrian_width : scatterLightpostTall pedestrianColor 	// second pedestrian way
+							| pedestrian_width : pedestrianColor 	// second pedestrian way
 							| ~floraHydro_width  : floraHydroColor  scatterTree1 scatterTree2 }	// second greenway
 
 	case type == "C1": //C1 includes miniATMs
@@ -84,25 +84,24 @@ Types-->
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
-							| pedestrian_width : scatterLightpostTall pedestrianColor 	 	// second pedestrian way
+							| pedestrian_width :  pedestrianColor 	 	// second pedestrian way
 							| ~floraHydro_width  : floraHydroColor scatterTree1 scatterTree2 }	// second greenway
 
 	case type == "D":
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
 				| bike_width : bikeColor 			// second bike path
-			 	| ~pedestrian_width : pedestrianColor scatterLightpostTall} 	 	// pedestrian way
+			 	| ~pedestrian_width : pedestrianColor } 	 	// pedestrian way
 
 	case type == "D1": //D1 includes miniATMs and interstitial tables
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
 				| bike_width : bikeColor 			// second bike path
-			 	| ~pedestrian_width : pedestrianColor  scatterTable scatterLightpostTall} 	 	// pedestrian way
+			 	| ~pedestrian_width : pedestrianColor  scatterTable } 	 	// pedestrian way
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
-		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor
-			| .5 : pedestrianColor scatterLightpostShort} 	 	// pedestrian way
+		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor } 	 	// pedestrian way
 
 	case type == "E1": # E1 includes miniATMs and interstitial tables
-		pedestrianColor pedestrianColor scatterTable scatterLightpostShort
+		pedestrianColor pedestrianColor scatterTable 
 		
 	case type == "F":
 		floraHydroColor scatterTree2 scatterTree1
@@ -162,17 +161,17 @@ tableObject-->
 	alignScopeToGeometry(yUp, any, longest)
 
 ################LIGHTPOSTS##############
-scatterLightpostTall-->
- 	scatter (surface, 1, gaussian, left, '.16){lightpostTallObject}
+#scatterLightpostTall-->
+ 	#scatter (surface, 1, gaussian, left, '.16){lightpostTallObject}
 
- lightpostTallObject-->
- 	i(textureFolder + "surfacescapes/LightPole_Tall.dae")
+ #lightpostTallObject-->
+ 	#i(textureFolder + "surfacescapes/LightPole_Tall.dae")
 
-scatterLightpostShort-->
- 	scatter (surface, 1, gaussian, left, '.1){lightpostShortObject}
+#scatterLightpostShort-->
+ 	#scatter (surface, 1, gaussian, left, '.1){lightpostShortObject}
 
- lightpostShortObject-->
- 	i(textureFolder + "surfacescapes/LightPole_Short.dae")
+# lightpostShortObject-->
+ 	#i(textureFolder + "surfacescapes/LightPole_Short.dae")
 
 
 ##########REPORT##################
