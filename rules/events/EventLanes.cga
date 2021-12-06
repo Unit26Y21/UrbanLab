@@ -10,7 +10,7 @@ import meterConverter: "meterToFeet.cga"
 
 @Enum(1,2,3)
 attr LOD = 1
-
+ 
 const EventDensity = meterConverter.sqmeterTosqft(6) #sqft/person
 const textureFolder =  "assets/textures/" 
 
@@ -135,7 +135,7 @@ Rack-->
 
 TableChair-->
 	case LOD == 2 :
- 		i("LOD2/TableChairGarden.dae", yUp, keepSizeAlignPosition)
+ 		i("LOD1/TableChairGarden.dae", yUp, keepSizeAlignPosition)
  	
  	else :
  		i("LOD1/TableChairGarden.dae", yUp, keepSizeAlignPosition)
