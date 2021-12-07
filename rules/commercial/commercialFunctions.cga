@@ -87,7 +87,7 @@ programSizeSupply(input, population) -->
 	
 # when you multiply unit need * avg size = total demand
 # you report this in sqft.
-programSizeDemand(input, population) -->
+programSizeDemand(input, household) -->
 	report("CommercialSizeType", categorizeProgamSizePerUse(input)) #reports size: S,M,L
 	
 	report(input + "_" + "maxDemand" , maxProgramSize(input, household) *  programSizeSqFt(input)) #reports size: 7 Daycares
