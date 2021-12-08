@@ -55,7 +55,7 @@ attr BldgColor = functions.assignBldgColor(Commercial)
 attr idealLotSize = 700
 
 
-attr totalHousehold = 1
+attr totalHousehold = 4166
 
 attr avgHouseholdSize = 3
 
