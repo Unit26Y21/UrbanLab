@@ -1,0 +1,24 @@
+/**
+ * File:    reports.cga
+ * Created: 7 Dec 2021 23:54:08 GMT
+ * Author:  aaceved006
+ */
+
+version "2021.0"
+
+import meterConverter: "meterToFeet.cga"
+
+const EventDensity = meterConverter.sqmeterTosqft(6) #sqft/person
+
+BlockDivision-->
+	setback(meterConverter.feet(3)){ all: ExternalRing | remainder: Second }
+	report ( "BalanceSpaceArea",  meterConverter.sqmeterTosqft(geometry.area()) )
+	report ( "PeoplePerEvent",  meterConverter.sqmeterTosqft(geometry.area())/EventDensity )
+ 
+ExternalRing-->
+ 	color ("#ffcf54")
+ 	
+Second-->
+	color ("#e88079")
+	
+	
