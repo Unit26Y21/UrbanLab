@@ -4,7 +4,7 @@
  * Author:  htarrido
  */
 
-version "2020.1"
+version "2021.0"
 
 ###################################################
 ## Attributes
@@ -33,4 +33,3 @@ sqmeterTosqft(unit) =
 #cubicMeterTocubicFoot = 
 #	case MeasureSystem == "feet": unit * 0.283168
 #	else: unit
-

@@ -34,8 +34,9 @@ Here you can find a high level description of the systems that make up the Urban
 
 ![A semi-decentralized waste system that is distributed around a neighborhood lots and the streets.](rules/waste)
 
+> A decentralize waste management within the first mile that by inserting new waste typologies increases civic engagement to properly sort waste; maximizing its value in secondary markets and reducing the its distance travels.
 
-### Events and Community(Balance Spaces)
+### Events and Community (Balance Spaces)
 
 ![event1_example](examples/events1.png)
 
@@ -43,32 +44,39 @@ Here you can find a high level description of the systems that make up the Urban
 
 ![A fully decentralized system of events to balance interscidial vertical and horizontal spaces.](rules/events)
 
-### Telecommunications
-![telecom_example](examples/telecom.png)
+> Balance Spaces, as part of the system of the city, are homeostatic places that restore and provide equilibrium to the city. They regulate the dynamic entourage and foster citizen exchange and equity through city events and community activities.
 
-![telecom_example](examples/telecom.png)
+### Telecommunications
+
+![telecom_example](examples/telecoms.png)
 
 ![A fully decentralized Internet Service Provider for the community.](rules/telecom)
+
+> A decentralize power and data network that is more resilient and can serve the entire community.
+
 
 ### Surfacescapes (“Streets”)
 ![surfacescapes_example](examples/surfacescapes.png)
 
 ![A semi-decentralized system of reorganizing “streets” to accomodate Climate Change.](rules/surfascapes)
 
+> A surface network that focuses on human powered mobility, community activation and productive systems. Its architecture symbiotically links to existing site infrastructure and topographies; maximizing environmental gains while promoting new activations within the public realm.
 
 ### Economic Activity (“Commercial”)
-![commercial_example](examples/commercial.PNG)
 
 ![commercial_example](examples/commercial.png)
 
 ![A semi-decentralized system of economic allocation use that uses demand and supply dynamics.](rules/commercial)
 
+> A system that creates "Fluid Economies" through diverse commercial types. The system distributes communal income equally in a sustainable way.
+
 ### Urban Ecology
-![ecology_examples](examples/ecology.jpg)
 
 ![ecology_example](examples/ecology.jpg)
 
 ![A fully autonomous and decentralized approach that leverages urban ecology for retaining water at a neighborhood level.](rules/ecology)
+
+> A system that reimagines impervious city surfaces to be performative through augmented ecology for efficient rain/storm-water management, heat mitigation, reduced energy consumption, ecosystem biodiversity and improved human health.
 
 ## Feedback
 

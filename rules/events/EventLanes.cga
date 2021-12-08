@@ -4,62 +4,283 @@
  * Author:  mozar
  */
 
-version "2019.0"
+version "2021.0"
+
+import meterConverter: "meterToFeet.cga"
+
+@Enum(1,2,3)
+attr LOD = 1
+ 
+const EventDensity = meterConverter.sqmeterTosqft(6) #sqft/person
+const textureFolder =  "assets/textures/" 
 
 @StartRule
+# you can use offset OR you can use the setback funcion:
 BlockDivision-->
-	# you can use offset 
-	offset(-3)
-	OffsetSelector
-//	split(x){ { 2 : A | 3 : B }* }
-
-	#OR you can use the setback funcion: 
-	setback(3){all: dividerExample1}
-	
-	
- 	
-OffsetSelector-->
-	comp(f){ inside: Second | border: First } 
+	setback(meterConverter.feet(3)){ all: ExternalRing | remainder: AreaDivider }
+	report ( "BalanceSpaceArea",  meterConverter.sqmeterTosqft(geometry.area()) )
+	report ( "PeoplePerEvent",  meterConverter.sqmeterTosqft(geometry.area())/EventDensity )
  
-First-->
+ExternalRing-->
+	setback(3){ all: ExternalRing | remainder: AreaDivider }
 	color ("#ffcf54")
- 
-Second-->
-	color ("#e88079")
-	offset(-3)
-	OffsetSelector2
-	split(x){2 : Kiosks | 3 : NIL }*
-	
-Kiosks -->
-	primitiveQuad(2,3)
-	i("Street Vendor.dae", yUp, keepSizeAlignPosition)
-     
-OffsetSelector2-->
-	comp(f) { inside: Third | border: Second } 
-	
-Third-->
-	color("#c8f5a2")
+
 	
 # You can use a combination of split or splitArea to subdive a block or lot to have variation
-
 # you can use stochastic percentage assignment, similar to how you would do it in an attribute
 # to determine outcomes INSIDE the rule
+
+////////////////////////////////////////////////////////////////////////////////////////
+// X AXIS LANE DIVIDER /////////////////////////////////////////////////////////////////
+
+AreaDivider -->
+	split(x){ rand(meterConverter.feet(10), meterConverter.feet(22)): WideLanes 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
+			| rand(meterConverter.feet(7), meterConverter.feet(12)) : NarrowLanes 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator 
+			| rand(meterConverter.feet(15), meterConverter.feet(30)): WideLanes2 
+			| rand(meterConverter.feet(1), meterConverter.feet(3)) : Separator }*
+
+Separator-->
+	color ("#cfcfcf")
+
+NarrowLanes-->
+	scatter(surface, 2, uniform){ BenchTableGarden }
+	color ("#b3b3b3")
+	
+WideLanes -->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		split(z){rand(meterConverter.feet(10), meterConverter.feet(20)): selectOddLanes }* 
+	else: 
+		Second
+		
+WideLanes2 -->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		split(z){rand(meterConverter.feet(20), meterConverter.feet(40)): selectOddLanes2 }* 
+	else: 
+		Second
+
+////////////////////////////////////////////////////////////////////////////////////////
+// TILES IN WIDE LANES /////////////////////////////////////////////////////////////////
+		
+selectOddLanes -->
+	//Seven/////////////////////////////////////
+	case float(listLast(getTreeKey())) % 7 == 0:
+		#scatter(surface, 2, uniform){ LittleBench }
+		LittleBench
+		Seven
+	
+
+	//Five//////////////////////////////////////	
+	case float(listLast(getTreeKey())) % 5 == 0:
+		Five
+		
+		rotate(rel, object, 0, rand(360), 0)
+	
+	//KIOSKS////////////////////////////////////
+	//Three/////////////////////////////////////	
+	case float(listLast(getTreeKey())) % 3 == 0:
+		#scatter(surface, 3, gaussian){ primitiveQuad(2,3)
+										#label("kiosk")
+										#CheckOverlap }		
+		Three
+		Kiosks	
+	
+	//FURNITURE&TREES/////////////////////////////////
+	//Two////////////////////////////////////////////			
+	case float(listLast(getTreeKey())) % 2 == 0:
+		#you might want to consider scattering the kios at the larger block and then removving the ones that clash with one another and with other objects.
+		#scatter(surface, 1, uniform){ BigBench }
+		BigBench
+		scatter(surface, 2, gaussian){ Trees }
+		Two
+	
+	//One//////////////////////////////////////		
+	else:
+		TableChair
+		One
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// TILES IN WIDE LANES 2 ///////////////////////////////////////////////////////////////
+
+selectOddLanes2-->
+	case float(listLast(getTreeKey())) % 2 == 0:
+		Eight
+
+	case float(listLast(getTreeKey())) % 3 == 0:
+		Five
+		Rack
+		
+	case float(listLast(getTreeKey())) % 5 == 0:
+		scatter(surface, 2, uniform){ Umbrella }
+		Five
+
+	else:
+		Umbrella 
+		Three
+
+
+////////////////////////////////////////////////////////////////////////////
+//KIOSKS///////////////////////////////////////////////////////////////////
+	
+	
+Kiosks-->
+	case LOD == 2 :
+ 	rotate(rel, object, 0, rand(360),0)
+ 	i("LOD2/Street Vendor.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		#rotate(rel, object, 0, rand(360),0)
+		primitiveQuad(meterConverter.feet(6), meterConverter.feet(9))
+		extrude(meterConverter.feet(6))
+		color ("#eb4034")
+		#reduceGeometry(0.5) //This makes half of the box. Commenting it.
+ 	
+ 	
+ ///////////////////////////////////////////////////////////////////////////////
+//UMBRELLA/////////////////////////////////////////////////////////////////////////
+
+Umbrella-->
+	case LOD == 2 :
+ 	#rotate(rel, object, 0, rand(360),0)
+ 	i("LOD1/UmbrellaTends.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		rotate(rel, object, 0, rand(360),0)
+		i("LOD1/UmbrellaTends.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
+ 
+
+///////////////////////////////////////////////////////////////////////////////
+//RACK/////////////////////////////////////////////////////////////////////////
+
+Rack-->
+	case LOD == 2 :
+ 	#rotate(rel, object, 0, rand(360),0)
+ 	i("LOD2/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		rotate(rel, object, 0, rand(360),0)
+		primitiveQuad(meterConverter.feet(7), meterConverter.feet(16))
+		extrude(meterConverter.feet(10))
+		#color ("#3cbdcf")
+		#i("LOD1/RackVendorsShelter.dae", yUp, keepSizeAlignPosition)
+		#reduceGeometry(0.5)
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//TABLE CHAIR///////////////////////////////////////////////////////////////////
+
+TableChair-->
+	case LOD == 2 :
+ 		i("LOD1/TableChairGarden.dae", yUp, keepSizeAlignPosition)
+ 	
+ 	else :
+ 		i("LOD1/TableChairGarden.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
+
+
+///////////////////////////////////////////////////////////////////////////////
+//HL BENCHES///////////////////////////////////////////////////////////////////
+
+BenchTableGarden-->
+	case LOD == 2 :
+ 	i("LOD2/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
+ 	rotate(rel, object, 0,90,0)
+ 	
+ 	else :
+ 		i("assets/LOD1/BenchTableGarden2.dae", yUp, keepSizeAlignPosition)
+		rotate(rel, object, 0,90,0)
+		reduceGeometry(0.5)
+		
+
+///////////////////////////////////////////////////////////////////////////////
+//BENCHES//////////////////////////////////////////////////////////////////////
+ 	
+Benches-->
+	primitiveQuad(rand(5, 7), rand (5,7))
+	color ("#3d694b")
+	#LittleBench
+	#BigBench
+
+LittleBench-->
+	rotate(rel, object, 0, rand(360),0)
+	i("LOD1/Garden+Bench.dae", yUp, keepSizeAlignPosition)
+	reduceGeometry(0.5)
+
+BigBench-->
+	rotate(rel, object, 0, rand(360),0)
+	i("LOD2/Garden+Bench3.dae", yUp, keepSizeAlignPosition)
+	reduceGeometry(0.5)
+
+
+///////////////////////////////////////////////////////////////////////////////
+//TREES////////////////////////////////////////////////////////////////////////
+
+Trees-->
+	case LOD == 2 :
+		rotate(rel, object, 0, rand(360),0)
+		i("ecology/River Birch.dae", yUp, keepSizeAlignPosition)
+		reduceGeometry(0.5)
+		s(4, 7, 4)
+	
+	else: 
+		primitiveDisk(16, .5)
+		extrude(4)
+		reduceGeometry(0.5)
+		
+
+///////////////////////////////////////////////////////////////////////////////
+//TEXTURES/////////////////////////////////////////////////////////////////////
+
+Second-->
+	color ("#e88079")
+	
+	
+Five-->
+	case LOD == 2 :
+	tileUV(0,2,2) texture(textureFolder + "ConcreteTiles.jpg")
+	
+	else : color("#919191")
+	
+Three-->
+	case LOD == 2 :
+	tileUV(0,2,2) texture(textureFolder + "ConcreteTiles.jpg")
+	
+	else : color("#919191")
+	
+Two-->
+	case LOD == 2 :
+	tileUV(0,2,2) texture(textureFolder + "Grass+Concrete.jpg")
+	
+	else : color("#82a671")
+	
+One-->
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Separator | ~meterConverter.feet(7) : Two } 
+			| 0.5 : Separator }*
+	
+Seven-->
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Two | ~meterConverter.feet(7) : Separator } 
+			| 0.5 : Separator }*
+
+Eight-->
+	split(x){ 0.5 : split(z){ rand(meterConverter.feet(3),meterConverter.feet(10)) : Three | ~meterConverter.feet(7) : Separator } 
+			| 0.5 : Three }*	
+
+	
+
+/*   
+Archive	 
 dividerExample1 -->
-	20%: split(x){rand(10,20): PotentialLocation}*
-	15%: split(x){rand(5,10): PotentialLocation}*
-	5%: split(x){rand(1,5): PotentialLocation}*
-	else: split(x){3: PotentialLocation}*
+	20%: split(y){rand(5,10): PotentialLocation}*
+	15%: split(y){rand(5,10): PotentialLocation}*
+	5%: split(y){rand(1,5): PotentialLocation}*
+	else: split(y){3: PotentialLocation}*
 	
-#or you can create a function that evaluates the area of the block and assigns a split area depending on the size of the blocl...
-subdivideBlock(input) = 
-	case input > 1000: 100 #subdivie Block by 100 or rand(75,100) if the block is 1000 sqmeters
-	case input < 1000 && input > 500: 50 #subdivie Block by 50 or rand(25,50) if the block is less than 1000 sqmeters and above 500 sqm
-	else: 10 #else subdivie Block by 10
-	
-#Then you use the function to determine the dimension of the split by passing the shapes geometry area
-divideExample2 -->
-	splitArea(x){subdivideBlock(geometry.area()): PotentialLocation}*
-	
-# To choose a random location inside the matrix
+	 
 PotentialLocation -->
+#choose the face, then randomly between 0 and the total number of components
 	comp(f){rint(rand(0,comp.total)): Kiosks} #we use comp.total to access the total number of splits
+*/ 

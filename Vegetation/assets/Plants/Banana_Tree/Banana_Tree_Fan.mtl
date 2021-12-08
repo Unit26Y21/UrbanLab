@@ -1,0 +1,11 @@
+newmtl CreateFan
+    Kd 1 1 1
+    Ka 0 0 0
+     d 0.999
+    Tf 1.0 1.0 1.0
+    Ni 1.0
+ illum 3
+    Ks 0 0 0
+    Ns 0
+ map_Kd Banana_Billboard.png
+ map_d Banana_Billboard.png

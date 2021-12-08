@@ -15,11 +15,9 @@ import meterConverter: "meterToFeet.cga"
 ### Constants ###
 const textureFolder =  "assets/" 
 
-@Enum("A", "B", "C", "D", "E", "F")
+@Enum("A", "A1", "B", "C", "C1", "D", "D1", "E", "E1", "F")
 attr type = "A"
 
-@Enum("H", "I", "J", "K")
-attr shapeType = "H"
 
 ### Attributes ###
 
@@ -41,111 +39,142 @@ attr bike_width = meterConverter.feet(6)
 Types-->
 	case type == "A":
 		split(v, unitSpace, 0){ ~pedestrian_width : pedestrianColor  // first sidewalk
-							|floraHydro_width : floraHydroColor	scatterGrass // first greenway
+							|floraHydro_width : floraHydroColor scatterTree1 scatterTree2 // first greenway
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor  		// second bike path
 							| shoulder_width : shoulderColor	 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 	// second service road
 							| shoulder_width : shoulderColor 		 	// second shoulder
-							| floraHydro_width  : floraHydroColor scatterGrass // second greenway
+							| floraHydro_width  : floraHydroColor scatterTree2 scatterTree1// second greenway
 							| ~pedestrian_width : pedestrianColor } 	// second sidewalk
-							
+
+	case type == "A1":
+		split(v, unitSpace, 0){ ~pedestrian_width : pedestrianColor  // first sidewalk
+							|floraHydro_width : floraHydroColor  scatterTree1  scatterTree2// first greenway
+							| bike_width : bikeColor  		// first bike path
+							| bike_width : bikeColor  		// second bike path
+							| shoulder_width : shoulderColor scatterTable 	// first shoulder
+							| service_width : serviceColor 		// first service road
+							| service_width : serviceColor 	// second service road
+							| shoulder_width : shoulderColor scatterTable		 	// second shoulder
+							| floraHydro_width  : floraHydroColor  scatterTree1 scatterTree2 // second greenway
+							| ~pedestrian_width : pedestrianColor } 	// second sidewalk
+		
 	#split into parts, shoulder, two car lanes, another shoulder and two bike lanes
 	case type == "B":
 		split(v, unitSpace, 0){ shoulder_width : shoulderColor 	// first shoulder
 							| service_width : serviceColor 		// first service road
 							| service_width : serviceColor 		// second service road
-							| shoulder_width : shoulderColor 	 	// second shoulder
+							| shoulder_width : shoulderColor  	// second shoulder
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor} 		// second bike path
 
 
 	case type == "C":
-		split(v, unitSpace, 0){ ~floraHydro_width : floraHydroColor	scatterTree scatterGrass// first greenway
+		split(v, unitSpace, 0){ ~floraHydro_width : floraHydroColor scatterTree1 scatterTree2 // first greenway
 						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
 							| bike_width : bikeColor  		// first bike path
 							| bike_width : bikeColor		// second bike path
-							| pedestrian_width : pedestrianColor scatterATM	 	// second pedestrian way
-							| ~floraHydro_width  : floraHydroColor scatterTree scatterGrass}	// second greenway
+							| pedestrian_width : pedestrianColor 	// second pedestrian way
+							| ~floraHydro_width  : floraHydroColor  scatterTree1 scatterTree2 }	// second greenway
+
+	case type == "C1": //C1 includes miniATMs
+		split(v, unitSpace, 0){ ~floraHydro_width : floraHydroColor	scatterTree1 scatterTree2 // first greenway
+						 	| pedestrian_width : pedestrianColor		 	// first pedestrian way
+							| bike_width : bikeColor  		// first bike path
+							| bike_width : bikeColor		// second bike path
+							| pedestrian_width :  pedestrianColor 	 	// second pedestrian way
+							| ~floraHydro_width  : floraHydroColor scatterTree1 scatterTree2 }	// second greenway
 
 	case type == "D":
 		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
 				| bike_width : bikeColor 			// second bike path
-			 	| ~pedestrian_width : pedestrianColor scatterATM} 	 	// pedestrian way
-		 	
+			 	| ~pedestrian_width : pedestrianColor } 	 	// pedestrian way
+
+	case type == "D1": //D1 includes miniATMs and interstitial tables
+		split(v, unitSpace, 0){ bike_width : bikeColor 		// first bike path
+				| bike_width : bikeColor 			// second bike path
+			 	| ~pedestrian_width : pedestrianColor  scatterTable } 	 	// pedestrian way
 		 	
 	case type == "E": # Type E is only pedestrian so does not need split up
-		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor} 	 	// pedestrian way
-	
+		split(v, unitSpace, 0){'pedestrian_width : pedestrianColor } 	 	// pedestrian way
+
+	case type == "E1": # E1 includes miniATMs and interstitial tables
+		pedestrianColor pedestrianColor scatterTable 
+		
 	case type == "F":
-		split(v, unitSpace, 0){~floraHydro_width : floraHydroColor scatterTree scatterGrass // greenway
-							| pedestrian_width : pedestrianColor }		 	// pedestrian way
+		floraHydroColor scatterTree2 scatterTree1
 
 	else:
 		NIL
 
 floraHydroColor-->
-	#use the folderPath you so cleverly declared above!!!!
-	tileUV(0,20,20) texture(textureFolder + "FloraHydro.png")
+	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver with Sod Infill.png")
 
 bikeColor-->
-	tileUV(0,20,20) texture(textureFolder + "Bike.png")
+	tileUV(0,2,2) texture(textureFolder + "surfacescapes/BikePath Paver Dot Pattern SIMPLE-01.png")
 	extrude (meterConverter.feet(.3))
 
 shoulderColor-->
-	tileUV(0,20,20) texture(textureFolder + "Shoulder.png")
+	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver Black with Gravel Infill.png")
  	extrude (meterConverter.feet(.3))
 
 pedestrianColor-->
- 	tileUV(0,10,10) texture(textureFolder + "Pedestrian.png")
+ 	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Pedestrian Paver Dot Pattern SIMPLE-01.png")
  	extrude (meterConverter.feet(.5))
  	
 serviceColor-->
- 	tileUV(0,20,20) texture(textureFolder + "Service.png")
+ 	tileUV(0,2,2) texture(textureFolder + "surfacescapes/Matrix Paver White with Gravel Infill.png")
  	extrude (meterConverter.feet(.3))
  
  #######TREES#########
- scatterTree-->
- 	scatter (surface, 5, uniform){treeObject}
+scatterTree1-->
+ 	scatter (surface, 1, uniform){treeObject1}
+
+scatterTree2-->
+ 	scatter (surface, 1, uniform){treeObject2}	
  	
- treeObject-->
-	 s(5,5,5)
- 	i(textureFolder + "Lowpoly_tree_sample.dae")
- 
- #######GRASS########
- scatterGrass-->
- 	scatter (surface, 5, uniform){grassObject}
- 
- grassObject-->
- 	s(1,1,1)
- 	i(textureFolder + "WildGrass.dae")
+ treeObject1-->
+ 	s(0,4,0)
+ 	i(textureFolder + "ecology/River Birch.dae")
+ 	
+ treeObject2-->
+ 	s(0,8,0)
+ 	i(textureFolder + "ecology/River Birch.dae")
  
  #######ATM#########
- scatterATM-->
- 	scatter (surface, 2, uniform){ATMObject}
+ #scatterATM-->
+ 	#scatter (surface, 1, gaussian, left, '1){ATMObject}
  	
- ATMObject-->
- 	s (5,5,5)
- 	i(textureFolder + "ATM.dae")
+ #ATMObject-->
+ 	#i(textureFolder + "Mini_ATM_ExportModel.dae", yUp, keepSizeAlignPosition)
+	#rotate(rel,object,0,90,0)
+	
+#########INTERSTITIAL TABLE##############
+ #scatterTable-->
+ 	#scatter (surface, 1, gaussian, left, '.1){tableObject}
+ 	
+ 	
+#tableObject-->
+ 	#s(2,1,1)
+ 	#i(textureFolder + "interstitialTable.obj")
+	#alignScopeToGeometry(yUp, any, longest)
 
-###### Roundabout function isn't working########
-#Roundabout--> 
- #split(v, unitSpace, 0)
- #{ 3: TestShape | 3: TestShape }
+################LIGHTPOSTS##############
+#scatterLightpostTall-->
+ 	#scatter (surface, 1, gaussian, left, '.16){lightpostTallObject}
+
+ #lightpostTallObject-->
+ 	#i(textureFolder + "surfacescapes/LightPole_Tall.dae")
+
+#scatterLightpostShort-->
+ 	#scatter (surface, 1, gaussian, left, '.1){lightpostShortObject}
+
+# lightpostShortObject-->
+ 	#i(textureFolder + "surfacescapes/LightPole_Short.dae")
+
+
+##########REPORT##################
+
  
-#TestShape -->
- #setupProjection(0,scope.xz, scope.sx, scope.sy) 
-   #projectUV(0) 
- #tileUV(0, 1, 1) pedestrianColor
-
-
-
-nonDeveloped-->
-	case shapeType == "H":
-			floraHydroColor scatter(surface, 5, gaussian){treeObject} scatter(surface, 5, uniform){grassObject}
-	case shapeType == "I":
-			setback(10) {all : pedestrianColor | remainder : floraHydroColor scatter(surface,5, uniform){grassObject}}
-		
-								
-else: NIL
