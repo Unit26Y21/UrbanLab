@@ -28,6 +28,8 @@ You can download the sample data the class used to develop the system rules [as 
 
 Here you can find a high level description of the systems that make up the Urban Lab. They have been designed as autonomous systems with different degrees of decentralization. The systems stand alone by themselves and are not meant to fully integrate into one another. Nevertheless, an attempt has been made to coordinate the different systems to show their combined potential.
 
+A high level, visual presentation of the systems can be viewed in [this Miro Board](https://miro.com/app/board/o9J_lr7Fuys=/)
+
 ### Waste and Density
 
 ![waste_example](examples/waste.jpg)
@@ -39,8 +41,6 @@ Here you can find a high level description of the systems that make up the Urban
 ### Events and Community (Balance Spaces)
 
 ![event1_example](examples/events1.png)
-
-![event2_example](examples/events2.png)
 
 ![A fully decentralized system of events to balance interscidial vertical and horizontal spaces.](rules/events)
 
