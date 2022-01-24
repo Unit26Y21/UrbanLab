@@ -1,14 +1,14 @@
 # Surfacescapes 
 Authors: Steven Kaminski & Meghan Kalinowski
 
-![surfacescapes_cover](examples/Surfacescapes_Markdown_Cover.PNG)
+![surfacescapes_cover](rules/surfascapes/examples/Surfacescapes_Markdown_Cover.PNG)
 
 ![A semi-decentralized system of reorganizing “streets” to accomodate community needs and Climate Change.](rules/surfascapes)
 
 > A surface network that focuses on human powered mobility, community activation and productive systems. Its architecture symbiotically links to existing site infrastructure and aims to respect the preexising golf course topography; maximizing environmental gains while promoting new activations within the public realm.
 
 ## Participative Design
-![surfacescape_participative}(examples/Surfacescapes_Markdown_Participative Design.PNG)
+![surfacescape_participative}(rules/surfascapes/examples/Surfacescapes_Markdown_ParticipativeDesign.PNG)
 
 > The rules of the surfacescape code were designed to allow for flexible use depending on what the community needs. Using the codes in the CityEngine model community stakeholders can see how different public use, ecological and mobility options would affect the mobility and engagement in the public realm of the surfacescape. 
 
@@ -19,7 +19,7 @@ The primary function of the code is to segment the street function in CityEngine
 
 We coded five main surface types and several offshoot sub-types of those primary surfaces. The main types were denoted as A, B, C, D, E and F within the code and sub-types were labeled as A1, A2 etc.
 
-![surfacescapes_typologies](examples/Surfacescapes_Markdown_Typologies.PNG)
+![surfacescapes_typologies](rules/surfascapes/examples/Surfacescapes_Markdown_Typologies.PNG)
 
 >**Type A** had similar functionality to a service road. It was wide enough for emergency vehicles like fire trucks, and was designed to be sturdy for heavy use, but porous with as light a structural touch as possible.
 
