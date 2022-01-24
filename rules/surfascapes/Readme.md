@@ -3,9 +3,7 @@ Authors: Steven Kaminski & Meghan Kalinowski
 
 ![surfacescapes_cover](https://github.com/Unit26Y21/UrbanLab/blob/cacef105e72dbc8def71bb1f6aeeff4c128c928e/examples/Surfacescapes_Markdown_Cover.PNG)
 
-![A semi-decentralized system of reorganizing “streets” to accomodate community needs and Climate Change.](https://github.com/Unit26Y21/UrbanLab/blob/cacef105e72dbc8def71bb1f6aeeff4c128c928e/examples/Surfacescapes_Markdown_Participative%20Design.PNG)
-
-> A surface network that focuses on human powered mobility, community activation and productive systems. Its architecture symbiotically links to existing site infrastructure and aims to respect the preexising golf course topography; maximizing environmental gains while promoting new activations within the public realm.
+A surface network that focuses on human powered mobility, community activation and productive systems. Its architecture symbiotically links to existing site infrastructure and aims to respect the preexising golf course topography; maximizing environmental gains while promoting new activations within the public realm.
 
 ## Participative Design
 ![surfacescape_participative](https://github.com/Unit26Y21/UrbanLab/blob/cacef105e72dbc8def71bb1f6aeeff4c128c928e/examples/Surfacescapes_Markdown_Participative%20Design.PNG)
@@ -16,6 +14,8 @@ Authors: Steven Kaminski & Meghan Kalinowski
 The primary function of the code is to segment the street function in CityEngine to create new "surfacescapes" which we envision having a totally different use and function from what is knows traditionally as a street. We designed two rules for these surfacescapes. One is a simplified version using primarily color for high level understanding the other is a more detailed and granular code with objects, trees, street splitting, extrusions and patterns demonstrating the surfacescape design.
 >**Inputs** are the street objects in CityEngine and attributes A, B, C, D, E, F.
 >**Output** segments the street object into sections depending on its width and A, B, C, D, E, F attribute and populates the street with colors, lanes, objects, extrusions and setbacks depending on the typology tied to the attribute and width. 
+
+---
 
 ### Surface Types
 
