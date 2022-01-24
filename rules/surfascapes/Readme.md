@@ -8,13 +8,12 @@ Authors: Steven Kaminski & Meghan Kalinowski
 > A surface network that focuses on human powered mobility, community activation and productive systems. Its architecture symbiotically links to existing site infrastructure and aims to respect the preexising golf course topography; maximizing environmental gains while promoting new activations within the public realm.
 
 ## Participative Design
-
-![surfacescapes_participative_design](examples/Surfacescapes_Markdown_Participative Design.PNG)
+![surfacescape_participative}(examples/Surfacescapes_Markdown_Participative Design.PNG)
 
 > The rules of the surfacescape code were designed to allow for flexible use depending on what the community needs. Using the codes in the CityEngine model community stakeholders can see how different public use, ecological and mobility options would affect the mobility and engagement in the public realm of the surfacescape. 
 
 ## Code
-The primary function of the code is to segment the street function in CityEngine to create new "surfacescapes" which we envision having a totally different use and function from what is knows traditionally as a street. We designed two rules for these surfacescapes. One is a simplified version using primarily color for high level understanding the other is a more detailed and granular code with objects, trees, street splitting, extrusions and patterns demonstrating the surfacescape design.
+The primary function of the code is to segment the street function in CityEngine to create new "surfacescapes" which we envision having a totally different use and function from what is knows traditionally as a street. We designed two rules for these surfacescapes. One is a simplified version using primarily color for high level understanding the other is a more detailed and granular code with objects, trees, street splitting, extrusions and patterns demonstrating the surfacescape design. The **inputs** are the street objects in CityEngine and attributes A, B, C, D, E, F. The **output** segments the street object into sections depending on its width and A, B, C, D, E, F attribute and populates the street with colors, lanes, objects, extrusions and setbacks depending on the typology tied to the attribute and width. 
 
 ### Surface Types
 
