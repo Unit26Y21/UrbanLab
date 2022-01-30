@@ -1,10 +1,10 @@
 # Ecology
 Authors: Rebecca Hager & Nathan Laveau
-![Cover pic Ecology](https://user-images.githubusercontent.com/93105936/151720369-88e30ada-6e90-4427-b94a-47c210c7c207.jpg)
+![image](https://user-images.githubusercontent.com/93105936/151720527-2d2e9fc9-c740-40a7-aaf3-9e95e02787ae.png)
 
 
  
-The Ecology team sought to accomplish two main tasks through CGA code in City Engine: 
+The Ecology team sought to reimaginine impervious city surfaces to be performative through augmented ecology for efficient rain/storm-water management, heat mitigation, reduced energy consumption, ecosystem biodiversity and improved human health. To represent this hypothesis in a functioning system, the Ecology team set out to achieve two main tasks through CGA code in City Engine: 
 
 1 - To generate building typologies that maximized performative surface area for water retention.
 
