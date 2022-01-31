@@ -1,16 +1,16 @@
 # Waste: Value Propositions in the First Mile
 Authors: Katherine Kenny & Brandon Neva
 
-![placeholder](/examples/1_Waste_Areal View.png "1_Waste_Areal View") 
+![placeholder](/https://github.com/Unit26Y21/UrbanLab/blob/a9c111c066c60f5260a83eced28c57fc8052102c/examples/1_Waste_Areal%20View.png) 
 #### If civic engagement increases, waste will be better sorted at the first mile, creating opportunities to maximize its value generation in secondary markets and reduce the distance it has to travel to be treated.
 
 ## Introducing 3 New Building Typologies to Treat Community Waste
-![placeholder](/examples/2_Waste_Site Axon.png "2_Waste_Site Axon") 
+![placeholder](/https://github.com/Unit26Y21/UrbanLab/blob/a9c111c066c60f5260a83eced28c57fc8052102c/examples/2_Waste_Site%20Axon.png) 
 
 ###### These typologies were calculated by first understanding how much of each waste type does an average family produce, and then coding that into City Engine to see as you play with different urban arrangements how does the required waste infrastructure change. 
 
 ## Tap into Assembly Line Flows to Efficiently Move Waste, Reducing Reliance on Diesel Heavy Trucks
-![placeholder](/examples/3_Waste_Diagrammatic Map.png "3_Waste_Diagrammatic Map")
+![placeholder](/https://github.com/Unit26Y21/UrbanLab/blob/a9c111c066c60f5260a83eced28c57fc8052102c/examples/3_Waste_Diagrammatic%20Map.png)
 
 ###### Mapped here are each waste typologies with the proposed movement and modes of transportation. 
 ###### - There are 50 sorting bins on the site, so people have to walk from their building to the sorting bin to properly dispose of the waste. Each bin is placed so the max distance someone has to walk is approximately 100 feet. 
@@ -18,6 +18,6 @@ Authors: Katherine Kenny & Brandon Neva
 ######  From the holding station, the waste is picked up by the traditional sanitation truck and is either taken off-site or drives to the on-site transformation station. The bulk of metal, plastic, glass and paper will be taken to other recycling processing facilities that already exist in the city. Any organics, refuse and select other materials will be taken to the transformation station, where waste can be turned to energy or resold in boutique markets. 
 
 ## Improve Diversion, with Increased On-Site Waste Treatment Solutions
-![placeholder](/examples/4_Waste_Diversion Flowchart.png "4_Waste_Diversion Flowchart.png") 
+![placeholder](/https://github.com/Unit26Y21/UrbanLab/blob/a9c111c066c60f5260a83eced28c57fc8052102c/examples/4_Waste_Diversion%20Flowchart.png) 
 
 #### Design Anarchy means being suspicious of the way things have been done and to question the motives of those in power making decisions. So finding ways to be disruptive and to question the current norms and thinking. We are not coming up with new solutions on how to treat and process waste, but rather proposing new ways to change the way people perceive waste as a commodity and how to integrate it into people’s lives and not making it this distant thought.
