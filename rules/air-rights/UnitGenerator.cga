@@ -6,12 +6,19 @@
 
 version "2019.0"
 
-const height = 8
+const height = 40
+const floorHeight = 3.1019
 
 
 BldgGenerator-->
 	extrude(height)
+	split(y){floorHeight : FloorSelector }*
 	
+FloorSelector-->
+	comp(f){ bottom : Color }
+	report ("Area", geometry.area)
 
-
+	
+Color-->
+	color("#00ecfc")
 
