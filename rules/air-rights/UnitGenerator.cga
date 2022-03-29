@@ -11,7 +11,7 @@ const floorHeight = 3.1019
 
 
 BldgGenerator-->
-	#extrude(height)
+	extrude(height)
 	split(y){floorHeight : FloorSelector }*
 	
 FloorSelector-->
